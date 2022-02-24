@@ -1,0 +1,9 @@
+
+.w-bg-container{
+    background-color: #e9ecef;
+  }
+  .w-container{
+    min-width: 100%;
+    display: block;
+    min-height: 800px;
+  }
