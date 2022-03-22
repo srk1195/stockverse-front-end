@@ -1,6 +1,6 @@
 import React from 'react'
-import {Navigation} from '../../components/Navigation';
-import "./Payment.css"
+import {Navigation} from './Navigation';
+import "../Css/Payment.css"
 import {
     Row,
     Container,

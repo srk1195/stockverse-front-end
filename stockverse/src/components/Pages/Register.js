@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Form from '../Form/Form';
-import "./Register.css"
+import Form from './Form';
+import "../Css/Register.css"
 const Register = () => {
     const[userData,setUserData]=useState({Name:"",email:"",password:"",cpassword:""});
     const [isLoggedIn,setIsLoggedIn]=useState(false);

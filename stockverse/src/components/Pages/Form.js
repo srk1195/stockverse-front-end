@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 import {useNavigate} from "react-router-dom";
-import "./Form.css"
+import "../Css/Form.css"
 
 function Form() {
 
@@ -82,10 +82,7 @@ function Form() {
         <div className="f-container">
             <div className="f-card">
                 <div className="f-form">
-                    {/* <div className="f-left-side">
-                        <img src="https://imgur.com/XaTWxJX.jpg" alt=""/>
-                    </div> */}
-
+                    
                     <div className="f-right-side">
                         <div className="f-register">
                             <p>Not a member? <div onClick={btnRegister}><span>Register Now</span></div></p>

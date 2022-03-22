@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
-import {Navigation} from '../../components/Navigation';
+import {Navigation} from './Navigation';
 import {useNavigate} from "react-router-dom";
-import "./Wishlist.css"
+import "../Css/Wishlist.css"
 import {
     Button,
     Card,
