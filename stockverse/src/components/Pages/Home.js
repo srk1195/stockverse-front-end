@@ -1,6 +1,6 @@
 import React from 'react'
-import "./Home.css"
-import Dashboard from '../../components/Dashboard/Dashboard'
+import "../Css/Home.css"
+import Dashboard from './Dashboard'
 
 const Home = () => {
   return (

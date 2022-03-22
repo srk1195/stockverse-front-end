@@ -1,22 +1,17 @@
 import React,{Component} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Navbar, Nav} from 'react-bootstrap'
-import logo from '../logo.png'
-import "./Navigation.css"
+import logo from '../Images/Logo.png'
+import "../Css/Navigation.css"
 // import logo from '../logo.svg';
 import {
-    DropdownButton,
-    Dropdown,
     Container,
     NavDropdown,
-    Form,
-    FormControl,
-    Button
   } from "react-bootstrap";
-  import Payment from '../components/Payment/Payment'
-  import Portfolio from '../components/Portfolio/Portfolio'
-  import Dashboard from '../components/Dashboard/Dashboard'
-  import Wishlist from '../components/Wishlist/Wishlist';
+  import Payment from './Payment'
+  import Portfolio from './Portfolio'
+  import Dashboard from './Dashboard'
+  import Wishlist from './Wishlist';
   import {Routes, Route} from 'react-router-dom';
 
 export class Navigation extends Component{

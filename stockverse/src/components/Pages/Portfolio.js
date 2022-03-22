@@ -1,6 +1,6 @@
 import React from 'react'
-import {Navigation} from '../../components/Navigation';
-import "./Portfolio.css"
+import {Navigation} from './Navigation';
+import "../Css/Portfolio.css"
 import {
     Row,
     Container,

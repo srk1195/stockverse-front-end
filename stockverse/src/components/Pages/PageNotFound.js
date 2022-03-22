@@ -1,5 +1,5 @@
 import React from 'react'
-import "./PageNotFound.css";
+import "../Css/PageNotFound.css";
 import {useNavigate} from "react-router-dom";
 
 function PageNotFound() {

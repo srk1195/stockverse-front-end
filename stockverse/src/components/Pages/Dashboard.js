@@ -1,6 +1,6 @@
 import React from 'react'
-import "./Dashboard.css"
-import {Navigation} from '../../components/Navigation';
+import "../Css/Dashboard.css"
+import {Navigation} from './Navigation';
 import {
   Row,
   Container,
