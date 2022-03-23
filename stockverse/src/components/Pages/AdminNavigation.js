@@ -1,11 +1,11 @@
 import React,{Component} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Navbar, Nav} from 'react-bootstrap'
-import "./AdminNavigation.css"
+import "../Css/AdminNavigation.css"
 import {DropdownButton,Dropdown,Container,NavDropdown,Form,FormControl,Button} from "react-bootstrap";
 import {Routes, Route} from 'react-router-dom';
-import AdminDashboard from '../AdminDashboard/AdminDashboard'
-import UsersList from '../UserList/UserList'
+import AdminDashboard from './AdminDashboard'
+import UsersList from './UserList'
 
 export class AdminNavigation extends Component{
 

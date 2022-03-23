@@ -1,17 +1,17 @@
 
 import './App.css';
 import { Routes, Route} from 'react-router-dom'
-import PageNotFound from './components/PageNotFound/PageNotFound';
-import Form from './components/Form/Form';
-import Home from './components/Home/Home';
-import AdminDashboard from './components/AdminDashboard/AdminDashboard';
-import Payment from './components/Payment/Payment'
-import Portfolio from './components/Portfolio/Portfolio'
-import Dashboard from './components/Dashboard/Dashboard'
-import Wishlist from './components/Wishlist/Wishlist';
-import Register from './components/Register/Register';
-import UsersList from './components/UserList/UserList';
-import Profile from './components/Profile/Profile';
+import PageNotFound from './components/Pages/PageNotFound';
+import Form from './components/Pages/Form';
+import Home from './components/Pages/Home';
+import AdminDashboard from './components/Pages/AdminDashboard';
+import Payment from './components/Pages/Payment'
+import Portfolio from './components/Pages/Portfolio'
+import Dashboard from './components/Pages/Dashboard'
+import Wishlist from './components/Pages/Wishlist';
+import Register from './components/Pages/Register';
+import UsersList from './components/Pages/UserList';
+import Profile from './components/Pages/Profile';
 function App() {
   
   return (

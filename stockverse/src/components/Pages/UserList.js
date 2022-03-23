@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect} from 'react';
-import './UserList.css';
-import {AdminNavigation} from '../../components/AdminNavigation/AdminNavigation';
+import "../Css/UserList.css"
+import {AdminNavigation} from './AdminNavigation';
 
 function UsersList() {
     const [showProfs, setShowProfs] = useState([]);

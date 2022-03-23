@@ -1,6 +1,6 @@
-import React from 'react'
-import "./AdminDashboard.css"
-import {AdminNavigation} from '../../components/AdminNavigation/AdminNavigation';
+import React from 'react';
+import "../Css/AdminDashboard.css"
+import {AdminNavigation} from './AdminNavigation';
 import {Card} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 
