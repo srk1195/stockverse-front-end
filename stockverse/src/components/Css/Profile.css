@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+  }
+  
+  .p-container {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    min-height: 100vh;
+    background-color: #ffffff;
+    margin-left: 100px;
+  }
+
+  .p-container .p-card .p-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  .p-warning {
+    border: 1px solid red !important
+  }
+  
+  .p-container .p-card .p-right-side {
+    width: 100%;
+    background-color: #efecf2;
+    height: 100%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 20px
+  }
+  
+  .p-main {
+    display: none
+  }
+  
+  .p-hello {
+    margin-top: 40px;
+    text-align: center;
+    color: #2a2739
+  }
+  
+  .p-hello h4 {
+    margin-top: 5px
+  }
+  
+  .p-input_text {
+    position: relative;
+    margin-top: 20px
+  }
+  
+  input[type="text"] {
+    height: 45px;
+    width: 100%;
+    border: none;
+    outline: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    border: 1px solid #fff
+  }
+  
+  input[type="password"] {
+    height: 45px;
+    width: 100%;
+    border: none;
+    outline: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    padding-right: 33px;
+    border: 1px solid #fff
+  }
+  
+  .p-input_text p {
+    margin-top: 4px;
+    font-size: 13px;
+    margin-left: 10px;
+    color: red
+  }
+  
+  .p-danger {
+    color:"red"
+  }
+  
+  .p-input_text p i {
+    margin-right: 2px
+  }
+  
+  .pa-eye-slash {
+    position: absolute;
+    top: 15px;
+    right: 8px;
+    cursor: pointer;
+    color: #727286
+  }
+  
+  .pa-eye {
+    position: absolute;
+    top: 15px;
+    right: 8px;
+    cursor: pointer;
+    color: #727286
+  }
+  
+  .p-btn {
+    margin-top: 15px
+  }
+  
+  .p-btn button {
+    height: 45px;
+    width: 100%;
+    border: none;
+    outline: 0;
+    background-color: #2581E6;
+    border-radius: 10px;
+    transition: all 0.5s;
+    cursor: pointer;
+    font-size: 13px;
+    color: #FFFFFF
+  }
+  
+  .p-btn button:hover {
+    background-color: #1565c0
+  }
+  
+  .p-right-side hr {
+    margin-top: 30px;
+    color: #fff;
+    border: 0;
+    border-top: 1px solid #fff
+  }
+  .p-forgot p {
+    display: flex;
+    justify-content: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2a2739
+}
+.p-register p {
+  display: flex;
+  justify-content: end;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2a2739
+}
+
+.p-register p div {
+  text-decoration: none;
+  color: blue;
+  margin-left: 3px
+}
+.p-forgot p div {
+  text-decoration: none;
+  color: blue;
+  margin-left: 3px
+}

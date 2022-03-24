@@ -31,7 +31,7 @@ export class Navigation extends Component{
                     <Nav.Link href=""><i className="fas fa-bell rounded-circle c-white " alt="Notification" width="30" ></i></Nav.Link>
                     <NavDropdown align="end" title={<i className="fas fa-user-alt rounded-circle c-white" alt="profile" width="30"></i>}>
                       <NavDropdown.Item href="">About</NavDropdown.Item>
-                      <NavDropdown.Item href="">Profile</NavDropdown.Item>
+                      <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                       <NavDropdown.Item href="">Subscription</NavDropdown.Item>
                       <NavDropdown.Divider />
                       <NavDropdown.Item href="">Notification</NavDropdown.Item>
