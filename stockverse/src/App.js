@@ -13,6 +13,7 @@ import Register from './components/Pages/Register';
 import ForgetPassword from './components/Pages/ForgotPassword'
 import Profile from './components/Pages/Profile'
 import SecurityQuestion from './components/Pages/SecurityQuestion';
+import UsersList from './components/Pages/UserList';
 
 function App() {
   
