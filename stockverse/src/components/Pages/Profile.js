@@ -23,24 +23,7 @@ function Profile() {
         });
     };
     const submitForm = (e) => {
-        setSecurityRes({ message: '', status: true });
-        e.preventDefault();
-        setWarnAnswer(false);
-
-        if (formData.answer === "") {
-            setWarnAnswer(true);
-            setMsgAnswer("Please enter a valid answer");
-            return;
-        }
-
-        else if (!warnAnswer) {
-            if (formData.answer === "hello") {
-                navigate("/login");
-            }
-            else {
-                setSecurityRes({ message: 'Please enter a valid answer.', status: false });
-            }
-        }
+        navigate('/securityanswer')
     };
     
     return (
@@ -71,7 +54,7 @@ function Profile() {
                                 
 
                                 <div className="p-btn">
-                                    <button type="submit" onClick={submitForm}>Sign in</button>
+                                    <button type="submit" onClick={submitForm}>Change your password</button>
                                 </div>
 
                                 <br />
