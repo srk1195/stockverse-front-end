@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
-import "../Css/Register.css"
-import Form from 'react-bootstrap/Form'
+import "../Css/Register.css";
+import Form from 'react-bootstrap/Form';
+import axios from "axios";
 const Register = () => {
     const navigate =useNavigate();
-    const [userData, setUserData] = useState({ Name: "", email: "", password: "", cpassword: "", securityAnswer1: "", securityAnswer2: "", });
+    const [error, setError] = useState("");
+    const [userData, setUserData] = useState({ firstName: "", lastName: "",email: "", password: "", });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     //Name
     const regexName = /^[a-zA-Z]+$/;
     const [warnFN, setWarnFN] = useState(false);
     const [msgFN, setMsgFN] = useState("");
+    //Name
+    const regexLastName = /^[a-zA-Z]+$/;
+    const [warnLN, setWarnLN] = useState(false);
+    const [msgLN, setMsgLN] = useState("");
     //email
     const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const [warnEmail, setWarnEmail] = useState(false);
@@ -32,14 +38,24 @@ const Register = () => {
         e.preventDefault();
         const name = e.target.name;
         const value = e.target.value;
-        if (name === "Name") {
+        if (name === "firstName") {
             if (!regexName.test(e.target.value) && e.target.value) {
                 setWarnFN(true);
                 setMsgFN("Invalid Name! Only alphabets allowed!");
             }
             else {
                 setWarnFN(false);
-                setUserData({ ...userData, Name: e.target.value });
+                setUserData({ ...userData, firstName: e.target.value });
+            }
+        }
+        else if (name === "lastName") {
+            if (!regexLastName.test(e.target.value) && e.target.value) {
+                setWarnLN(true);
+                setMsgLN("Invalid Name! Only alphabets allowed!");
+            }
+            else {
+                setWarnLN(false);
+                setUserData({ ...userData, lastName: e.target.value });
             }
         }
         else if (name === "email") {
@@ -95,33 +111,48 @@ const Register = () => {
 
         setUserData({ ...userData, [name]: value });
     };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (userData.Name === "") {
-            setWarnFN(true);
-            setMsgFN("Please Enter a valid Name.");
-            return;
-        }
-        else if (userData.email === "") {
-            setWarnEmail(true);
-            setMsgEmail("Please Enter a valid Email Id.");
-            return;
-        }
-        else if (userData.password === "") {
-            setWarnPass(true);
-            setMsgPass("Please Enter Password! Alpha-numeric and special characters with minimum limit is 8 characters needed.");
-            return;
-        }
-        else if (userData.cpassword === "") {
-            setWarnCPass(true);
-            setMsgCPass("Please confirm the Password.");
-            return;
-        }
-        else if (!warnFN && !warnEmail && !warnPass && !warnCPass) {
+    const handleSubmit = async(e) => {
+        // e.preventDefault();
+        // if (userData.Name === "") {
+        //     setWarnFN(true);
+        //     setMsgFN("Please Enter a valid Name.");
+        //     return;
+        // }
+        // else if (userData.email === "") {
+        //     setWarnEmail(true);
+        //     setMsgEmail("Please Enter a valid Email Id.");
+        //     return;
+        // }
+        // else if (userData.password === "") {
+        //     setWarnPass(true);
+        //     setMsgPass("Please Enter Password! Alpha-numeric and special characters with minimum limit is 8 characters needed.");
+        //     return;
+        // }
+        // else if (userData.cpassword === "") {
+        //     setWarnCPass(true);
+        //     setMsgCPass("Please confirm the Password.");
+        //     return;
+        // }
+        // else if (!warnFN && !warnEmail && !warnPass && !warnCPass) {
             
-            alert("Submitted Successfully");
-            navigate(`/login`);
-        }
+        //     alert("Submitted Successfully");
+        //     navigate(`/login`);
+        // }
+        e.preventDefault();
+		try {
+			const url = "http://localhost:5000/api/register";
+			const { data: res } = await axios.post(url, userData);
+			navigate("/login");
+			console.log(res.message);
+		} catch (error) {
+			if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message);
+			}
+		}
     };
     return (
         <>
@@ -132,8 +163,12 @@ const Register = () => {
                             <h1>Registration Form</h1>
 
                             <div className="r-input_text">
-                                <input type="text" className={` ${warnFN ? "r-warning" : ""}`} name="Name" placeholder="Enter Name" value={userData.Name} onChange={handleChange} />
+                                <input type="text" className={` ${warnFN ? "r-warning" : ""}`} name="firstName" placeholder="Enter Name" value={userData.firstName} onChange={handleChange} />
                                 {warnFN ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgFN}</p> : null}
+                            </div>
+                            <div className="r-input_text">
+                                <input type="text" className={` ${warnLN ? "r-warning" : ""}`} name="lastName" placeholder="Enter Last Name" value={userData.lastName} onChange={handleChange} />
+                                {warnLN ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgLN}</p> : null}
                             </div>
 
                             <div className="r-input_text">
@@ -146,11 +181,11 @@ const Register = () => {
                                 {warnPass ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgPass}</p> : null}
                             </div>
 
-                            <div className="r-input_text">
+                            {/* <div className="r-input_text">
                                 <input type="password" className={` ${warnCPass ? "r-warning" : ""}`} name="cpassword" placeholder="Confirm Password" value={userData.cpassword} onChange={handleChange} />
                                 {warnCPass ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgCPass}</p> : null}
-                            </div>
-                            <div className="r-input_text">
+                            </div> */}
+                            {/* <div className="r-input_text">
                                 <Form.Select aria-label="Default select example">
                                     <option>Select Question 1</option>
                                     <option value="Which city you were born in?">Which city you were born in?</option>
@@ -173,8 +208,8 @@ const Register = () => {
                             <div className="r-input_text">
                                 <input type="text" className={` ${warnSA1 ? "r-warning" : ""}`} name="securityAnswer2" placeholder="Security Answer 2" value={userData.securityAnswer2} onChange={handleChange} />
                                 {warnSA2 ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgSA2}</p> : null}
-                            </div>
-
+                            </div> */}
+                            {error && <div className="fa fa-warning">{error}</div>}
                             <div className="r-btn">
                                 <button type="submit" onClick={handleSubmit}>Submit</button>
                             </div>

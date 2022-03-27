@@ -1,6 +1,7 @@
 
 import './App.css';
 import { Routes, Route} from 'react-router-dom'
+
 import PageNotFound from './components/Pages/PageNotFound';
 import Form from './components/Pages/Form';
 import Home from './components/Pages/Home';
@@ -16,15 +17,16 @@ import SecurityQuestion from './components/Pages/SecurityQuestion';
 import UsersList from './components/Pages/UserList';
 
 function App() {
-  
+  const user = localStorage.getItem("token");
   return (
     <>
+    
     <Routes>
        <Route exact path='/' element={ <Form />}  />
        <Route exact path='/login' element={ <Form />}  />
        <Route exact path='/register' element={ <Register />}/>
-       <Route exact path='/home' element={ <Home/>}/>      
-       <Route exact path='/dashboard' element={ <Dashboard />}/>
+       {user &&<  Route exact path='/home' element={ <Home/>}/> } 
+       {user &&<Route exact path='/dashboard' element={ <Dashboard />}/>}
        <Route exact path='/payment' element={ <Payment />}/>
        <Route exact path='/portfolio' element={ <Portfolio />}/>
        <Route exact path='/wishlist' element={ <Wishlist />}/>
@@ -38,7 +40,8 @@ function App() {
         </Route>
 
        <Route exact path='*' element={ <PageNotFound />}/>
-     </Routes>      
+     </Routes>
+          
     </>    
   );
 }

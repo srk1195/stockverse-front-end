@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import "../Css/Form.css";
+import axios from "axios";
+
 
 function Form() {
 
     const navigate = useNavigate();
-
+    const [error, setError] = useState("");
     const [formData, setFormData] = useState({ email: '', password: '' });
     const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const [warnEmail, setWarnEmail] = useState(false);
@@ -32,29 +34,43 @@ function Form() {
             return { ...lastValue, [e.target.name]: e.target.value }
         });
     };
-    const submitForm = (e) => {
+    const submitForm = async(e) => {
         setLoginRes({ message: '', status: true });
         e.preventDefault();
-        setWarnEmail(false);
-        setWarnPass(false);
-        if (formData.email === "") {
-            setWarnEmail(true);
-            setMsgEmail("Please enter a Email Id.");
-            return;
-        }
-        else if (formData.password === "") {
-            setWarnPass(true);
-            setMsgPass("Please enter a Password!");
-            return;
-        }
-        else if (!warnEmail && !warnPass) {
-            if (formData.email === "admin@gmail.com" && formData.password === "Admin123") {
-                navigate("/home");
-            }
-            else {
-                setLoginRes({ message: 'Oops! Something went wrong.', status: false });
-            }
-        }
+        // setWarnEmail(false);
+        // setWarnPass(false);
+        // if (formData.email === "") {
+        //     setWarnEmail(true);
+        //     setMsgEmail("Please enter a Email Id.");
+        //     return;
+        // }
+        // else if (formData.password === "") {
+        //     setWarnPass(true);
+        //     setMsgPass("Please enter a Password!");
+        //     return;
+        // }
+        // else if (!warnEmail && !warnPass) {
+        //     if (formData.email === "admin@gmail.com" && formData.password === "Admin123") {
+        //         navigate("/home");
+        //     }
+        //     else {
+        //         setLoginRes({ message: 'Oops! Something went wrong.', status: false });
+        //     }
+        // }
+        try {
+			const url = "http://localhost:5000/api/signin";
+			const { data: res } = await axios.post(url, formData);
+			localStorage.setItem("token", res.formData);
+			window.location = "/home";
+		} catch (error) {
+			if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message);
+			}
+		}
     };
     const Eye = () => {
         if (pass === "password") {
@@ -102,7 +118,7 @@ function Form() {
                                     <i onClick={Eye} className={`fa ${eye ? "fa-eye-slash" : "fa-eye"}`}></i>
                                     {warnPass ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgPass}</p> : null}
                                 </div>
-
+                                {error && <div className="fa fa-warning">{error}</div>}
                                 <div className="f-btn">
                                     <button type="submit" onClick={submitForm}>Sign in</button>
                                 </div>

@@ -15,7 +15,11 @@ import {
   import {Routes, Route} from 'react-router-dom';
 
 export class Navigation extends Component{
-
+  
+  handleLogout = () => {
+		localStorage.removeItem("token");
+		window.location = "/login";
+	};
     render(){
         return(
             <>
@@ -33,6 +37,7 @@ export class Navigation extends Component{
                       <NavDropdown.Item href="">About</NavDropdown.Item>
                       <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                       <NavDropdown.Item href="">Subscription</NavDropdown.Item>
+                      <NavDropdown.Item onClick={this.handleLogout}>Logout</NavDropdown.Item>
                       <NavDropdown.Divider />
                       <NavDropdown.Item href="">Notification</NavDropdown.Item>
                     </NavDropdown>                   
@@ -50,6 +55,7 @@ export class Navigation extends Component{
                     <Nav.Link  className="d-inline p-2 bg-secondary text-white"href="/portfolio">Portfolio</Nav.Link>
                     <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/wishlist">Wishlist</Nav.Link>
                     <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/payment">Payment</Nav.Link>
+                    
                   </Nav>
                 </Navbar.Collapse>
               </Container>
@@ -60,6 +66,7 @@ export class Navigation extends Component{
        <Route exact path='/payment' element={ <Payment />}/>
        <Route exact path='/portfolio' element={ <Portfolio />}/>
        <Route exact path='/wishlist' element={ <Wishlist />}/>
+       <Route exact path='/logout' element={ <Wishlist />}/>
      </Routes>
             </>
             
