@@ -42,6 +42,7 @@ const CustomBasketAdmin = () => {
   };
 
   const printValues = (event) => {
+    event.preventDefault();
     console.log("basketName " + basketName);
     console.log("description " + description);
     console.log("ageGroup " + ageGroup);
@@ -66,12 +67,18 @@ const CustomBasketAdmin = () => {
 
   const handleBasketName = (e) => {
     setBasketName(e.target.value);
-    console.log(basketName);
   };
 
   const handleDescription = (e) => {
     setDescription(e.target.value);
-    console.log(description);
+  };
+
+  const handleAgeGroup = (e) => {
+    setAgeGroup(e.target.value);
+  };
+
+  const handleMarketSymbol = (e) => {
+    setMarketSymbol(e.target.value);
   };
 
   return (
@@ -112,6 +119,7 @@ const CustomBasketAdmin = () => {
             type="Target Age Group"
             label="Target Age Group"
             value={ageGroup}
+            onChange={handleAgeGroup}
           />
           <FormControl sx={{ m: 1, width: "30ch" }}>
             <InputLabel id="demo-controlled-open-select-label">
@@ -137,12 +145,12 @@ const CustomBasketAdmin = () => {
             id="outlined-search"
             type="search"
             label="Market Symbol"
+            value={marketSymbol}
+            onChange={handleMarketSymbol}
           />
         </Box>
         <Button
-          onClick={() => {
-            alert("Space");
-          }}
+          onClick={(e) => printValues(e)}
           style={{ backgroundColor: "#474d5a", color: "white" }}
           variant="contained"
         >

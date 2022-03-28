@@ -16,6 +16,7 @@ import {
   Table,
 } from "react-bootstrap";
 import axios from "axios";
+import { integerPropType } from "@mui/utils";
 
 const CustomBasketList = () => {
   const [basketList, setBasketList] = useState([]);
@@ -36,49 +37,61 @@ const CustomBasketList = () => {
       });
   };
 
+  const deleteCustomBasket = (e, id) => {
+    e.preventDefault();
+    axios
+      .delete("http://localhost:5000/api/customBasket/deleteCustomBasket/" + id)
+      .then((res) => {
+        if (res.status === 200) {
+          fetchCustomBaskets();
+        } else {
+          alert("Error with the api");
+        }
+      });
+  };
+
   return (
     <>
-      <div className="container">
-        <div>CustomBasketList</div>(
-        <div>
-          <Row className="p-3"></Row>
-          <Container className="p-1 bg-container container">
-            <Row className="p-3">
-              <Col className="p-3">
-                <Card>
-                  <Table striped bordered hover className="p-1">
-                    <thead>
-                      <tr>
-                        <th>Basket Name</th>
-                        <th>Description</th>
-                        <th>Age Group</th>
-                        <th>Confidence Level</th>
-                        <th>MarketSymbol</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {basketList.map((item) => (
-                        <tr>
-                          <td>{item.basket_name}</td>
-                          <td>{item.description}</td>
-                          <td>{item.age_group}</td>
-                          <td>{item.confidence_level}</td>
-                          <td>
-                            {item.market_symbol
-                              .toString()
-                              .replaceAll(",", ", ")}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+      <div>CustomBasketList</div>
+      <div className="d-flex justify-content-left">
+        <Container className="p-1 bg-container container">
+          <Row className="p-3">
+            <Table striped bordered hover className="p-1">
+              <thead>
+                <tr>
+                  <th>Basket Name</th>
+                  <th>Description</th>
+                  <th>Age Group</th>
+                  <th>Confidence Level</th>
+                  <th>MarketSymbol</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {basketList.map((item, i) => (
+                  <tr key={i}>
+                    <td>{item.basket_name}</td>
+                    <td>{item.description}</td>
+                    <td>{item.age_group}</td>
+                    <td>{item.confidence_level}</td>
+                    <td>
+                      {item.market_symbol.toString().replaceAll(",", ", ")}
+                    </td>
+                    <td>
+                      <Button
+                        type="danger"
+                        onClick={(e) => deleteCustomBasket(e, item._id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Row>
+        </Container>
       </div>
-      )
     </>
   );
 };
