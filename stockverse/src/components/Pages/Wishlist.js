@@ -1,11 +1,11 @@
-import React,{useState, useEffect, useCallback} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Navigation} from './Navigation';
 import {useNavigate} from "react-router-dom";
 import "../Css/Wishlist.css"
-import { addWishlist, getUserWishlist ,getWishlistById, updateWishlistById,deleteWishlistById} from '../../api/AxiosCall';
-import { AV_API_KEY } from '../../api/AlphaVantage';
+import { addWishlist, getUserWishlist ,getWishlistById, updateWishlistById,deleteWishlistById} from '../../utils/axiosCall';
 import { Button, Row, FloatingLabel, ListGroup, Form, Container, Col, Modal, Table } from "react-bootstrap"; 
 import {Box, Grid, Card, CardContent, CardHeader, Divider}  from "@mui/material";
+import CONSTANTS from '../../utils/constants';
 
 function Wishlist() {
     const [state, setState] = useState('start');
@@ -13,14 +13,9 @@ function Wishlist() {
     const [wishlistData,setWishlistData] = useState({ WId:'',Name:'',Investments:'',InvestArray:[],SearchArray:[],ViewDetailsArray:[] });
   
     const navigate =useNavigate();
-    const[Name,setName]=React.useState("");   
-    const[WishlistId,setWishlistId]=React.useState("");    
     const regexName = /^[a-zA-Z]+$/;
     const [warnFN,setWarnFN]= React.useState(false);
     const [msgFN, setMsgFN] = React.useState("");
-    let [viewDetailArray, setViewDetailArray] = React.useState([]);
-    let [investArray, setInvestArray] = React.useState([]);
-    let [searchArray, setSearchArray] = React.useState([]);
     // Getting User Wishlist
     const [userWishlists, setUserWishlists] = useState([]);
     const [show, setShow] = useState(false);
@@ -61,6 +56,7 @@ function Wishlist() {
     var btnAdd= e =>
     {
         e.preventDefault();
+        setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:'',InvestArray:[],Investments:'',SearchArray:[]});
         setState('btnAdd');
     }
     var btnNewState= (e,reqid) =>
@@ -87,15 +83,9 @@ function Wishlist() {
                             };
                         
                         wInvestArrayFunction.push(demo);
-                        const API_KEY = '&apikey='+AV_API_KEY;
-                        var API_SEARCH = null;
-                        const API_FUN ="function=GLOBAL_QUOTE";
-                        let API_Call = "https://www.alphavantage.co/query?";
+                        const url = CONSTANTS.GLOBAL_QUOTE(arr[i].split('-')[0]);
                         let Sym=arr[i].split('-')[0],Name=arr[i].split('-')[1];
-                        API_SEARCH="&symbol="+arr[i].split('-')[0];
-                        API_Call+=API_FUN+API_SEARCH+API_KEY;
-                        //alert(API_Call);
-                        fetch(API_Call)
+                        fetch(url)
                         .then(
                             function(res){return res.json();}
                         )
@@ -308,10 +298,8 @@ function Wishlist() {
         navigate(`/payment`);
     };
     const btnSearch =(e)=>{
-        const API_KEY = '&apikey='+AV_API_KEY;
-        var API_SEARCH = null;
-        const API_FUN ="function=SYMBOL_SEARCH";
-        let API_Call = "https://www.alphavantage.co/query?";
+       
+        let API_SEARCH = null;
         if(searchKeyword==null && searchSymbol== null)
         {
             alert("Please enter Search Symbol or Keyword for finding Investment.");
@@ -320,7 +308,7 @@ function Wishlist() {
         {
             if(searchSymbol)
             {
-                API_SEARCH="&keywords="+searchSymbol;
+                API_SEARCH=searchSymbol;
                 if(searchRegion)
                 {
                     if(searchRegion !== "-" && searchRegion !=="0"){API_SEARCH+="."+searchRegion;} 
@@ -328,11 +316,13 @@ function Wishlist() {
             }
             if(searchKeyword)
             {
-                API_SEARCH = "&keywords="+searchKeyword;
+                API_SEARCH = searchKeyword;
             }
-            API_Call+=API_FUN+API_SEARCH+API_KEY;
+            
+            const url = CONSTANTS.SYMBOL_SEARCH(API_SEARCH);
+        
             //alert(API_Call);
-            fetch(API_Call)
+            fetch(url)
             .then(
                 function(res){return res.json();}
             )
@@ -479,20 +469,6 @@ function Wishlist() {
                                     </thead>
                                     
                                     <tbody>
-                                    {/*     {console.log(viewDetailArray)}
-                                    {viewDetailArray.map(item => (
-                                        <tr>
-                                            <td>{item.Symbol}</td>
-                                            <td>{item.Name}</td>
-                                            <td>{item.Open}</td>
-                                            <td>{item.High}</td>
-                                            <td>{item.Low}</td>
-                                            <td>{item.Price}</td>
-                                            <td>{item.PreviousClose}</td>
-                                            <td>{item.Change}</td>
-                                            <td>{item.PChng}</td>
-                                        </tr>                                       
-                                    ))}  */}
                                     {wishlistData.ViewDetailsArray?.map(item => (
                                         <tr>
                                             <td>{item.Symbol}</td>
