@@ -6,6 +6,7 @@ import { addWishlist, getUserWishlist ,getWishlistById, updateWishlistById,delet
 import { Button, Row, FloatingLabel, ListGroup, Form, Container, Col, Modal, Table } from "react-bootstrap"; 
 import {Box, Grid, Card, CardContent, CardHeader, Divider}  from "@mui/material";
 import CONSTANTS from '../../utils/constants';
+import { toast } from 'react-toastify';
 
 function Wishlist() {
     const [state, setState] = useState('start');
@@ -43,11 +44,11 @@ function Wishlist() {
             }
         }).catch((err) => {
             if (!err?.response) {
-                alert('No Server Response');
+                toast.error('No Server Response');
             } else if (err.response?.status !== 201) {
-                alert(err.response?.data["Message"]);
+                toast.error(err.response?.data["Message"]);
             } else {
-                alert('Wishlist fetching Failed.');
+                toast.error('Wishlist fetching Failed.');
             }
         }); 
     }
@@ -119,11 +120,11 @@ function Wishlist() {
             }
         }).catch((err) => {
             if (!err?.response) {
-                alert('No Server Response');
+                toast.error('No Server Response');
             } else if (err.response?.status !== 201) {
-                alert(err.response?.data["Message"]);
+                toast.error(err.response?.data["Message"]);
             } else {
-                alert('Wishlist fetching Failed.');
+                toast.error('Wishlist fetching Failed.');
             }
         }); 
         
@@ -162,18 +163,18 @@ function Wishlist() {
                     //console.log(res);
                     if (res.status === 201) {
                         if (res.data["Status"]) {
-                            alert(res.data["Message"]);
+                            toast.success(res.data["Message"]);
                             getUserWishlists(); 
                             setState('start');
                         } 
                     }
                 }).catch((err) => {
                     if (!err?.response) {
-                        alert('No Server Response');
+                        toast.error('No Server Response');
                     } else if (err.response?.status !== 201) {
-                        alert(err.response?.data["Message"]);
+                        toast.error(err.response?.data["Message"]);
                     } else {
-                        alert('Wishlist saving Failed.');
+                        toast.error('Wishlist saving Failed.');
                     }
                 }); 
         }
@@ -200,18 +201,18 @@ function Wishlist() {
                     //console.log(res);
                     if (res.status === 201) {
                         if (res.data !== null && res.data.Data !== null) {
-                            alert(res.data["Message"]);
+                            toast.success(res.data["Message"]);
                             getUserWishlists(); 
                             setState('start');
                         } 
                     }
                 }).catch((err) => {
                     if (!err?.response) {
-                        alert('No Server Response');
+                        toast.error('No Server Response');
                     } else if (err.response?.status !== 201) {
-                        alert(err.response?.data["Message"]);
+                        toast.error(err.response?.data["Message"]);
                     } else {
-                        alert('Wishlist updating Failed.');
+                        toast.error('Wishlist updating Failed.');
                     }
                 }); 
         }
@@ -252,7 +253,7 @@ function Wishlist() {
             const foundInvest = wishlistData.InvestArray.filter((item) => item.Symbol === demo[0]["Symbol"]); 
             if(foundInvest.length >0)
             {
-                alert("Investment has already been added");
+                toast.error("Investment has already been added");
             }
             else
             {
@@ -275,7 +276,7 @@ function Wishlist() {
         deleteWishlistById(wishlistData.WId).then((res) => {
             if (res.status === 201) {
                 if (res.data !== null && res.data.Data !== null) {
-                    alert(res.data["Message"]);
+                    toast.success(res.data["Message"]);
                     setState('start');
                     setStateView('startView');
                     getUserWishlists(); 
@@ -285,11 +286,11 @@ function Wishlist() {
             }
         }).catch((err) => {
             if (!err?.response) {
-                alert('No Server Response');
+                toast.error('No Server Response');
             } else if (err.response?.status !== 201) {
-                alert(err.response?.data["Message"]);
+                toast.error(err.response?.data["Message"]);
             } else {
-                alert('Wishlist fetching Failed.');
+                toast.error('Wishlist fetching Failed.');
             }
         }); 
         
@@ -302,7 +303,7 @@ function Wishlist() {
         let API_SEARCH = null;
         if(searchKeyword==null && searchSymbol== null)
         {
-            alert("Please enter Search Symbol or Keyword for finding Investment.");
+            toast.error("Please enter Search Symbol or Keyword for finding Investment.");
         }
         else
         {
@@ -423,7 +424,7 @@ function Wishlist() {
                                                             <CardContent>
                                                                 <ListGroup style={{overflow: "auto",maxHeight: "500px"}}>
                                                                     {arr.map(item => (
-                                                                        <ListGroup.Item>
+                                                                        <ListGroup.Item key={item.split('-')[0]}>
                                                                             <span>  {item.split('-')[0]} - {item.split('-')[1]}</span>
                                                                         </ListGroup.Item>
                                                                     ))}
@@ -470,7 +471,7 @@ function Wishlist() {
                                     
                                     <tbody>
                                     {wishlistData.ViewDetailsArray?.map(item => (
-                                        <tr>
+                                        <tr key={item.Symbol}>
                                             <td>{item.Symbol}</td>
                                             <td>{item.Name}</td>
                                             <td>{item.Open}</td>
@@ -527,7 +528,7 @@ function Wishlist() {
                                                         {wishlistData.InvestArray.map(item => (
                                                             <>
                                                             
-                                                            <ListGroup.Item action onClick={() => minusClicked(item)}>
+                                                            <ListGroup.Item action key={item.Symbol} onClick={() => minusClicked(item)}>
                                                                 <i className="fas fa-minus-circle"></i>
                                                                
                                                                 <span>  {item.Symbol} - {item.Name}</span>
@@ -606,7 +607,7 @@ function Wishlist() {
                                                     {wishlistData.SearchArray.map((val,key)=>{
                                                         return (
                                                             <div>
-                                                                <ListGroup.Item action onClick={() => plusClicked(val)}>
+                                                                <ListGroup.Item action key={val.Symbol} onClick={() => plusClicked(val)}>
                                                                     <i className="fas fa-plus-circle"></i>
                                                                     <span>  {val.Symbol} - {val.Name}</span>
                                                                 </ListGroup.Item>

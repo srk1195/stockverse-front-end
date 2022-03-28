@@ -1,6 +1,7 @@
 import axios from 'axios';
+import CONSTANTS from './constants';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api/' });
+const API = axios.create({ baseURL: CONSTANTS.LOCAL_BACKEND_URL });
 
 /* export const performLogin = (loginData) => API.post('/users/login', loginData); */
 
