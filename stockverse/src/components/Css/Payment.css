@@ -1,9 +1,26 @@
 
-.p-bg-container{
+.p-bg-container {
     background-color: #e9ecef;
   }
-  .p-container{
+.p-container{
     min-width: 100%;
     display: block;
     min-height: 800px;
+ }
+table {width: 100%;}
+td {
+ max-width: 0;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+}
+select, input {
+    height: 45px;
+    width: 100%;
+    border: none;
+    outline: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    border: 1px solid #fff;
   }
