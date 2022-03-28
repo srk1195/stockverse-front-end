@@ -14,7 +14,7 @@ td {
  text-overflow: ellipsis;
  white-space: nowrap;
 }
-select {
+select, input {
     height: 45px;
     width: 100%;
     border: none;

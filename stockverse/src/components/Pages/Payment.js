@@ -67,7 +67,7 @@ const Payment = () => {
         <Row>
           <Col>
             <div style={{ marginBottom: '2%' }}>
-              <input className="searchText" placeholder="Search by ID" type="text" name="search" onChange={(e) => setSearch(e.target.value)}>
+              <input placeholder="Search by ID" type="text" name="search" onChange={(e) => setSearch(e.target.value)}>
               </input>
             </div>
           </Col>
