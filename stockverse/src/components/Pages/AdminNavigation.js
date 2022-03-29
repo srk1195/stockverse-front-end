@@ -1,11 +1,11 @@
 import React,{Component} from 'react'
-import {NavLink} from 'react-router-dom'
 import {Navbar, Nav} from 'react-bootstrap'
 import "../Css/AdminNavigation.css"
-import {DropdownButton,Dropdown,Container,NavDropdown,Form,FormControl,Button} from "react-bootstrap";
+import {Dropdown,Container,NavDropdown} from "react-bootstrap";
 import {Routes, Route} from 'react-router-dom';
 import AdminDashboard from './AdminDashboard'
 import UsersList from './UserList'
+import logo from '../Images/Logo.png'
 
 export class AdminNavigation extends Component{
 
@@ -14,6 +14,7 @@ export class AdminNavigation extends Component{
             <>
             <Navbar collapseOnSelect className=' App-header' expand="lg" bg="dark" variant="dark">
               <Container style={{marginLeft:'unset',minWidth: '100%'}}>                
+              <Navbar.Brand  href="/admin"> <img src={logo} className="n-App-logo rounded-circle pe-3" alt="logo"  />STOCKVERSE</Navbar.Brand> 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav"> 
                 <Nav className="me-auto">

@@ -1,0 +1,55 @@
+.profile{
+    height: 100%;
+    position: absolute;
+    background-color: #DCDCDC;
+    width: 100%;
+}
+
+.text{
+    font-size: xx-large;
+    text-align: center;
+}
+
+table {
+    border: 2px solid #474d5a;
+    width: 80%;
+    margin: auto;
+  }
+    
+  th {
+    border-bottom: 1px solid black;
+    text-align: center;
+    border: solid;
+  }
+    
+  td {
+    text-align: center;
+    border: solid;
+  }
+
+  tr {
+    border: solid
+  }
+
+  input {
+    border-radius: 5px;
+  }
+
+  .textstats{
+    font-family: cursive;
+  }
+
+
+  .inputsection{
+    width: 90%;
+    margin: auto;
+    margin-bottom: 10px;
+  }
+
+  .statistics{
+    width: fit-content;
+    background: white;
+    margin: 10px;
+    height: 100px;
+    box-shadow: 1px 1px 1px 1px black;
+  }

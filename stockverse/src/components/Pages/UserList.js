@@ -2,25 +2,32 @@ import axios from 'axios';
 import React, { useState, useEffect} from 'react';
 import "../Css/UserList.css"
 import {AdminNavigation} from './AdminNavigation';
+import {useNavigate} from 'react-router-dom';
+import { Button } from "react-bootstrap"; 
 
 function UsersList() {
+    const navigate = useNavigate();
     const [showProfs, setShowProfs] = useState([]);
     const [allProfiles, setAllProfiles] = useState([]);
-    const userList = [{'name':"Pallavi1", 'id':1}, {'name':"Pallavi11", 'id':2}, {'name':"Pallavi", 'id':3}, {'name':"Pallavi4", 'id':4}, {'name':"Pallavi5", 'id':5}, {'name':"Pallavi16", 'id':6}, {'name':"Pallavi7", 'id':7}, {'name':"Pallavi8", 'id':8}, {'name':"Pallavi9", 'id':9}]
+    const getAllUsersApi = 'http://localhost:5000/api/userList';
     useEffect(() => {
-        axios.get('https://tutorial4-api.herokuapp.com/api/users/').then(
+        axios.get(getAllUsersApi).then(
         (response) => {
-            setAllProfiles(userList)
-            setShowProfs(userList);
+            setAllProfiles(response.data.users)
+            setShowProfs(response.data.users);
         }
     )
     },[1]);
+
+    const btnClick = () =>{
+        navigate("/userStatistics")
+    }
 
     const onModification = (c) => {
         let profs = [];
         if(c.target.value)
         {
-            let filteredValues = userList.filter(item => (item.name.toLowerCase().includes(c.target.value.toLowerCase())));
+            let filteredValues = showProfs.filter(item => (item.firstName && item.firstName.toLowerCase().includes(c.target.value.toLowerCase()) || (item.lastName && item.lastName.toLowerCase().includes(c.target.value.toLowerCase()))));
             setShowProfs(filteredValues)
             profs = filteredValues
         }else{
@@ -50,13 +57,15 @@ function UsersList() {
             <div id="list" className='list'>
                 { showProfs.map(user => (
                 <div className='eachItem'>
-                    {user.name}
+                    {user.firstName}  {user.lastName}
+                    <b className='premiumUsers'>{ user.isPremium ? 'Premium': 'Non Premium'}</b>
                 </div>
             ))}
             </div>
             <div id="nullUsers" className='nullUsers'>
                 <p className='text'>No Users found</p>
             </div>
+            <Button style={{fontSize:18, float:'right', margin: '20px'}} variant="outline-primary" onClick={btnClick}>Statistics</Button>
         </div>
     </div>
   );
