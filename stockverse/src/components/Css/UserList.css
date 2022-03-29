@@ -32,13 +32,12 @@
   .searchText {
     border:none;
     outline:none;
-    height: 30px;
+    height: 40px;
     width: 100%;
   }
 
   .eachItem{
     margin:15px;
-    cursor: pointer;
   }
 
   .eachItem:hover{
@@ -63,8 +62,11 @@
       font-size: x-large;
   }
 
-  input[type="text" i] {
-    padding: 0px
+  input {
+    width: 100% !important;
+    padding: 0px;
+    border-radius: 0px; 
+    padding-left: 10px;
     }
 
   .heading{
@@ -77,4 +79,9 @@
   position: absolute;
   background-color: #DCDCDC;
   width: 100%;
+  }
+
+  .premiumUsers{
+    float:right;
+    padding-right: 100px;
   }

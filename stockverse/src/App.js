@@ -17,6 +17,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EditPortfolioRecord from './components/Pages/EditPortfolioRecord';
 
+import UserStatistics from './components/Pages/UserStatistics';
 function App() {
   return (
     <>
@@ -32,10 +33,8 @@ function App() {
 
         <Route exact path="/wishlist" element={<Wishlist />} />
         <Route exact path="/admin" element={<AdminDashboard />} />
-        <Route path="/usersList">
-          <Route path=":userId" element={<Profile></Profile>}></Route>
-          <Route index element={<UsersList></UsersList>}></Route>
-        </Route>
+        <Route exact path="/usersList" element={<UsersList/>}/>
+        <Route exact path='/userStatistics' element={<UserStatistics/>}/>
         <Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />
         <Route
           exact
