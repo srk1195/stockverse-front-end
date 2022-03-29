@@ -5,6 +5,7 @@ import "../Css/Register.css";
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import CONSTANTS from '../../utils/constants';
 const Register = () => {
     
    
@@ -57,7 +58,7 @@ const Register = () => {
         e.preventDefault();
         try {
 
-            const url = `http://localhost:5000/api/updatePassword/${params.id}`;
+            const url = `${CONSTANTS.LOCAL_BACKEND_URL }/updatePassword/${params.id}`;
             
             const { data: res } = await axios.post(url, userData);
             console.log(res);

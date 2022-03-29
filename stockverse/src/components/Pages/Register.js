@@ -4,9 +4,10 @@ import Select from 'react-select';
 import "../Css/Register.css";
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
+import CONSTANTS from '../../utils/constants';
 const Register = () => {
     const [profile, setProfile] = useState([]);
-    const api_url = `http://localhost:5000/api/getRandomQuestion`;
+    const api_url = `${CONSTANTS.LOCAL_BACKEND_URL}/getRandomQuestion`;
     useEffect(() => {
         axios.get(api_url).then((res) => {
             // console.log("questions", res.data.questions);
@@ -131,7 +132,7 @@ const Register = () => {
         e.preventDefault();
         try {
 
-            const url = "http://localhost:5000/api/register";
+            const url = `${CONSTANTS.LOCAL_BACKEND_URL}/register`;
             console.log(userData);
             const { data: res } = await axios.post(url, userData);
 
