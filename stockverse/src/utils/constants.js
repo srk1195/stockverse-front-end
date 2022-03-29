@@ -5,11 +5,13 @@ function getRandomAPIKey() {
     process.env.REACT_APP_AV_API_KEY_THREE,
     process.env.REACT_APP_AV_API_KEY_FOUR,
     process.env.REACT_APP_AV_API_KEY_FIVE,
+    process.env.REACT_APP_AV_API_KEY_SIX,
+    process.env.REACT_APP_AV_API_KEY_SEVEN,
   ];
 
   return (
     keys[Math.floor(Math.random() * keys.length)] ||
-    process.env.REACT_APP_AV_API_KEY_ONE
+    process.env.REACT_APP_AV_API_KEY_SIX
   );
 }
 

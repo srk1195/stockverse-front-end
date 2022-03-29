@@ -15,6 +15,7 @@ import Profile from './components/Pages/Profile';
 import AddPortfolioRecord from './components/Pages/AddPortfolioRecord';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import EditPortfolioRecord from './components/Pages/EditPortfolioRecord';
 
 function App() {
   return (
@@ -36,6 +37,11 @@ function App() {
           <Route index element={<UsersList></UsersList>}></Route>
         </Route>
         <Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />
+        <Route
+          exact
+          path="/edit-portfolio/:id"
+          element={<EditPortfolioRecord />}
+        />
         <Route exact path="*" element={<PageNotFound />} />
       </Routes>
       <ToastContainer position="bottom-right" />

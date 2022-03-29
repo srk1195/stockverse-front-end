@@ -1,5 +1,6 @@
 import CONSTANTS from './constants';
 
+// Portfolio Backend
 const validateInstrumentSymbol = async (symbol) => {
   try {
     // handle USA
@@ -9,7 +10,7 @@ const validateInstrumentSymbol = async (symbol) => {
     console.log('Firing for the symbol: ', redefinedSymbol);
 
     const url = CONSTANTS.SYMBOL_SEARCH(redefinedSymbol);
-    // const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=SAIC&apikey=demo`;
+    console.log(url);
 
     const response = await fetch(url);
     const data = await response.json();
@@ -96,6 +97,53 @@ const getPortfolioData = async (userId) => {
   }
 };
 
+const getPortfolioDateMap = async (userId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio-date-map/${userId}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    return { status: true, data };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const getPortfolioDataById = async (userId, recordId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.success) {
+      return { status: true, data: data.data };
+    } else {
+      throw new Error('No Match Found');
+    }
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const deletePortfolioRecord = async (userId, recordId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    return { status: true, data };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+// Payment Backend
 const getPayments = async (userId) => {
   try {
     const url = `${CONSTANTS.LOCAL_BACKEND_URL}/paymentList/${userId}`;
@@ -133,7 +181,7 @@ const makePayment = async (userId, token) => {
       body: JSON.stringify(token),
     });
     const data = await response.json();
-    return { status: true, data :data?.list?.payments };
+    return { status: true, data: data?.list?.payments };
   } catch (e) {
     console.log(e);
     return { status: false, message: e.message };
@@ -145,7 +193,10 @@ export {
   validateInstrumentCrypto,
   addPortfolioRecord,
   getPortfolioData,
+  getPortfolioDataById,
+  deletePortfolioRecord,
   getPayments,
   getPaymentById,
-  makePayment
+  makePayment,
+  getPortfolioDateMap,
 };

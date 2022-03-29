@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Button,
@@ -14,12 +14,15 @@ import {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
   addPortfolioRecord,
+  getPortfolioDataById,
+  deletePortfolioRecord,
 } from '../../utils/apiCalls';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function AddPortfolioRecord() {
+function EditPortfolioRecord() {
   const userId = '623fcb4036fe9031dcfd696e';
+  const { id: recordId } = useParams();
   const [portfolioData, setPortfolioData] = useState({
     instrumentName: '',
     instrumentSymbol: '',
@@ -45,6 +48,24 @@ function AddPortfolioRecord() {
   } = portfolioData;
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchPortfolioData(userId) {
+      const response = await toast.promise(
+        getPortfolioDataById(userId, recordId),
+        {
+          pending: 'Loading Data@@W#1',
+          success: 'Successfully loaded data 👌',
+          error: 'Something went wrong 🤯',
+        }
+      );
+      const newData = response['data'];
+      setPortfolioData({ ...portfolioData, ...newData });
+    }
+
+    // Call the Async Function
+    fetchPortfolioData(userId);
+  }, [recordId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,14 +101,6 @@ function AddPortfolioRecord() {
     }
 
     if (nw.status) {
-      // console.log('Firing in the Nw Status!!');
-      // console.log('Match Found for the Symbol : ' + instrumentSymbol);
-      // console.log(nw.matchedItem);
-      // console.log(
-      //   nw.matchedItem['instrumentRegion'],
-      //   nw.matchedItem['currency']
-      // );
-
       const newPortfolioData = {
         ...portfolioData,
         instrumentRegion: nw.matchedItem['instrumentRegion'],
@@ -225,24 +238,65 @@ function AddPortfolioRecord() {
           </Col>
         </Row>
 
-        <Form.Group className="d-flex justify-content-center mt-4">
-          <Button role="button" variant="outline-dark" type="submit">
-            {!isLoading ? (
-              <></>
-            ) : (
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden={isLoading}
-              />
-            )}
-            Add
-          </Button>
-        </Form.Group>
+        <div className="d-flex justify-content-center mt-4">
+          <Form.Group className="m-2">
+            <Button role="button" variant="outline-dark" type="submit">
+              {!isLoading ? (
+                <></>
+              ) : (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden={isLoading}
+                />
+              )}
+              Edit
+            </Button>
+          </Form.Group>
+          <Form.Group className="m-2">
+            <Button
+              role="button"
+              variant="outline-danger"
+              type="button"
+              onClick={handleDeleteRecord}
+            >
+              {!isLoading ? (
+                <></>
+              ) : (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden={isLoading}
+                />
+              )}
+              Delete
+            </Button>
+          </Form.Group>
+        </div>
       </Form>
     );
+  };
+
+  const handleDeleteRecord = async () => {
+    const { data } = await toast.promise(
+      deletePortfolioRecord(userId, recordId),
+      {
+        pending: 'Deleting...',
+        success: 'Deleted Successfully',
+        error: 'Error in deleting the record',
+      }
+    );
+
+    if (data.success) {
+      toast.success('Successfully deleted the record');
+      navigate('/portfolio');
+    } else {
+      toast.error('Failed to delete the record');
+    }
   };
 
   const handleClose = () => {
@@ -263,21 +317,16 @@ function AddPortfolioRecord() {
       );
     }
   };
-
   return (
     <>
       <Navigation />
-
       <Container fluid className="pf-bg-container p-2 pf-container">
         {displayErrorMessage()}
-        <h3 className="text-center mb-5">
-          {' '}
-          Make a new entry to your portfolio
-        </h3>
+        <h3 className="text-center mb-5">Make changes to your portfolio</h3>
         {displayForm()}
       </Container>
     </>
   );
 }
 
-export default AddPortfolioRecord;
+export default EditPortfolioRecord;
