@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import "../Css/Form.css";
 import axios from "axios";
-
-
+import CONSTANTS from '../../utils/constants';
 function Form() {
     
     const navigate = useNavigate();
@@ -40,11 +39,11 @@ function Form() {
         
         try {
             console.log(formData);
-			const url = "http://localhost:5000/api/signin";
+			const url = `${CONSTANTS.LOCAL_BACKEND_URL}/signin`;
 			const { data: res } = await axios.post(url, formData);
-			localStorage.setItem("token", res.formData);
-            console.log(res);
-            const url2 = "http://localhost:5000/api/getRoleByEmail";
+			localStorage.setItem("token", JSON.stringify(res));
+            
+            const url2 = `${CONSTANTS.LOCAL_BACKEND_URL}/getRoleByEmail`;
 			const { data: response } = await axios.post(url2, formData);
             console.log(response);
             if(response.role===false) {
