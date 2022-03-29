@@ -21,7 +21,7 @@ import { ToastContainer } from 'react-toastify';
 import ForgotPassword from './components/Pages/ForgotPassword';
 import SecurityQuestion from './components/Pages/SecurityQuestion';
 import 'react-toastify/dist/ReactToastify.css';
-
+import UserStatistics from './components/Pages/UserStatistics';
 function App() {
   const user = localStorage.getItem("token");
   return (
@@ -43,10 +43,8 @@ function App() {
 
         <Route exact path="/wishlist" element={<Wishlist />} />
         <Route exact path="/admin" element={<AdminDashboard />} />
-        <Route path="/usersList">
-          <Route path=":userId" element={<Profile></Profile>}></Route>
-          <Route index element={<UsersList></UsersList>}></Route>
-        </Route>
+        <Route exact path="/usersList" element={<UsersList/>}/>
+        <Route exact path='/userStatistics' element={<UserStatistics/>}/>
         <Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />
         <Route exact path="/forgot" element={<ForgotPassword />} />
         <Route exact path="/securityanswer/:id" element={<SecurityQuestion />} />
