@@ -20,11 +20,11 @@ const AdminDashboard = () => {
                     <Card.Body className='cardRight eachCard bg-secondary'>Investment Video Strategy</Card.Body>
                 </div>
                 <div className='container'>
-                    <Card.Body className='cardLeft eachCard bg-secondary'>Mail Management</Card.Body>
+                    <Card.Body className='cardLeft eachCard bg-secondary'>Custom Basket Management</Card.Body>
                     <Card.Body className='cardRight eachCard bg-secondary'>My blogs</Card.Body>
                 </div>
                 <div className='container'>
-                    <Card.Body className='eachCard bg-secondary'>Custom Basket Management</Card.Body>
+                    
                 </div>
             
             </Card>
