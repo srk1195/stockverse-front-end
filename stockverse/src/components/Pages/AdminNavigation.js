@@ -41,7 +41,6 @@ export class AdminNavigation extends Component{
                     <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/admin">Home</Nav.Link>
                     <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/usersList">Check Activity</Nav.Link>
                     <Nav.Link className="d-inline p-2 bg-secondary text-white"href="/">Investment Video Strategy</Nav.Link>
-                    <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/">Mail Management</Nav.Link>
                     <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/">My blogs</Nav.Link>
                     <Nav.Link className="d-inline p-2 bg-secondary text-white" href="/">Custom Basket Management</Nav.Link>
                   </Nav>
