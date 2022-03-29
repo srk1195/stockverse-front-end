@@ -37,15 +37,15 @@ function App() {
         </Route>
         
         {user &&<Route exact path="/dashboard" element={<Dashboard />} />}
-        <Route exact path="/payment" element={<Payment />} />
-        <Route exact path='/payment/users/:userId/transactions/:transactionId' element={ <PaymentDetails />}/>
-        <Route exact path="/portfolio" element={<Portfolio />} />
+        {user &&<Route pathexact path="/payment" element={<Payment />} />}
+        {user &&<Route exact path='/payment/users/:userId/transactions/:transactionId' element={ <PaymentDetails />}/>}
+        {user &&<Route exact path="/portfolio" element={<Portfolio />} />}
 
-        <Route exact path="/wishlist" element={<Wishlist />} />
-        <Route exact path="/admin" element={<AdminDashboard />} />
-        <Route exact path="/usersList" element={<UsersList/>}/>
-        <Route exact path='/userStatistics' element={<UserStatistics/>}/>
-        <Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />
+        {user &&<Route exact path="/wishlist" element={<Wishlist />} />}
+        {user &&<Route exact path="/admin" element={<AdminDashboard />} />}
+        {user &&<Route exact path="/usersList" element={<UsersList/>}/>}
+        {user &&<Route exact path='/userStatistics' element={<UserStatistics/>}/>}
+        {user &&<Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />}
         <Route exact path="/forgot" element={<ForgotPassword />} />
         <Route exact path="/securityanswer/:id" element={<SecurityQuestion />} />
          <Route exact path="/changePassword/:id" element={<ChangePassword />} />
