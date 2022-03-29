@@ -31,10 +31,7 @@ function App() {
         <Route exact path="/" element={<Form />} />
         <Route exact path="/login" element={<Form />} />
         <Route exact path="/register" element={<Register />} />
-        <Route path="/home">
-        {user &&<Route path=":id" element={<Home />}></Route>}
-          
-        </Route>
+        {user &&<Route exact path="/home" element={<Home />}/>}
         
         {user &&<Route exact path="/dashboard" element={<Dashboard />} />}
         {user &&<Route pathexact path="/payment" element={<Payment />} />}
