@@ -1,12 +1,30 @@
-import React, { useState } from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Select from 'react-select';
 import "../Css/Register.css";
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 const Register = () => {
-    const navigate =useNavigate();
+    const [profile, setProfile] = useState([]);
+    const api_url = `http://localhost:5000/api/getRandomQuestion`;
+    useEffect(() => {
+        axios.get(api_url).then((res) => {
+            // console.log("questions", res.data.questions);
+            setProfile(res.data.questions);
+            
+        });
+    },[]);
+    const options =profile.map(item =>{
+        return {
+            label: item.question,
+            value: item.question   
+        }
+    });
+    console.log(options);
+    const navigate = useNavigate();
     const [error, setError] = useState("");
-    const [userData, setUserData] = useState({ firstName: "", lastName: "",email: "", password: "", });
+    
+    const [userData, setUserData] = useState({ firstName: "", lastName: "", email: "", password: "", cpassword: "", securityAnswer: "", securityQuestion: "", });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     //Name
     const regexName = /^[a-zA-Z]+$/;
@@ -30,10 +48,13 @@ const Register = () => {
     const regexSecurityAnswer1 = /^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/;
     const [warnSA1, setWarnSA1] = useState(false);
     const [msgSA1, setMsgSA1] = useState("");
-    //Name
-    const regexSecurityAnswer2 = /^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/;
-    const [warnSA2, setWarnSA2] = useState(false);
-    const [msgSA2, setMsgSA2] = useState("");
+    const [securityQuestionOption,setSecurityQuestion] = useState("");
+    const[value,setValue] = useState("");
+    const handleOptions = (selectedOptions) => {
+        setSecurityQuestion(selectedOptions);
+        setUserData({ ...userData,securityQuestion:selectedOptions.value});
+    }
+    
     const handleChange = (e) => {
         e.preventDefault();
         const name = e.target.name;
@@ -68,7 +89,7 @@ const Register = () => {
                 setUserData({ ...userData, email: e.target.value });
             }
         }
-        else if (name === "securityAnswer1") {
+        else if (name === "securityAnswer") {
             if (!regexSecurityAnswer1.test(e.target.value) && e.target.value) {
                 setWarnSA1(true);
                 setMsgSA1("Please enter only alphabets and numeric values");
@@ -78,16 +99,10 @@ const Register = () => {
                 setUserData({ ...userData, securityAnswer1: e.target.value });
             }
         }
-        else if (name === "securityAnswer2") {
-            if (!regexSecurityAnswer2.test(e.target.value) && e.target.value) {
-                setWarnSA2(true);
-                setMsgSA2("Please enter only alphabets and numeric values");
-            }
-            else {
-                setWarnSA2(false);
-                setUserData({ ...userData, securityAnswer2: e.target.value });
-            }
+        else if (name === "securityQuestion") {
+            setUserData({ ...userData,securityQuestion:securityQuestionOption.value});
         }
+
         else if (name === "password") {
             if (!regexPass.test(e.target.value) && e.target.value) {
                 setWarnPass(true);
@@ -111,55 +126,34 @@ const Register = () => {
 
         setUserData({ ...userData, [name]: value });
     };
-    const handleSubmit = async(e) => {
-        // e.preventDefault();
-        // if (userData.Name === "") {
-        //     setWarnFN(true);
-        //     setMsgFN("Please Enter a valid Name.");
-        //     return;
-        // }
-        // else if (userData.email === "") {
-        //     setWarnEmail(true);
-        //     setMsgEmail("Please Enter a valid Email Id.");
-        //     return;
-        // }
-        // else if (userData.password === "") {
-        //     setWarnPass(true);
-        //     setMsgPass("Please Enter Password! Alpha-numeric and special characters with minimum limit is 8 characters needed.");
-        //     return;
-        // }
-        // else if (userData.cpassword === "") {
-        //     setWarnCPass(true);
-        //     setMsgCPass("Please confirm the Password.");
-        //     return;
-        // }
-        // else if (!warnFN && !warnEmail && !warnPass && !warnCPass) {
-            
-        //     alert("Submitted Successfully");
-        //     navigate(`/login`);
-        // }
+    const handleSubmit = async (e) => {
+
         e.preventDefault();
-		try {
-			const url = "http://localhost:5000/api/register";
-			const { data: res } = await axios.post(url, userData);
-			navigate("/login");
-			console.log(res.message);
-		} catch (error) {
-			if (
-				error.response &&
-				error.response.status >= 400 &&
-				error.response.status <= 500
-			) {
-				setError(error.response.data.message);
-			}
-		}
+        try {
+
+            const url = "http://localhost:5000/api/register";
+            console.log(userData);
+            const { data: res } = await axios.post(url, userData);
+
+            navigate("/login");
+            console.log(res.message);
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.status >= 400 &&
+                error.response.status <= 500
+            ) {
+                setError(error.response.data.message);
+            }
+        }
     };
+   
     return (
         <>
             <div className="r-container">
                 <div className="r-inner">
                     <div className="r-form">
-                        <form >
+                        <form onSubmit={handleSubmit}>
                             <h1>Registration Form</h1>
 
                             <div className="r-input_text">
@@ -181,37 +175,21 @@ const Register = () => {
                                 {warnPass ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgPass}</p> : null}
                             </div>
 
-                            {/* <div className="r-input_text">
+                            <div className="r-input_text">
                                 <input type="password" className={` ${warnCPass ? "r-warning" : ""}`} name="cpassword" placeholder="Confirm Password" value={userData.cpassword} onChange={handleChange} />
                                 {warnCPass ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgCPass}</p> : null}
-                            </div> */}
-                            {/* <div className="r-input_text">
-                                <Form.Select aria-label="Default select example">
-                                    <option>Select Question 1</option>
-                                    <option value="Which city you were born in?">Which city you were born in?</option>
-                                    <option value="What was your pets name?">What was your pets name?</option>
-                                    <option value="What was your school name?">What was your school name?</option>
-                                </Form.Select>
                             </div>
                             <div className="r-input_text">
-                                <input type="text" className={` ${warnSA1 ? "r-warning" : ""}`} name="securityAnswer1" placeholder="Security Answer 1" value={userData.securityAnswer1} onChange={handleChange} />
+                                <Select options={options} name="securityQuestion" value={securityQuestionOption} onChange={handleOptions} placeholder="Security Question "></Select>
+                            </div>
+                            <div className="r-input_text">
+                                <input type="text" className={` ${warnSA1 ? "r-warning" : ""}`} name="securityAnswer" placeholder="Security Answer " value={userData.securityAnswer} onChange={handleChange} />
                                 {warnSA1 ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgSA1}</p> : null}
                             </div>
-                            <div className="r-input_text">
-                                <Form.Select aria-label="Default select example">
-                                    <option>Select Question 2</option>
-                                    <option value="Which city you were born in?">Which city you were born in?</option>
-                                    <option value="What was your pets name?">What was your pets name?</option>
-                                    <option value="What was your school name?">What was your school name?</option>
-                                </Form.Select>
-                            </div>
-                            <div className="r-input_text">
-                                <input type="text" className={` ${warnSA1 ? "r-warning" : ""}`} name="securityAnswer2" placeholder="Security Answer 2" value={userData.securityAnswer2} onChange={handleChange} />
-                                {warnSA2 ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{msgSA2}</p> : null}
-                            </div> */}
+
                             {error && <div className="fa fa-warning">{error}</div>}
                             <div className="r-btn">
-                                <button type="submit" onClick={handleSubmit}>Submit</button>
+                                <button type="submit" >Submit</button>
                             </div>
                         </form>
                     </div>

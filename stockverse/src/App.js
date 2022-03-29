@@ -10,18 +10,20 @@ import Portfolio from './components/Pages/Portfolio';
 import Dashboard from './components/Pages/Dashboard';
 import Wishlist from './components/Pages/Wishlist';
 import Register from './components/Pages/Register';
-import ForgetPassword from './components/Pages/ForgotPassword'
+
 import Profile from './components/Pages/Profile'
-import SecurityQuestion from './components/Pages/SecurityQuestion';
+
 import UsersList from './components/Pages/UserList';
-import Profile from './components/Pages/Profile';
+
 import AddPortfolioRecord from './components/Pages/AddPortfolioRecord';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+  const user = localStorage.getItem("token");
   return (
     <>
+      
       <Routes>
         <Route exact path="/" element={<Form />} />
         <Route exact path="/login" element={<Form />} />

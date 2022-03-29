@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 function Form() {
-
+    
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -37,27 +37,9 @@ function Form() {
     const submitForm = async(e) => {
         setLoginRes({ message: '', status: true });
         e.preventDefault();
-        // setWarnEmail(false);
-        // setWarnPass(false);
-        // if (formData.email === "") {
-        //     setWarnEmail(true);
-        //     setMsgEmail("Please enter a Email Id.");
-        //     return;
-        // }
-        // else if (formData.password === "") {
-        //     setWarnPass(true);
-        //     setMsgPass("Please enter a Password!");
-        //     return;
-        // }
-        // else if (!warnEmail && !warnPass) {
-        //     if (formData.email === "admin@gmail.com" && formData.password === "Admin123") {
-        //         navigate("/home");
-        //     }
-        //     else {
-        //         setLoginRes({ message: 'Oops! Something went wrong.', status: false });
-        //     }
-        // }
+        
         try {
+            console.log(formData);
 			const url = "http://localhost:5000/api/signin";
 			const { data: res } = await axios.post(url, formData);
 			localStorage.setItem("token", res.formData);
