@@ -1,19 +1,11 @@
+//Author : Pallavi Cherukupalli (B00887062)
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import "../Css/AdminNavigation.css";
-import {
-  DropdownButton,
-  Dropdown,
-  Container,
-  NavDropdown,
-  Form,
-  FormControl,
-  Button,
-} from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import AdminDashboard from "./AdminDashboard";
 import UsersList from "./UserList";
+import logo from "../Images/Logo.png";
 
 export class AdminNavigation extends Component {
   render() {

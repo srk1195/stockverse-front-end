@@ -1,3 +1,4 @@
+/* Author : Pallavi Cherukupalli (B00887062) */
 .profile{
     height: 100%;
     position: absolute;
@@ -36,7 +37,7 @@ table {
   }
 
   .textstats{
-    font-family: cursive;
+    font-family: initial;
   }
 
 

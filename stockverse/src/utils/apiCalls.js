@@ -139,7 +139,16 @@ const makePayment = async (userId, token) => {
     return { status: false, message: e.message };
   }
 };
+const isAuthenticated =()=>{
+  const user=localStorage.getItem("token");
+  if(!user){
+      return false;
+  }
+  else {
+    return JSON.parse(user);
+  }
 
+}
 export {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
@@ -147,5 +156,6 @@ export {
   getPortfolioData,
   getPayments,
   getPaymentById,
-  makePayment
+  makePayment,
+  isAuthenticated
 };

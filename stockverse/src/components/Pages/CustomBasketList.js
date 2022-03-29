@@ -26,7 +26,7 @@ const CustomBasketList = () => {
   return (
     <>
       <Navigation />
-      <div style={{ backgroundColor: "#e9ecef" }}>
+      <div style={{ backgroundColor: "#e9ecef", paddingTop: 10 }}>
         <div className="text-center fs-1">Custom Basket List</div>
         <br />
         <div className="table-responsive">

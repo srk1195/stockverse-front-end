@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import logo from "../Images/Logo.png";
 import "../Css/Navigation.css";
+import { useNavigate } from "react-router-dom";
 // import logo from '../logo.svg';
 import { Container, NavDropdown } from "react-bootstrap";
 import Payment from "./Payment";
@@ -10,11 +11,23 @@ import Portfolio from "./Portfolio";
 import Dashboard from "./Dashboard";
 import Wishlist from "./Wishlist";
 import { Routes, Route } from "react-router-dom";
+import CustomBasketList from "./CustomBasketList";
 
 export class Navigation extends Component {
+  handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location = "/login";
+    console.log(localStorage.getItem("token"));
+  };
+  handleProfile = () => {
+    window.location = `/profile/${this.props.name}`;
+  };
+
   render() {
+    console.log(this.props.name);
     return (
       <>
+        <h1>{this.props.value}</h1>
         <Navbar
           collapseOnSelect
           className=" App-header"
@@ -54,8 +67,17 @@ export class Navigation extends Component {
                   }
                 >
                   <NavDropdown.Item href="">About</NavDropdown.Item>
-                  <NavDropdown.Item href="">Profile</NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={this.handleProfile}
+                    name={this.props.value}
+                  >
+                    Profile
+                  </NavDropdown.Item>
                   <NavDropdown.Item href="">Subscription</NavDropdown.Item>
+                  <NavDropdown.Item onClick={this.handleLogout}>
+                    Logout
+                  </NavDropdown.Item>
+
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="">Notification</NavDropdown.Item>
                 </NavDropdown>
@@ -109,6 +131,11 @@ export class Navigation extends Component {
           <Route exact path="/payment" element={<Payment />} />
           <Route exact path="/portfolio" element={<Portfolio />} />
           <Route exact path="/wishlist" element={<Wishlist />} />
+          <Route
+            exact
+            path="/customBasketList"
+            element={<CustomBasketList />}
+          />
         </Routes>
       </>
     );

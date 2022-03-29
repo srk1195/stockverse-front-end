@@ -196,7 +196,7 @@ const CustomBasketForm = () => {
                   value={basketName}
                   onChange={handleBasketName}
                 />
-                <div style={{ marginLeft: 8 }}>
+                <div style={{ marginLeft: 8, color: "red" }}>
                   {basketNameError ? errors.basketName : null}
                 </div>
               </div>
@@ -208,7 +208,7 @@ const CustomBasketForm = () => {
                 value={description}
                 onChange={handleDescription}
               />
-              <div style={{ marginLeft: 8 }}>
+              <div style={{ marginLeft: 8, color: "red" }}>
                 {descriptionError ? errors.description : null}
               </div>
               <TextField
@@ -219,7 +219,7 @@ const CustomBasketForm = () => {
                 value={ageGroup}
                 onChange={handleAgeGroup}
               />
-              <div style={{ marginLeft: 8 }}>
+              <div style={{ marginLeft: 8, color: "red" }}>
                 {ageGroupError ? errors.ageGroup : null}
               </div>
               <FormControl sx={{ m: 1, width: "calc(100% - 5px)" }}>
@@ -241,7 +241,7 @@ const CustomBasketForm = () => {
                   <MenuItem value={"Low"}>Low</MenuItem>
                 </Select>
               </FormControl>
-              <div className="error-margin">
+              <div style={{ marginLeft: 8, color: "red" }}>
                 {confidenceLevelError ? errors.confidenceLevel : null}
               </div>
               <Stack spacing={2} direction="row">
@@ -272,7 +272,7 @@ const CustomBasketForm = () => {
                   <Chip label={item} onDelete={handleDelete(item)} />
                 ))}
               </Stack>
-              <div style={{ marginLeft: 8 }}>
+              <div style={{ marginLeft: 8, color: "red" }}>
                 {marketSymbolError ? errors.marketSymbol : null}
               </div>
               <FormControlLabel
