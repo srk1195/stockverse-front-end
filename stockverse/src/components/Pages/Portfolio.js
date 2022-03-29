@@ -10,11 +10,9 @@ import {
   Form,
   Card,
   Button,
-  Spinner,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { getPortfolioData, getPortfolioDateMap } from '../../utils/apiCalls';
-import getSymbolFromCurrency from 'currency-symbol-map';
 
 import { BsPencilSquare } from 'react-icons/bs';
 import { toast } from 'react-toastify';
@@ -47,44 +45,46 @@ const Portfolio = () => {
     } else {
       return filterPortfolioData().map((portfolio, index) => {
         //determine if the investment is profit or loss
-        let textColor = 'text-success fw-bold';
-        if (portfolio.currentValue < portfolio.investmentValue) {
-          textColor = 'text-danger fw-bold';
-        } else if (portfolio.currentValue === portfolio.investmentValue) {
-          textColor = 'text-warning fw-bold';
+        if (portfolio !== null) {
+          let textColor = 'text-success fw-bold';
+          if (portfolio.currentValue < portfolio.investmentValue) {
+            textColor = 'text-danger fw-bold';
+          } else if (portfolio.currentValue === portfolio.investmentValue) {
+            textColor = 'text-warning fw-bold';
+          }
+
+          return (
+            <tr key={index} className="fs-6">
+              <td>
+                <span
+                  role="button"
+                  onClick={() => navigate(`/edit-portfolio/${portfolio._id}`)}
+                >
+                  <BsPencilSquare />
+                </span>
+              </td>
+              <td>{portfolio.instrumentName}</td>
+              <td>{portfolio.instrumentSymbol}</td>
+              <td>{portfolio.instrumentType.toLowerCase()}</td>
+              <td>{portfolio.instrumentRegion}</td>
+              <td>{portfolio.buyQuantity}</td>
+              <td>{portfolio.avgBuyPrice}</td>
+              <td>
+                {currencyFormatter(
+                  portfolio.currency,
+                  portfolio.investmentValue
+                )}
+              </td>
+              <td>
+                {currencyFormatter(portfolio.currency, portfolio.currentValue)}
+              </td>
+
+              <td className={textColor}>
+                {currencyFormatter(portfolio.currency, portfolio.profitLoss)}
+              </td>
+            </tr>
+          );
         }
-
-        return (
-          <tr key={index} className="fs-6">
-            <td>
-              <span
-                role="button"
-                onClick={() => navigate(`/edit-portfolio/${portfolio._id}`)}
-              >
-                <BsPencilSquare />
-              </span>
-            </td>
-            <td>{portfolio.instrumentName}</td>
-            <td>{portfolio.instrumentSymbol}</td>
-            <td>{portfolio.instrumentType.toLowerCase()}</td>
-            <td>{portfolio.instrumentRegion}</td>
-            <td>{portfolio.buyQuantity}</td>
-            <td>{portfolio.avgBuyPrice}</td>
-            <td>
-              {getSymbolFromCurrency(portfolio.currency)}
-              {portfolio.investmentValue}
-            </td>
-            <td>
-              {getSymbolFromCurrency(portfolio.currency) + ' '}
-              {portfolio.currentValue.toFixed(2)}
-            </td>
-
-            <td className={textColor}>
-              {getSymbolFromCurrency(portfolio.currency) + ' '}
-              {portfolio.profitLoss.toFixed(2)}
-            </td>
-          </tr>
-        );
       });
     }
   };
@@ -114,7 +114,7 @@ const Portfolio = () => {
     return (
       <div>
         <Table
-          className="border border-secondary"
+          className="border border-secondary text-xsmall"
           responsive
           striped
           bordered
@@ -178,6 +178,16 @@ const Portfolio = () => {
         </Card.Body>
       </Card>
     );
+  };
+
+  const currencyFormatter = (currency, value) => {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency || 'USD',
+      minimumFractionDigits: 2,
+    });
+
+    return formatter.format(value);
   };
 
   const handleClick = (e) => {

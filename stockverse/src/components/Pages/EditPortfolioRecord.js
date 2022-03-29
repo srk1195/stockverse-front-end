@@ -6,17 +6,17 @@ import {
   Row,
   Col,
   Alert,
-  Spinner,
+  OverlayTrigger,
+  Tooltip,
 } from 'react-bootstrap';
 import { Navigation } from './Navigation';
 import '../Css/Portfolio.css';
 import {
-  validateInstrumentSymbol,
-  validateInstrumentCrypto,
-  addPortfolioRecord,
   getPortfolioDataById,
   deletePortfolioRecord,
+  editPortfolioRecord,
 } from '../../utils/apiCalls';
+import getSymbolFromCurrency from 'currency-symbol-map';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -33,18 +33,15 @@ function EditPortfolioRecord() {
     avgBuyPrice: 0,
     remarks: 'NA',
     error: { status: false, message: '' },
-    isLoading: false,
   });
 
   const {
     instrumentName,
     instrumentSymbol,
-    instrumentRegion,
-    currency,
     buyQuantity,
     avgBuyPrice,
     remarks,
-    isLoading,
+    currency,
   } = portfolioData;
 
   const navigate = useNavigate();
@@ -54,7 +51,7 @@ function EditPortfolioRecord() {
       const response = await toast.promise(
         getPortfolioDataById(userId, recordId),
         {
-          pending: 'Loading Data@@W#1',
+          pending: 'Loading Data...',
           success: 'Successfully loaded data 👌',
           error: 'Something went wrong 🤯',
         }
@@ -75,9 +72,6 @@ function EditPortfolioRecord() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Start Loading
-    setPortfolioData({ ...portfolioData, isLoading: true });
-
     // check if the quantity and price are positive numbers
     if (buyQuantity <= 0 || avgBuyPrice <= 0) {
       setPortfolioData({
@@ -92,43 +86,27 @@ function EditPortfolioRecord() {
       return;
     }
 
-    let nw;
-    console.log(portfolioData.instrumentType);
-    if (portfolioData.instrumentType.toLowerCase() === 'Equity'.toLowerCase()) {
-      nw = await validateInstrumentSymbol(instrumentSymbol.toUpperCase());
-    } else {
-      nw = await validateInstrumentCrypto(instrumentSymbol.toUpperCase());
-    }
+    const newPortfolioData = {
+      ...portfolioData,
+      error: { status: false, message: '' },
+    };
 
-    if (nw.status) {
-      const newPortfolioData = {
-        ...portfolioData,
-        instrumentRegion: nw.matchedItem['instrumentRegion'],
-        currency: nw.matchedItem['currency'],
-      };
+    setPortfolioData(newPortfolioData);
 
-      setPortfolioData(newPortfolioData);
-
-      // Add it to the mongoDB!
-      const addResult = await addPortfolioRecord(newPortfolioData, userId);
-      if (addResult.status) {
-        toast.success('Successfully added the record');
-        console.log(addResult.data);
-        navigate('/portfolio');
-      } else {
-        setPortfolioData({
-          ...portfolioData,
-          error: { status: true, message: addResult.message },
-        });
-      }
+    // Add it to the mongoDB!
+    const addResult = await editPortfolioRecord(
+      newPortfolioData,
+      userId,
+      recordId
+    );
+    if (addResult.status) {
+      toast.success('Successfully edited the record');
+      console.log(addResult.data);
+      navigate('/portfolio');
     } else {
       setPortfolioData({
         ...portfolioData,
-        instrumentSymbol: '',
-        error: {
-          status: true,
-          message: 'Invalid instrument Symbol...please check it',
-        },
+        error: { status: true, message: addResult.message },
       });
     }
   };
@@ -142,7 +120,7 @@ function EditPortfolioRecord() {
               <Form.Label>Instrument Name</Form.Label>
               <Form.Control
                 type="text"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 placeholder="Ex: IBM"
                 required
@@ -156,42 +134,66 @@ function EditPortfolioRecord() {
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Instrument Type</Form.Label>
-              <Form.Select
-                className="mb-3 fw-lighter fst-italic"
-                size="md"
-                aria-label="Default select example"
-                name="instrumentType"
-                onChange={handleChange}
+              <OverlayTrigger
+                overlay={
+                  <Tooltip id="tooltip-disabled tooltip-right">
+                    Type can't be modified once added
+                  </Tooltip>
+                }
               >
-                <option value="Equity">Equity</option>
-                <option value="Crypto">Crypto</option>
-              </Form.Select>
+                <span>
+                  <Form.Select
+                    className="mb-3 fw-normal"
+                    size="md"
+                    aria-label="Default select example"
+                    name="instrumentType"
+                    onChange={handleChange}
+                    disabled
+                  >
+                    <option value="Equity">Equity</option>
+                    <option value="Crypto">Crypto</option>
+                  </Form.Select>
+                </span>
+              </OverlayTrigger>
             </Form.Group>
           </Col>
         </Row>
 
         <Row>
+          {/* Instrument Symbol */}
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Instrument Symbol</Form.Label>
-              <Form.Control
-                type="text"
-                className="fw-lighter fst-italic"
-                size="sm"
-                placeholder="Ex: IBM.USA (or) BTC.USD"
-                required
-                onChange={handleChange}
-                name="instrumentSymbol"
-                value={instrumentSymbol}
-              />
+              <OverlayTrigger
+                overlay={
+                  <Tooltip id="tooltip-disabled tooltip-right">
+                    Symbol Cannot be modified once added
+                  </Tooltip>
+                }
+              >
+                <span>
+                  <Form.Control
+                    type="text"
+                    className="fw-normal"
+                    size="sm"
+                    placeholder="Ex: IBM.USA (or) BTC.USD"
+                    onChange={handleChange}
+                    name="instrumentSymbol"
+                    value={instrumentSymbol}
+                    disabled={true}
+                  />
+                </span>
+              </OverlayTrigger>
             </Form.Group>
           </Col>
+
+          {/* Remarks */}
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Remarks</Form.Label>
               <Form.Control
                 type="text"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 min="1"
                 placeholder="Ex: short term buy"
@@ -208,7 +210,7 @@ function EditPortfolioRecord() {
               <Form.Label>Buy Quantity</Form.Label>
               <Form.Control
                 type="number"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 placeholder="Ex:100"
                 min="1"
@@ -221,11 +223,14 @@ function EditPortfolioRecord() {
           </Col>
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
-              <Form.Label>Average Buy Price</Form.Label>
+              <Form.Label>
+                Average Buy Price ({getSymbolFromCurrency(currency) + ' '}
+                {currency})
+              </Form.Label>
               <Form.Control
                 type="number"
                 step="any"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 min="1"
                 placeholder="Ex:1220"
@@ -241,17 +246,6 @@ function EditPortfolioRecord() {
         <div className="d-flex justify-content-center mt-4">
           <Form.Group className="m-2">
             <Button role="button" variant="outline-dark" type="submit">
-              {!isLoading ? (
-                <></>
-              ) : (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden={isLoading}
-                />
-              )}
               Edit
             </Button>
           </Form.Group>
@@ -262,17 +256,6 @@ function EditPortfolioRecord() {
               type="button"
               onClick={handleDeleteRecord}
             >
-              {!isLoading ? (
-                <></>
-              ) : (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden={isLoading}
-                />
-              )}
               Delete
             </Button>
           </Form.Group>
@@ -286,16 +269,19 @@ function EditPortfolioRecord() {
       deletePortfolioRecord(userId, recordId),
       {
         pending: 'Deleting...',
-        success: 'Deleted Successfully',
+        success: 'Successfully deleted the record',
         error: 'Error in deleting the record',
       }
     );
 
     if (data.success) {
-      toast.success('Successfully deleted the record');
       navigate('/portfolio');
     } else {
       toast.error('Failed to delete the record');
+      setPortfolioData({
+        ...portfolioData,
+        error: { status: true, message: data.message },
+      });
     }
   };
 
@@ -324,6 +310,9 @@ function EditPortfolioRecord() {
         {displayErrorMessage()}
         <h3 className="text-center mb-5">Make changes to your portfolio</h3>
         {displayForm()}
+        <p className="text-muted fst-italic fs-6">
+          Last Updated at: {portfolioData.updatedAt}
+        </p>
       </Container>
     </>
   );

@@ -23,7 +23,7 @@ function AddPortfolioRecord() {
   const [portfolioData, setPortfolioData] = useState({
     instrumentName: '',
     instrumentSymbol: '',
-    instrumentType: '',
+    instrumentType: 'Equity',
     instrumentRegion: '',
     currency: '',
     buyQuantity: 0,
@@ -36,8 +36,6 @@ function AddPortfolioRecord() {
   const {
     instrumentName,
     instrumentSymbol,
-    instrumentRegion,
-    currency,
     buyQuantity,
     avgBuyPrice,
     remarks,
@@ -72,7 +70,6 @@ function AddPortfolioRecord() {
     }
 
     let nw;
-    console.log(portfolioData.instrumentType);
     if (portfolioData.instrumentType.toLowerCase() === 'Equity'.toLowerCase()) {
       nw = await validateInstrumentSymbol(instrumentSymbol.toUpperCase());
     } else {
@@ -80,14 +77,6 @@ function AddPortfolioRecord() {
     }
 
     if (nw.status) {
-      // console.log('Firing in the Nw Status!!');
-      // console.log('Match Found for the Symbol : ' + instrumentSymbol);
-      // console.log(nw.matchedItem);
-      // console.log(
-      //   nw.matchedItem['instrumentRegion'],
-      //   nw.matchedItem['currency']
-      // );
-
       const newPortfolioData = {
         ...portfolioData,
         instrumentRegion: nw.matchedItem['instrumentRegion'],
@@ -129,7 +118,7 @@ function AddPortfolioRecord() {
               <Form.Label>Instrument Name</Form.Label>
               <Form.Control
                 type="text"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 placeholder="Ex: IBM"
                 required
@@ -144,11 +133,12 @@ function AddPortfolioRecord() {
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Instrument Type</Form.Label>
               <Form.Select
-                className="mb-3 fw-lighter fst-italic"
+                className="mb-3 fw-normal"
                 size="md"
                 aria-label="Default select example"
                 name="instrumentType"
                 onChange={handleChange}
+                defaultValue="Equity"
               >
                 <option value="Equity">Equity</option>
                 <option value="Crypto">Crypto</option>
@@ -163,7 +153,7 @@ function AddPortfolioRecord() {
               <Form.Label>Instrument Symbol</Form.Label>
               <Form.Control
                 type="text"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 placeholder="Ex: IBM.USA (or) BTC.USD"
                 required
@@ -178,7 +168,7 @@ function AddPortfolioRecord() {
               <Form.Label>Remarks</Form.Label>
               <Form.Control
                 type="text"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 min="1"
                 placeholder="Ex: short term buy"
@@ -195,7 +185,7 @@ function AddPortfolioRecord() {
               <Form.Label>Buy Quantity</Form.Label>
               <Form.Control
                 type="number"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 placeholder="Ex:100"
                 min="1"
@@ -212,7 +202,7 @@ function AddPortfolioRecord() {
               <Form.Control
                 type="number"
                 step="any"
-                className="fw-lighter fst-italic"
+                className="fw-normal"
                 size="sm"
                 min="1"
                 placeholder="Ex:1220"

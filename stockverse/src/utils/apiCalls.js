@@ -64,12 +64,35 @@ const addPortfolioRecord = async (portfolioData, userId) => {
 
     const newPortfolioData = { ...portfolioData };
 
-    console.log('Firing the addPortfolioRecord');
     delete newPortfolioData.error;
-    delete newPortfolioData.remarks;
-    console.log(newPortfolioData);
     const response = await fetch(url, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPortfolioData),
+    });
+
+    const data = await response.json();
+    return { status: true, data };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const editPortfolioRecord = async (portfolioData, userId, recordId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
+
+    const newPortfolioData = { ...portfolioData };
+
+    delete newPortfolioData.error;
+    delete newPortfolioData.currency;
+    delete newPortfolioData.createdAt;
+    delete newPortfolioData.updatedAt;
+    const response = await fetch(url, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -195,6 +218,7 @@ export {
   getPortfolioData,
   getPortfolioDataById,
   deletePortfolioRecord,
+  editPortfolioRecord,
   getPayments,
   getPaymentById,
   makePayment,
