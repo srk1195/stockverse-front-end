@@ -1,12 +1,13 @@
 import React,{ useState } from 'react'
 import {useNavigate} from "react-router-dom";
-import "../Css/Form.css"
+import "../Css/Form.css";
+import axios from "axios";
 
 function ForgetPassword() {
 
     const navigate =useNavigate();
     
-    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [formData, setFormData] = useState({ email: '',});
     const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const[warnEmail,setWarnEmail]=useState(false);
     const [msgEmail, setMsgEmail] = useState("");
@@ -33,7 +34,7 @@ function ForgetPassword() {
             return{ ...lastValue,[e.target.name]:e.target.value}
         });
     };
-    const submitForm=(e)=>{
+    const submitForm=async(e)=>{
         setLoginRes({ message: '', status: true });
         e.preventDefault();
         setWarnEmail(false);
@@ -44,17 +45,16 @@ function ForgetPassword() {
             setMsgEmail("Please enter a Email Id.");
             return;
         }  
+        const url = "http://localhost:5000/api/checkUser";
+		const { data: res } = await axios.post(url, formData);
         
-        else if(!warnEmail )
+        
+        
+        if(res.message==="User Found" )
         {
-            if(formData.email==="admin@gmail.com" )
-            { 
-                navigate("/securityanswer");
-            } 
-            else
-            {
-                setLoginRes({ message: 'Oops! Something went wrong.', status: false });
-            }
+        
+            navigate(`/securityanswer/${res.id}`, { state: { newId: res.id} });
+        
         }
     }; 
     

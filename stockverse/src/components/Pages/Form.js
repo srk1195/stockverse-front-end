@@ -43,7 +43,15 @@ function Form() {
 			const url = "http://localhost:5000/api/signin";
 			const { data: res } = await axios.post(url, formData);
 			localStorage.setItem("token", res.formData);
-			window.location = "/home";
+            console.log(res);
+            const url2 = "http://localhost:5000/api/getRoleByEmail";
+			const { data: response } = await axios.post(url2, formData);
+            console.log(response);
+            if(response.role===false) {
+			    navigate(`/home/${res.id}`, { state: { newId: res.id} });
+            }
+            else
+                navigate('/admin')
 		} catch (error) {
 			if (
 				error.response &&
@@ -68,7 +76,7 @@ function Form() {
         navigate(`/register`);
     }
     const btnReset = (e) => {
-        navigate(`/forget`);
+        navigate(`/forgot`);
     }
     return (
 

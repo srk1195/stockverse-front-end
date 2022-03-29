@@ -6,11 +6,11 @@ import {
   Container,
   Col,
 } from "react-bootstrap";
-const Dashboard = () => {
+const Dashboard = (props) => {
   
   return (
     <>
-    <Navigation/>
+    <Navigation name={props.value}/>
     <Container className="d-bg-container d-container"> 
     
         <Row className="p-3">

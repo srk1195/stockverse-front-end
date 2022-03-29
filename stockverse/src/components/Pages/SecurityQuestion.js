@@ -1,11 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../Css/Form.css"
-
+import { useParams } from "react-router-dom";
 function SecurityQuestion() {
 
     const navigate = useNavigate();
-
+    const params = useParams();
+    const [question, setQuestion] = useState([]);
+    const api_url = `http://localhost:5000/api/getQuestion/${params.id}`;
+    
+            
+    
+    useEffect(() => {
+        axios.get(api_url).then((res) => {
+            console.log(res.data.question);
+            setQuestion(res.data.question);
+            
+        });
+        
+    },[]);
+    console.log("params", params.id);
     const [formData, setFormData] = useState({ answer: '' });
     const [warnAnswer, setWarnAnswer] = useState(false);
     const [msgAnswer, setMsgAnswer] = useState("");
@@ -22,25 +37,39 @@ function SecurityQuestion() {
             return { ...lastValue, [e.target.name]: e.target.value }
         });
     };
-    const submitForm = (e) => {
+    const submitForm = async(e) => {
         setSecurityRes({ message: '', status: true });
         e.preventDefault();
         setWarnAnswer(false);
+        
+        e.preventDefault();
+        try {
 
-        if (formData.answer === "") {
-            setWarnAnswer(true);
-            setMsgAnswer("Please enter a valid answer");
-            return;
-        }
-
-        else if (!warnAnswer) {
-            if (formData.answer === "hello") {
-                navigate("/login");
+            const url = "http://localhost:5000/api/verifyAnswer";
+            setFormData({ ...formData, id:params.id });
+            console.log(formData);
+            const { data: res } = await axios.post(url, formData);
+            console.log(res);
+            if (!warnAnswer) {
+                if (res.message ==='Answer is correct') {
+                    navigate(`/changePassword/${params.id}`, { state: { newId: params.id} });
+                }
+                else {
+                    setSecurityRes({ message: 'Please enter a valid answer.', status: false });
+                }
             }
-            else {
-                setSecurityRes({ message: 'Please enter a valid answer.', status: false });
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.status >= 400 &&
+                error.response.status <= 500
+            ) {
+                // setError(error.response.data.message);
             }
         }
+        
+        
+        
     };
 
     return (
@@ -61,7 +90,7 @@ function SecurityQuestion() {
                             <br />
                             <form>
                                 <div className="f-input_text">
-                                    <input type="text" className="" value="Where were you born?" placeholder=""></input>
+                                    <input type="text" className="" value={question} placeholder=""></input>
                                 </div>
                                 <div className="f-input_text">
                                     <input type="text" className={` ${warnAnswer ? "f-warning" : ""}`} name="answer" placeholder="Enter the answer for the question" value={formData.answer} onChange={inputEvent} />
@@ -71,8 +100,6 @@ function SecurityQuestion() {
                                 <div className="f-btn">
                                     <button type="submit" onClick={submitForm}>Sign in</button>
                                 </div>
-
-                                <br />
                                 {(!securityRes.status) ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{securityRes.message}</p> : null}
                             </form>
                         </div>

@@ -1,31 +1,21 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {Navigation} from './Navigation';
 import {useNavigate} from "react-router-dom";
 import "../Css/Profile.css"
-
-function Profile() {
-    const navigate = useNavigate();
-
-    const [formData, setFormData] = useState({ answer: '' });
-    const [warnAnswer, setWarnAnswer] = useState(false);
-    const [msgAnswer, setMsgAnswer] = useState("");
-    const [securityRes, setSecurityRes] = useState({ message: '', status: true });
-    const inputEvent = (e) => {
-        setSecurityRes({ message: '', status: true });
-        if (e.target.name === "answer") {
-
-            setWarnAnswer(false);
-            setFormData({ ...formData, answer: e.target.value });
-
-        }
-        setFormData((lastValue) => {
-            return { ...lastValue, [e.target.name]: e.target.value }
+import { useParams } from "react-router-dom";
+import axios from "axios";
+function Profile(props) {
+    const [profile, setProfile] = useState([]);
+   const value=window.location.href.split('/');
+   console.log(value[4]);
+   const api_url = `http://localhost:5000/api/getDetails/${value[4]}`;
+    useEffect(() => {
+        axios.get(api_url).then((res) => {
+            
+            setProfile(res.data);
+            console.log(profile);
         });
-    };
-    const submitForm = (e) => {
-        navigate('/securityanswer')
-    };
-    
+    },[]);
     return (
         <>
         <Navigation/>
@@ -44,21 +34,21 @@ function Profile() {
                             <br />
                             <br />
                             <form>
-                                <div className="p-input_text">
-                                    <input type="text" className="" value="Amandeep Singh" placeholder=""></input>
-                                </div>
-                                <div className="p-input_text">
-                                    <input type="text" className="" value="amansingh78622@gmail.com" placeholder=""></input>
-                                </div>
-
                                 
-
-                                <div className="p-btn">
-                                    <button type="submit" onClick={submitForm}>Change your password</button>
+                                <div className="p-input_text">
+                                <h8>Email: {profile.email}</h8>
                                 </div>
-
+                                
+                                <div className="p-input_text">
+                                <h8>First Name: {profile.firstName}</h8>
+                                
+                                </div>
+                                <div className="p-input_text">
+                                <h8>Last Name: {profile.lastName}</h8>
+                                    
+                                </div>
                                 <br />
-                                {(!securityRes.status) ? <p style={{ color: "red" }}><i className="pa fa-warning"></i>{securityRes.message}</p> : null}
+                                
                             </form>
                         </div>
                     </div>

@@ -3,6 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {Navbar, Nav} from 'react-bootstrap'
 import logo from '../Images/Logo.png'
 import "../Css/Navigation.css"
+import { useNavigate } from "react-router-dom";
 // import logo from '../logo.svg';
 import {
     Container,
@@ -19,11 +20,18 @@ export class Navigation extends Component{
   handleLogout = () => {
 		localStorage.removeItem("token");
 		window.location = "/login";
+    console.log(localStorage.getItem("token"));
 	};
+  handleProfile = () => {
+		
+		window.location = `/profile/${this.props.name}`;
+	};
+  
     render(){
+      console.log(this.props.name);
         return(
             <>
-            
+            <h1>{this.props.value}</h1>
             <Navbar collapseOnSelect className=' App-header' expand="lg" bg="dark" variant="dark">
               <Container style={{marginLeft:'unset',minWidth: '100%'}}>              
                 <Navbar.Brand  href="/home"> <img src={logo} className="n-App-logo rounded-circle pe-3" alt="logo"  />STOCKVERSE</Navbar.Brand>    
@@ -35,9 +43,10 @@ export class Navigation extends Component{
                     <Nav.Link href=""><i className="fas fa-bell rounded-circle c-white " alt="Notification" width="30" ></i></Nav.Link>
                     <NavDropdown align="end" title={<i className="fas fa-user-alt rounded-circle c-white" alt="profile" width="30"></i>}>
                       <NavDropdown.Item href="">About</NavDropdown.Item>
-                      <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                      <NavDropdown.Item onClick={this.handleProfile} name={this.props.value}>Profile</NavDropdown.Item>
                       <NavDropdown.Item href="">Subscription</NavDropdown.Item>
                       <NavDropdown.Item onClick={this.handleLogout}>Logout</NavDropdown.Item>
+
                       <NavDropdown.Divider />
                       <NavDropdown.Item href="">Notification</NavDropdown.Item>
                     </NavDropdown>                   
@@ -66,7 +75,7 @@ export class Navigation extends Component{
        <Route exact path='/payment' element={ <Payment />}/>
        <Route exact path='/portfolio' element={ <Portfolio />}/>
        <Route exact path='/wishlist' element={ <Wishlist />}/>
-       <Route exact path='/logout' element={ <Wishlist />}/>
+       
      </Routes>
             </>
             
