@@ -1,13 +1,16 @@
+//Author : Pallavi Cherukupalli (B00887062)
 import React, { useEffect, useState } from 'react';
 import '../Css/UserStatistics.css'
 import { AdminNavigation } from './AdminNavigation';
 import axios from 'axios';
+import CONSTANTS from '../../utils/constants';
+
 
 const UserStatistics = () => {
   const [wishlists, setWishlists] = useState([]);
   const [allWishlists, setAllWishlists] = useState([]);
   const [filterData, setFilterData] = useState({});
-  const getAllWishlistsApi = 'http://localhost:5000/api/wishlist/allWishlists'
+  const getAllWishlistsApi = CONSTANTS.LOCAL_BACKEND_URL + '/wishlist/allWishlists'
   useEffect(() =>{
       axios.get(getAllWishlistsApi).then((res) => 
       {
@@ -15,6 +18,8 @@ const UserStatistics = () => {
         setAllWishlists(res.data.wishlist)
       }
       )}, [1])
+
+
 
     const onModification = (c) => {
       var filterAttribute;
@@ -50,12 +55,6 @@ const UserStatistics = () => {
         setFilterData(obj)
         setWishlists(allWishlists)
       }
-      if(filterData.length == 0){
-        document.getElementById("filteredVal").style.display = "none";
-      }else{
-        document.getElementById("filteredVal").style.display = "block";
-      }
-        console.log(filterData)
     }
 
   return (
