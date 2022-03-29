@@ -46,29 +46,6 @@
     margin-top: 20px
   }
   
-  input[type="text"] {
-    height: 45px;
-    width: 100%;
-    border: none;
-    outline: 0;
-    padding: 0 10px;
-    font-size: 13px;
-    border-radius: 10px;
-    border: 1px solid #fff
-  }
-  
-  input[type="password"] {
-    height: 45px;
-    width: 100%;
-    border: none;
-    outline: 0;
-    padding: 0 10px;
-    font-size: 13px;
-    border-radius: 10px;
-    padding-right: 33px;
-    border: 1px solid #fff
-  }
-  
   .r-warning {
     border: 1px solid red !important
   }
@@ -91,4 +68,26 @@
   
   .r-btn button:hover {
     background-color: #f1221e
+  }
+  .r-input_text input[type="text"] {
+    height: 45px;
+    width: 100%;
+    border: none;
+    outline: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    border: 1px solid #fff
+  }
+
+  .r-input_text input[type="password"] {
+    height: 45px;
+    width: 100%;
+    border: none;
+    outline: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    padding-right: 33px;
+    border: 1px solid #fff
   }

@@ -6,6 +6,7 @@ import Form from './components/Pages/Form';
 import Home from './components/Pages/Home';
 import AdminDashboard from './components/Pages/AdminDashboard';
 import Payment from './components/Pages/Payment';
+import PaymentDetails from './components/Pages/PaymentDetails';
 import Portfolio from './components/Pages/Portfolio';
 import Dashboard from './components/Pages/Dashboard';
 import Wishlist from './components/Pages/Wishlist';
@@ -31,6 +32,7 @@ function App() {
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/payment" element={<Payment />} />
+        <Route exact path='/payment/users/:userId/transactions/:transactionId' element={ <PaymentDetails />}/>
         <Route exact path="/portfolio" element={<Portfolio />} />
 
         <Route exact path="/wishlist" element={<Wishlist />} />
