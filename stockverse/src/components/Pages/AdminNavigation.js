@@ -96,7 +96,7 @@ export class AdminNavigation extends Component {
                 </Nav.Link>
                 <Nav.Link
                   className="d-inline p-2 bg-secondary text-white"
-                  href="/customBasketListAdmin"
+                  href="/CustomBasketListAdmin"
                 >
                   Custom Basket Management
                 </Nav.Link>

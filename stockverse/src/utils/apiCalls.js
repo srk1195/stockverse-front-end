@@ -96,9 +96,56 @@ const getPortfolioData = async (userId) => {
   }
 };
 
+const getPayments = async (userId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/paymentList/${userId}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    return data?.list || {};
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const getPaymentById = async (userId, transactionId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/paymentList/users/${userId}/transactions/${transactionId}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    return data?.transaction || {};
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const makePayment = async (userId, token) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/makePayment/${userId}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(token),
+    });
+    const data = await response.json();
+    return { status: true, data :data?.list?.payments };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
 export {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
   addPortfolioRecord,
   getPortfolioData,
+  getPayments,
+  getPaymentById,
+  makePayment
 };

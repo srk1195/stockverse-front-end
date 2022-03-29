@@ -7,3 +7,10 @@
     display: block;
     min-height: 800px;
   }
+  .ucontainer {
+    margin: 5px;
+    padding: 5px;
+  }
+  .udtitle {
+    margin: 5px;
+  }
