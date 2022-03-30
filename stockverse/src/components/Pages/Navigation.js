@@ -1,3 +1,4 @@
+/*Author : Parthkumar Patel (B00899800)*/
 import React,{Component} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Navbar, Nav} from 'react-bootstrap'
@@ -20,7 +21,6 @@ export class Navigation extends Component{
   handleLogout = () => {
 		localStorage.removeItem("token");
 		window.location = "/login";
-    console.log(localStorage.getItem("token"));
 	};
   handleProfile = () => {
 		
@@ -28,7 +28,6 @@ export class Navigation extends Component{
 	};
   
     render(){
-      console.log(this.props.name);
         return(
             <>
             <h1>{this.props.value}</h1>
