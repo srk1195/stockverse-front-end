@@ -47,7 +47,7 @@ function Form() {
 			const { data: response } = await axios.post(url2, formData);
             console.log(response);
             if(response.role===false) {
-			    navigate(`/home`, { state: { newId: res.id} });
+			    navigate("/home", { state: { newId: res.id} });
             }
             else
                 navigate('/admin')
