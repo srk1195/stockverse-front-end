@@ -5,11 +5,14 @@ import "../Css/Profile.css"
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CONSTANTS from '../../utils/constants';
+import {isAuthenticated} from "../../utils/apiCalls";
 function Profile(props) {
     const [profile, setProfile] = useState([]);
-   const value=window.location.href.split('/');
-   console.log(value[4]);
-   const api_url = `${CONSTANTS.LOCAL_BACKEND_URL}/getDetails/${value[4]}`;
+   
+   
+   const user=isAuthenticated();
+    console.log(user);
+   const api_url = `${CONSTANTS.LOCAL_BACKEND_URL}/getDetails/${user.id}`;
     useEffect(() => {
         axios.get(api_url).then((res) => {
             
