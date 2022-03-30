@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom';
 
 import PageNotFound from './components/Pages/PageNotFound';
 import UserNotAuthenticate from './components/Pages/UserNotAuthenticate';
@@ -13,7 +13,7 @@ import Dashboard from './components/Pages/Dashboard';
 import Wishlist from './components/Pages/Wishlist';
 import Register from './components/Pages/Register';
 import ChangePassword from './components/Pages/ChangePassword';
-import Profile from './components/Pages/Profile'
+import Profile from './components/Pages/Profile';
 
 import UsersList from './components/Pages/UserList';
 
@@ -22,12 +22,13 @@ import { ToastContainer } from 'react-toastify';
 import ForgotPassword from './components/Pages/ForgotPassword';
 import SecurityQuestion from './components/Pages/SecurityQuestion';
 import 'react-toastify/dist/ReactToastify.css';
+import EditPortfolioRecord from './components/Pages/EditPortfolioRecord';
+
 import UserStatistics from './components/Pages/UserStatistics';
 function App() {
-  const user = localStorage.getItem("token");
+  const user = localStorage.getItem('token');
   return (
     <>
-      
       <Routes>
         <Route exact path="/" element={<Form />} />
         {user &&<Route exact path="/home" element={<Home />}/>}
@@ -53,7 +54,7 @@ function App() {
         <Route  path="/*" element={<PageNotFound />} />
         
       </Routes>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" autoClose={1000} />
     </>
   );
 }
