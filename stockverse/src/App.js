@@ -2,6 +2,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 import PageNotFound from './components/Pages/PageNotFound';
+import UserNotAuthenticate from './components/Pages/UserNotAuthenticate';
 import Form from './components/Pages/Form';
 import Home from './components/Pages/Home';
 import AdminDashboard from './components/Pages/AdminDashboard';
@@ -30,59 +31,28 @@ function App() {
     <>
       <Routes>
         <Route exact path="/" element={<Form />} />
+        {user &&<Route exact path="/home" element={<Home />}/>}
+        
+        {user &&<Route exact path="/dashboard" element={<Dashboard />} />}
+        {user &&<Route pathexact path="/payment" element={<Payment />} />}
+        {user &&<Route exact path='/payment/users/:userId/transactions/:transactionId' element={ <PaymentDetails />}/>}
+        {user &&<Route exact path="/portfolio" element={<Portfolio />} />}
+
+        {user &&<Route exact path="/wishlist" element={<Wishlist />} />}
+        {user &&<Route exact path="/admin" element={<AdminDashboard />} />}
+        {user &&<Route exact path="/usersList" element={<UsersList/>}/>}
+        {user &&<Route exact path='/userStatistics' element={<UserStatistics/>}/>}
+        {user &&<Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />}
+        {!user &&<Route exact path="/*" element={<UserNotAuthenticate />} />}
         <Route exact path="/login" element={<Form />} />
         <Route exact path="/register" element={<Register />} />
-        {user && <Route exact path="/home" element={<Home />} />}
-
-        {user && <Route exact path="/dashboard" element={<Dashboard />} />}
-        {user && <Route exact path="/payment" element={<Payment />} />}
-        {user && (
-          <Route
-            exact
-            path="/payment/users/:userId/transactions/:transactionId"
-            element={<PaymentDetails />}
-          />
-        )}
-        {user && <Route exact path="/portfolio" element={<Portfolio />} />}
-
-        {user && <Route exact path="/dashboard" element={<Dashboard />} />}
-        {user && <Route exact path="/payment" element={<Payment />} />}
-        {user && (
-          <Route
-            exact
-            path="/payment/users/:userId/transactions/:transactionId"
-            element={<PaymentDetails />}
-          />
-        )}
-        {user && <Route exact path="/portfolio" element={<Portfolio />} />}
-
-        <Route
-          exact
-          path="/edit-portfolio/:id"
-          element={<EditPortfolioRecord />}
-        />
-        {user && <Route exact path="/wishlist" element={<Wishlist />} />}
-        {user && <Route exact path="/admin" element={<AdminDashboard />} />}
-        {user && <Route exact path="/usersList" element={<UsersList />} />}
-        {user && (
-          <Route exact path="/userStatistics" element={<UserStatistics />} />
-        )}
-        {user && (
-          <Route
-            exact
-            path="/add-portfolio/*"
-            element={<AddPortfolioRecord />}
-          />
-        )}
+        
         <Route exact path="/forgot" element={<ForgotPassword />} />
-        <Route
-          exact
-          path="/securityanswer/:id"
-          element={<SecurityQuestion />}
-        />
+        <Route exact path="/securityanswer/:id" element={<SecurityQuestion />} />
         <Route exact path="/changePassword/:id" element={<ChangePassword />} />
         <Route exact path="/profile/:id" element={<Profile />} />
-        <Route exact path="*" element={<PageNotFound />} />
+        <Route  path="/*" element={<PageNotFound />} />
+        
       </Routes>
       <ToastContainer position="bottom-right" autoClose={1000} />
     </>
