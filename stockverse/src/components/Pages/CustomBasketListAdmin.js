@@ -15,7 +15,9 @@ const CustomBasketListAdmin = () => {
 
   const fetchCustomBaskets = () => {
     axios
-      .get("http://localhost:5000/api/customBasket/getCustomBasketList")
+      .get(
+        "https://stockverse-back-end.herokuapp.com/api/customBasket/getCustomBasketList"
+      )
       .then((res) => {
         if (res.status === 200) {
           setBasketList(res.data);
@@ -28,7 +30,10 @@ const CustomBasketListAdmin = () => {
   const deleteCustomBasket = (e, id) => {
     e.preventDefault();
     axios
-      .delete("http://localhost:5000/api/customBasket/deleteCustomBasket/" + id)
+      .delete(
+        "https://stockverse-back-end.herokuapp.com/api/customBasket/deleteCustomBasket/" +
+          id
+      )
       .then((res) => {
         if (res.status === 200) {
           fetchCustomBaskets();

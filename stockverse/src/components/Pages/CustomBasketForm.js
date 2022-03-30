@@ -48,14 +48,17 @@ const CustomBasketForm = () => {
   const addCustomBasket = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/customBasket/addCustomBasket", {
-        basket_name: basketName,
-        description: description,
-        age_group: ageGroup,
-        confidence_level: confidenceLevel,
-        market_symbol: marketSymbol,
-        visibility: isVisibility,
-      })
+      .post(
+        "https://stockverse-back-end.herokuapp.com/api/customBasket/addCustomBasket",
+        {
+          basket_name: basketName,
+          description: description,
+          age_group: ageGroup,
+          confidence_level: confidenceLevel,
+          market_symbol: marketSymbol,
+          visibility: isVisibility,
+        }
+      )
       .then((res) => {
         console.log(res);
         if (res.status === 200) {

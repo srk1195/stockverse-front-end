@@ -1,11 +1,6 @@
 .vertical-center {
   align-items: center;
 }
-.container {
-  background-color: #e9ecef;
-  height: 100%;
-  width: 100%;
-}
 
 .add-custom-basket {
   background-color: #474d5a;

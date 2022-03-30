@@ -25,18 +25,6 @@ const CustomBasketList = () => {
         }
       });
   }, []);
-  /* 
-  const fetchCustomBaskets = () => {
-    axios
-      .get("http://localhost:5000/api/customBasket/getCustomBasketByVisibility")
-      .then((res) => {
-        if (res.status === 200) {
-          setBasketList(res.data);
-        } else {
-          alert("Error with the api");
-        }
-      });
-  }; */
 
   return (
     <>
