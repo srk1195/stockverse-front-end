@@ -287,7 +287,8 @@ function EditPortfolioRecord() {
         pending: 'Deleting...',
         success: 'Successfully deleted the record',
         error: 'Error in deleting the record',
-      }
+      },
+      { theme: 'dark' }
     );
 
     if (data.success) {
