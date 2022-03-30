@@ -1,13 +1,13 @@
 /*Author : Parthkumar Patel (B00899800)*/
 import React from 'react'
-import "../Css/PageNotFound.css";
+import "../Css/UserNotAuthenticate.css";
 import {useNavigate} from "react-router-dom";
 
-function PageNotFound() {
+function UserNotAuthenticate() {
 
   const navigate =useNavigate();
   const goBack = () => {
-    navigate(-1);
+    navigate(`/login`);
   }
 
   return (
@@ -18,12 +18,12 @@ function PageNotFound() {
                404
             </h2>
             <h4 data-text="Opps! Page not found">
-               Opps! Page not found
+               Opps!<br/> Not Autherized to Access !!
             </h4>
             <p>
-               Sorry, the page you're looking for doesn't exist. 
+               Sorry, the page you're looking for needs Login for Access. 
                <br/>
-               We can't find the page you're looking for.
+               We can't forward to the page you're looking for.
             </p>
             <div className="btns">
               <button onClick={goBack}>Go Back</button>               
@@ -35,4 +35,4 @@ function PageNotFound() {
   )
 }
 
-export default PageNotFound
+export default UserNotAuthenticate

@@ -9,9 +9,11 @@ import {
     makePayment
 } from '../../utils/apiCalls';
 
+const stripe_publicKey = "pk_test_51KhmBKLyxaCK9H4ulqAVRo7eM4jsIk64WJ8iVnKUUMwQCOplmGfVzz18fZ7csy2Vv7RrbqpC5NlagD1uUQcqqYlc00KTtRVewT";
+
 const PaymentForm = (props) => {
     const handleSubmit = async (token) => {
-        let userId = "6241a51dc3b605106b626d06";
+        let userId = props.userId;
         let response = await makePayment(userId, token);
         if (response.status) {
             if (typeof (props.callback) === "function") {
@@ -23,7 +25,7 @@ const PaymentForm = (props) => {
     return (
         <form onSubmit={handleSubmit}>
             <StripeCheckoutButton
-                stripeKey="pk_test_51KhmBKLyxaCK9H4ulqAVRo7eM4jsIk64WJ8iVnKUUMwQCOplmGfVzz18fZ7csy2Vv7RrbqpC5NlagD1uUQcqqYlc00KTtRVewT"
+                stripeKey={stripe_publicKey}
                 token={handleSubmit}
                 amount={100}
                 currency="cad"

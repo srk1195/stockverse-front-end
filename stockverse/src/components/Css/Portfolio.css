@@ -1,5 +1,6 @@
 .pf-bg-container {
   background-color: #e9ecef;
+  /* background-color: whitesmoke; */
 }
 .pf-container {
   min-width: 100%;
@@ -10,4 +11,8 @@
   min-height: 100px;
   overflow: auto;
   display: inline-block;
+}
+.searchBoxRow {
+  align-items: center;
+  justify-content: flex-end;
 }

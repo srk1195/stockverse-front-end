@@ -1,15 +1,15 @@
+// Author: Sai Rahul Kodumuru (B00875628)
 import CONSTANTS from "./constants";
 
+// Portfolio Backend
 const validateInstrumentSymbol = async (symbol) => {
   try {
     // handle USA
     let redefinedSymbol = symbol;
     const country = symbol.split(".")[1];
     if (country === "USA") redefinedSymbol = symbol.replace(".USA", "");
-    console.log("Firing for the symbol: ", redefinedSymbol);
 
     const url = CONSTANTS.SYMBOL_SEARCH(redefinedSymbol);
-    // const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=SAIC&apikey=demo`;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -37,9 +37,7 @@ const validateInstrumentCrypto = async (symbol) => {
     console.log("Firing the Crypto API");
     const [cryptoCoin, country] = symbol.split(".");
 
-    console.log("Firing for the symbol: ", cryptoCoin, country);
     const url = CONSTANTS.CRYPTO_CURRENCY_DAILY(cryptoCoin, country);
-    console.log(url);
 
     const response = await fetch(url);
     const data = await response.json();
@@ -63,12 +61,35 @@ const addPortfolioRecord = async (portfolioData, userId) => {
 
     const newPortfolioData = { ...portfolioData };
 
-    console.log("Firing the addPortfolioRecord");
     delete newPortfolioData.error;
-    delete newPortfolioData.remarks;
-    console.log(newPortfolioData);
     const response = await fetch(url, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPortfolioData),
+    });
+
+    const data = await response.json();
+    return { status: true, data };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const editPortfolioRecord = async (portfolioData, userId, recordId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
+
+    const newPortfolioData = { ...portfolioData };
+
+    delete newPortfolioData.error;
+    delete newPortfolioData.currency;
+    delete newPortfolioData.createdAt;
+    delete newPortfolioData.updatedAt;
+    const response = await fetch(url, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -96,6 +117,53 @@ const getPortfolioData = async (userId) => {
   }
 };
 
+const getPortfolioDateMap = async (userId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio-date-map/${userId}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    return { status: true, data };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const getPortfolioDataById = async (userId, recordId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.success) {
+      return { status: true, data: data.data };
+    } else {
+      throw new Error("No Match Found");
+    }
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+const deletePortfolioRecord = async (userId, recordId) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    return { status: true, data };
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
+// Payment Backend
 const getPayments = async (userId) => {
   try {
     const url = `${CONSTANTS.LOCAL_BACKEND_URL}/paymentList/${userId}`;
@@ -126,36 +194,38 @@ const makePayment = async (userId, token) => {
   try {
     const url = `${CONSTANTS.LOCAL_BACKEND_URL}/makePayment/${userId}`;
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(token),
     });
     const data = await response.json();
-    return { status: true, data :data?.list?.payments };
+    return { status: true, data: data?.list?.payments };
   } catch (e) {
     console.log(e);
     return { status: false, message: e.message };
   }
 };
-const isAuthenticated =()=>{
-  const user=localStorage.getItem("token");
-  if(!user){
-      return false;
-  }
-  else {
+const isAuthenticated = () => {
+  const user = localStorage.getItem("token");
+  if (!user) {
+    return false;
+  } else {
     return JSON.parse(user);
   }
-
-}
+};
 export {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
   addPortfolioRecord,
   getPortfolioData,
+  getPortfolioDataById,
+  deletePortfolioRecord,
+  editPortfolioRecord,
   getPayments,
   getPaymentById,
   makePayment,
-  isAuthenticated
+  getPortfolioDateMap,
+  isAuthenticated,
 };

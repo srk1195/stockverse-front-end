@@ -1,3 +1,4 @@
+/*Author : Parthkumar Patel (B00899800)*/
 import axios from "axios";
 import CONSTANTS from "./constants";
 
@@ -31,3 +32,10 @@ export const addCustomBasket = (customBasketData) =>
 export const getUserProfile = (UserId) => API.get(`/users/${UserId}`);
 
 */
+
+// User authentication
+function isAuthenticated() {
+  const data = JSON.parse(localStorage.getItem("token"));
+  console.log(data);
+  return { userId: "", isAdmin: false, isPremium: false };
+}

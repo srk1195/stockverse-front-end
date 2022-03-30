@@ -1,5 +1,5 @@
 // Author: Sai Rahul Kodumuru (B00875628)
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Button,
@@ -7,32 +7,35 @@ import {
   Row,
   Col,
   Alert,
-  Spinner,
+  OverlayTrigger,
+  Tooltip,
 } from 'react-bootstrap';
 import { Navigation } from './Navigation';
 import '../Css/Portfolio.css';
 import {
-  validateInstrumentSymbol,
-  validateInstrumentCrypto,
-  addPortfolioRecord,
+  getPortfolioDataById,
+  deletePortfolioRecord,
+  editPortfolioRecord,
   isAuthenticated,
 } from '../../utils/apiCalls';
+import getSymbolFromCurrency from 'currency-symbol-map';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function AddPortfolioRecord() {
+function EditPortfolioRecord() {
   const { id: userId } = isAuthenticated();
+
+  const { id: recordId } = useParams();
   const [portfolioData, setPortfolioData] = useState({
     instrumentName: '',
     instrumentSymbol: '',
-    instrumentType: 'Equity',
+    instrumentType: '',
     instrumentRegion: '',
     currency: '',
     buyQuantity: 0,
     avgBuyPrice: 0,
     remarks: 'NA',
     error: { status: false, message: '' },
-    isLoading: false,
   });
 
   const {
@@ -41,10 +44,31 @@ function AddPortfolioRecord() {
     buyQuantity,
     avgBuyPrice,
     remarks,
-    isLoading,
+    currency,
   } = portfolioData;
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchPortfolioData(userId) {
+      const response = await toast.promise(
+        getPortfolioDataById(userId, recordId),
+        {
+          pending: 'Loading Data...',
+          success: 'Successfully loaded data 👌',
+          error: 'Something went wrong 🤯',
+        },
+        {
+          theme: 'dark',
+        }
+      );
+      const newData = response['data'];
+      setPortfolioData({ ...portfolioData, ...newData });
+    }
+
+    // Call the Async Function
+    fetchPortfolioData(userId);
+  }, [recordId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,9 +86,6 @@ function AddPortfolioRecord() {
       return;
     }
 
-    // Start Loading
-    setPortfolioData({ ...portfolioData, isLoading: true });
-
     // check if the quantity and price are positive numbers
     if (buyQuantity <= 0 || avgBuyPrice <= 0) {
       setPortfolioData({
@@ -79,44 +100,29 @@ function AddPortfolioRecord() {
       return;
     }
 
-    let nw;
-    if (portfolioData.instrumentType.toLowerCase() === 'Equity'.toLowerCase()) {
-      nw = await validateInstrumentSymbol(instrumentSymbol.toUpperCase());
-    } else {
-      nw = await validateInstrumentCrypto(instrumentSymbol.toUpperCase());
-    }
+    const newPortfolioData = {
+      ...portfolioData,
+      error: { status: false, message: '' },
+    };
 
-    if (nw.status) {
-      const newPortfolioData = {
-        ...portfolioData,
-        instrumentRegion: nw.matchedItem['instrumentRegion'],
-        currency: nw.matchedItem['currency'],
-      };
+    setPortfolioData(newPortfolioData);
 
-      setPortfolioData(newPortfolioData);
-
-      // Add it to the mongoDB!
-      const addResult = await addPortfolioRecord(newPortfolioData, userId);
-      if (addResult.status) {
-        toast.success('Successfully added the record', {
-          theme: 'dark',
-        });
-        console.log(addResult.data);
-        navigate('/portfolio');
-      } else {
-        setPortfolioData({
-          ...portfolioData,
-          error: { status: true, message: addResult.message },
-        });
-      }
+    // Add it to the mongoDB!
+    const addResult = await editPortfolioRecord(
+      newPortfolioData,
+      userId,
+      recordId
+    );
+    if (addResult.status) {
+      toast.success('Successfully edited the record', {
+        theme: 'dark',
+      });
+      console.log(addResult.data);
+      navigate('/portfolio');
     } else {
       setPortfolioData({
         ...portfolioData,
-        instrumentSymbol: '',
-        error: {
-          status: true,
-          message: 'Invalid instrument Symbol...please check it',
-        },
+        error: { status: true, message: addResult.message },
       });
     }
   };
@@ -144,37 +150,60 @@ function AddPortfolioRecord() {
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Instrument Type</Form.Label>
-              <Form.Select
-                className="mb-3 fw-normal"
-                size="md"
-                aria-label="Default select example"
-                name="instrumentType"
-                onChange={handleChange}
-                defaultValue="Equity"
+              <OverlayTrigger
+                overlay={
+                  <Tooltip id="tooltip-disabled tooltip-right">
+                    Type can't be modified once added
+                  </Tooltip>
+                }
               >
-                <option value="Equity">Equity</option>
-                <option value="Crypto">Crypto</option>
-              </Form.Select>
+                <span>
+                  <Form.Select
+                    className="mb-3 fw-normal"
+                    size="md"
+                    aria-label="Default select example"
+                    name="instrumentType"
+                    onChange={handleChange}
+                    disabled
+                  >
+                    <option value="Equity">Equity</option>
+                    <option value="Crypto">Crypto</option>
+                  </Form.Select>
+                </span>
+              </OverlayTrigger>
             </Form.Group>
           </Col>
         </Row>
 
         <Row>
+          {/* Instrument Symbol */}
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Instrument Symbol</Form.Label>
-              <Form.Control
-                type="text"
-                className="fw-normal"
-                size="sm"
-                placeholder="Ex: IBM.USA (or) BTC.USD"
-                required
-                onChange={handleChange}
-                name="instrumentSymbol"
-                value={instrumentSymbol}
-              />
+              <OverlayTrigger
+                overlay={
+                  <Tooltip id="tooltip-disabled tooltip-right">
+                    Symbol Cannot be modified once added
+                  </Tooltip>
+                }
+              >
+                <span>
+                  <Form.Control
+                    type="text"
+                    className="fw-normal"
+                    size="sm"
+                    placeholder="Ex: IBM.USA (or) BTC.USD"
+                    onChange={handleChange}
+                    name="instrumentSymbol"
+                    value={instrumentSymbol}
+                    disabled={true}
+                  />
+                </span>
+              </OverlayTrigger>
             </Form.Group>
           </Col>
+
+          {/* Remarks */}
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>Remarks</Form.Label>
@@ -210,7 +239,10 @@ function AddPortfolioRecord() {
           </Col>
           <Col>
             <Form.Group className="mb-3" controlId="formBasicText">
-              <Form.Label>Average Buy Price</Form.Label>
+              <Form.Label>
+                Average Buy Price ({getSymbolFromCurrency(currency) + ' '}
+                {currency})
+              </Form.Label>
               <Form.Control
                 type="number"
                 step="any"
@@ -227,24 +259,49 @@ function AddPortfolioRecord() {
           </Col>
         </Row>
 
-        <Form.Group className="d-flex justify-content-center mt-4">
-          <Button role="button" variant="outline-dark" type="submit">
-            {!isLoading ? (
-              <></>
-            ) : (
-              <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden={isLoading}
-              />
-            )}
-            Add
-          </Button>
-        </Form.Group>
+        <div className="d-flex justify-content-center mt-4">
+          <Form.Group className="m-2">
+            <Button role="button" variant="outline-dark" type="submit">
+              Edit
+            </Button>
+          </Form.Group>
+          <Form.Group className="m-2">
+            <Button
+              role="button"
+              variant="outline-danger"
+              type="button"
+              onClick={handleDeleteRecord}
+            >
+              Delete
+            </Button>
+          </Form.Group>
+        </div>
       </Form>
     );
+  };
+
+  const handleDeleteRecord = async () => {
+    const { data } = await toast.promise(
+      deletePortfolioRecord(userId, recordId),
+      {
+        pending: 'Deleting...',
+        success: 'Successfully deleted the record',
+        error: 'Error in deleting the record',
+      },
+      { theme: 'dark' }
+    );
+
+    if (data.success) {
+      navigate('/portfolio');
+    } else {
+      toast.error('Failed to delete the record', {
+        theme: 'dark',
+      });
+      setPortfolioData({
+        ...portfolioData,
+        error: { status: true, message: data.message },
+      });
+    }
   };
 
   const handleClose = () => {
@@ -265,21 +322,19 @@ function AddPortfolioRecord() {
       );
     }
   };
-
   return (
     <>
       <Navigation />
-
       <Container fluid className="pf-bg-container p-2 pf-container">
         {displayErrorMessage()}
-        <h3 className="text-center mb-5">
-          {' '}
-          Make a new entry to your portfolio
-        </h3>
+        <h3 className="text-center mb-5">Make changes to your portfolio</h3>
         {displayForm()}
+        <p className="text-muted fst-italic fs-6">
+          Last Updated at: {portfolioData.updatedAt}
+        </p>
       </Container>
     </>
   );
 }
 
-export default AddPortfolioRecord;
+export default EditPortfolioRecord;

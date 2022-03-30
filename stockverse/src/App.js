@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
 import PageNotFound from "./components/Pages/PageNotFound";
+import UserNotAuthenticate from "./components/Pages/UserNotAuthenticate";
 import Form from "./components/Pages/Form";
 import Home from "./components/Pages/Home";
 import AdminDashboard from "./components/Pages/AdminDashboard";
@@ -21,23 +22,22 @@ import { ToastContainer } from "react-toastify";
 import ForgotPassword from "./components/Pages/ForgotPassword";
 import SecurityQuestion from "./components/Pages/SecurityQuestion";
 import "react-toastify/dist/ReactToastify.css";
+import EditPortfolioRecord from "./components/Pages/EditPortfolioRecord";
+
 import UserStatistics from "./components/Pages/UserStatistics";
 import CustomBasketForm from "./components/Pages/CustomBasketForm";
-import CustomBasketList from "./components/Pages/CustomBasketList";
 import CustomBasketListAdmin from "./components/Pages/CustomBasketListAdmin";
+import CustomBasketList from "./components/Pages/CustomBasketList";
 function App() {
   const user = localStorage.getItem("token");
   return (
     <>
       <Routes>
         <Route exact path="/" element={<Form />} />
-        <Route exact path="/login" element={<Form />} />
-        <Route exact path="/register" element={<Register />} />
-        <Route path="/home">
-          {user && <Route path=":id" element={<Home />}></Route>}
-        </Route>
+        {user && <Route exact path="/home" element={<Home />} />}
+
         {user && <Route exact path="/dashboard" element={<Dashboard />} />}
-        {user && <Route pathexact path="/payment" element={<Payment />} />}
+        {user && <Route exact path="/payment" element={<Payment />} />}
         {user && (
           <Route
             exact
@@ -46,13 +46,7 @@ function App() {
           />
         )}
         {user && <Route exact path="/portfolio" element={<Portfolio />} />}
-        <Route exact path="/customBasketForm" element={<CustomBasketForm />} />
-        <Route exact path="/customBasketList" element={<CustomBasketList />} />
-        <Route
-          exact
-          path="/customBasketListAdmin"
-          element={<CustomBasketListAdmin />}
-        />
+
         {user && <Route exact path="/wishlist" element={<Wishlist />} />}
         {user && <Route exact path="/admin" element={<AdminDashboard />} />}
         {user && <Route exact path="/usersList" element={<UsersList />} />}
@@ -66,6 +60,17 @@ function App() {
             element={<AddPortfolioRecord />}
           />
         )}
+        {user && (
+          <Route
+            exact
+            path="/edit-portfolio/:id"
+            element={<EditPortfolioRecord />}
+          />
+        )}
+        {!user && <Route exact path="/*" element={<UserNotAuthenticate />} />}
+        <Route exact path="/login" element={<Form />} />
+        <Route exact path="/register" element={<Register />} />
+
         <Route exact path="/forgot" element={<ForgotPassword />} />
         <Route
           exact
@@ -74,9 +79,18 @@ function App() {
         />
         <Route exact path="/changePassword/:id" element={<ChangePassword />} />
         <Route exact path="/profile/:id" element={<Profile />} />
-        <Route exact path="*" element={<PageNotFound />} />
+        <Route path="/*" element={<PageNotFound />} />
+
+        <Route exact path="/customBasketForm" element={<CustomBasketForm />} />
+        <Route exact path="/customBasketList" element={<CustomBasketList />} />
+
+        <Route
+          exact
+          path="/customBasketListAdmin"
+          element={<CustomBasketListAdmin />}
+        />
       </Routes>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" autoClose={1000} />
     </>
   );
 }

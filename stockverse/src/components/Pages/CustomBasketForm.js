@@ -61,6 +61,7 @@ const CustomBasketForm = () => {
         console.log(res);
         if (res.status === 200) {
           toast.success("Successfully added the record");
+          navigate("/customBasketListAdmin");
         }
       })
       .catch((err) => {
@@ -160,7 +161,7 @@ const CustomBasketForm = () => {
   };
 
   const navigateToListing = (e) => {
-    navigate("/CustomBasketList");
+    navigate("/customBasketListAdmin");
   };
 
   return (
