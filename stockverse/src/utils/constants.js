@@ -14,7 +14,7 @@ function getRandomAPIKey() {
 }
 
 const CONSTANTS = Object.freeze({
-  API_ENDPOINT: '',
+  API_ENDPOINT: "",
   GLOBAL_QUOTE(symbol) {
     return `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${getRandomAPIKey()}`;
   },
@@ -25,7 +25,8 @@ const CONSTANTS = Object.freeze({
     return `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=${market}&apikey=${getRandomAPIKey()}`;
   },
   LOCAL_BACKEND_URL: `http://localhost:5000/api`,
-  COUNTRY_CODE_URL: 'https://openexchangerates.org/api/currencies.json',
+  COUNTRY_CODE_URL: "https://openexchangerates.org/api/currencies.json",
+  PRODUCTION_URL: "https://stockverse-back-end.herokuapp.com/api/",
 });
 
 export default CONSTANTS;

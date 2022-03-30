@@ -2,43 +2,56 @@ import React, { useEffect, useState } from "react";
 import "../Css/CustomBasket.css";
 import { useNavigate } from "react-router-dom";
 import { Button, Table } from "react-bootstrap";
-import axios from "axios";
 import { AdminNavigation } from "./AdminNavigation";
 import "../Css/CustomBasket.css";
+import {
+  fetchCustomBasketsAdmin,
+  deleteCustomBasket,
+} from "../../utils/axiosCall";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const CustomBasketListAdmin = () => {
   const [basketList, setBasketList] = useState([]);
 
   useEffect(() => {
-    fetchCustomBaskets();
+    getCustomBasketListData();
   }, []);
 
-  const fetchCustomBaskets = () => {
-    axios
-      .get(
-        "https://stockverse-back-end.herokuapp.com/api/customBasket/getCustomBasketList"
-      )
+  const getCustomBasketListData = () => {
+    fetchCustomBasketsAdmin()
       .then((res) => {
         if (res.status === 200) {
           setBasketList(res.data);
+        }
+      })
+      .catch((err) => {
+        if (!err?.response) {
+          toast.error("No Server Response");
+        } else if (err.response?.status !== 201) {
+          toast.error(err.response?.data["Message"]);
         } else {
-          alert("Error with the api");
+          toast.error("Wishlist fetching Failed.");
         }
       });
   };
 
-  const deleteCustomBasket = (e, id) => {
+  const deleteCustomBasketApi = (e, id) => {
     e.preventDefault();
-    axios
-      .delete(
-        "https://stockverse-back-end.herokuapp.com/api/customBasket/deleteCustomBasket/" +
-          id
-      )
+    deleteCustomBasket(id)
+      // .delete("https://localhost/api/customBasket/delete")
       .then((res) => {
         if (res.status === 200) {
-          fetchCustomBaskets();
+          getCustomBasketListData();
+        }
+      })
+      .catch((err) => {
+        if (!err?.response) {
+          toast.error("No Server Response");
+        } else if (err.response?.status !== 201) {
+          toast.error(err.response?.data["Message"]);
         } else {
-          alert("Error with the api");
+          toast.error("Wishlist fetching Failed.");
         }
       });
   };
@@ -88,7 +101,7 @@ const CustomBasketListAdmin = () => {
                       <Button
                         type="button"
                         className="btn btn-danger"
-                        onClick={(e) => deleteCustomBasket(e, item._id)}
+                        onClick={(e) => deleteCustomBasketApi(e, item._id)}
                       >
                         Delete
                       </Button>

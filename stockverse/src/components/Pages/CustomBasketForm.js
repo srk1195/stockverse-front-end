@@ -21,6 +21,7 @@ import { validateInstrumentSymbol } from "../../utils/apiCalls";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AdminNavigation } from "./AdminNavigation";
+import { addCustomBasket } from "../../utils/axiosCall";
 
 const CustomBasketForm = () => {
   const navigate = useNavigate();
@@ -45,28 +46,26 @@ const CustomBasketForm = () => {
   const [confidenceLevelError, setconfidenceLevelError] = React.useState(false);
   const [marketSymbolError, setMarketSymbolError] = React.useState(false);
 
-  const addCustomBasket = (e) => {
+  const addCustomBasketApi = (e) => {
     e.preventDefault();
-    axios
-      .post(
-        "https://stockverse-back-end.herokuapp.com/api/customBasket/addCustomBasket",
-        {
-          basket_name: basketName,
-          description: description,
-          age_group: ageGroup,
-          confidence_level: confidenceLevel,
-          market_symbol: marketSymbol,
-          visibility: isVisibility,
-        }
-      )
+    const data = {
+      basket_name: basketName,
+      description: description,
+      age_group: ageGroup,
+      confidence_level: confidenceLevel,
+      market_symbol: marketSymbol,
+      visibility: isVisibility,
+    };
+    addCustomBasket(data)
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
           toast.success("Successfully added the record");
-        } else {
-          alert("Error with the api");
         }
-      });
+      })
+      .catch((err) => {
+        toast.error(err);
+      }, []);
   };
 
   const verifyData = (event) => {
@@ -103,7 +102,7 @@ const CustomBasketForm = () => {
       setMarketSymbolError(true);
     }
     if (isValid === true) {
-      addCustomBasket(event);
+      addCustomBasketApi(event);
     }
   };
 
