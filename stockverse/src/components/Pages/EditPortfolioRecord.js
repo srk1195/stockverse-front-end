@@ -1,3 +1,4 @@
+// Author: Sai Rahul Kodumuru (B00875628)
 import React, { useState, useEffect } from 'react';
 import {
   Form,
@@ -15,13 +16,15 @@ import {
   getPortfolioDataById,
   deletePortfolioRecord,
   editPortfolioRecord,
+  isAuthenticated,
 } from '../../utils/apiCalls';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditPortfolioRecord() {
-  const userId = '623fcb4036fe9031dcfd696e';
+  const { id: userId } = isAuthenticated();
+
   const { id: recordId } = useParams();
   const [portfolioData, setPortfolioData] = useState({
     instrumentName: '',
@@ -54,6 +57,9 @@ function EditPortfolioRecord() {
           pending: 'Loading Data...',
           success: 'Successfully loaded data 👌',
           error: 'Something went wrong 🤯',
+        },
+        {
+          theme: 'dark',
         }
       );
       const newData = response['data'];
@@ -71,6 +77,14 @@ function EditPortfolioRecord() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isAuthenticated() || !userId) {
+      toast.error('You are not logged in', {
+        theme: 'dark',
+      });
+      navigate('/');
+      return;
+    }
 
     // check if the quantity and price are positive numbers
     if (buyQuantity <= 0 || avgBuyPrice <= 0) {
@@ -100,7 +114,9 @@ function EditPortfolioRecord() {
       recordId
     );
     if (addResult.status) {
-      toast.success('Successfully edited the record');
+      toast.success('Successfully edited the record', {
+        theme: 'dark',
+      });
       console.log(addResult.data);
       navigate('/portfolio');
     } else {
@@ -277,7 +293,9 @@ function EditPortfolioRecord() {
     if (data.success) {
       navigate('/portfolio');
     } else {
-      toast.error('Failed to delete the record');
+      toast.error('Failed to delete the record', {
+        theme: 'dark',
+      });
       setPortfolioData({
         ...portfolioData,
         error: { status: true, message: data.message },

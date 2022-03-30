@@ -2,7 +2,7 @@ import React,{ useState } from 'react'
 import {useNavigate} from "react-router-dom";
 import "../Css/Form.css";
 import axios from "axios";
-
+import CONSTANTS from '../../utils/constants';
 function ForgetPassword() {
 
     const navigate =useNavigate();
@@ -45,7 +45,7 @@ function ForgetPassword() {
             setMsgEmail("Please enter a Email Id.");
             return;
         }  
-        const url = "http://localhost:5000/api/checkUser";
+        const url = `${CONSTANTS.LOCAL_BACKEND_URL}/checkUser`;
 		const { data: res } = await axios.post(url, formData);
         
         

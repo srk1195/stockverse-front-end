@@ -1,15 +1,17 @@
+//Author : Pallavi Cherukupalli (B00887062)
 import axios from 'axios';
 import React, { useState, useEffect} from 'react';
 import "../Css/UserList.css"
 import {AdminNavigation} from './AdminNavigation';
 import {useNavigate} from 'react-router-dom';
 import { Button } from "react-bootstrap"; 
+import CONSTANTS from '../../utils/constants';
 
 function UsersList() {
     const navigate = useNavigate();
     const [showProfs, setShowProfs] = useState([]);
     const [allProfiles, setAllProfiles] = useState([]);
-    const getAllUsersApi = 'http://localhost:5000/api/userList';
+    const getAllUsersApi = CONSTANTS.LOCAL_BACKEND_URL + '/userList';
     useEffect(() => {
         axios.get(getAllUsersApi).then(
         (response) => {

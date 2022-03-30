@@ -4,11 +4,12 @@ import {useNavigate} from "react-router-dom";
 import "../Css/Profile.css"
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import CONSTANTS from '../../utils/constants';
 function Profile(props) {
     const [profile, setProfile] = useState([]);
    const value=window.location.href.split('/');
    console.log(value[4]);
-   const api_url = `http://localhost:5000/api/getDetails/${value[4]}`;
+   const api_url = `${CONSTANTS.LOCAL_BACKEND_URL}/getDetails/${value[4]}`;
     useEffect(() => {
         axios.get(api_url).then((res) => {
             

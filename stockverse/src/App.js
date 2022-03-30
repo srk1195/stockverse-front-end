@@ -75,7 +75,7 @@ function App() {
         <Route exact path="/profile/:id" element={<Profile />} />
         <Route exact path="*" element={<PageNotFound />} />
       </Routes>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" autoClose={1000} />
     </>
   );
 }

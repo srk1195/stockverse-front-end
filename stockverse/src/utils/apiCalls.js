@@ -1,3 +1,4 @@
+// Author: Sai Rahul Kodumuru (B00875628)
 import CONSTANTS from './constants';
 
 // Portfolio Backend
@@ -7,10 +8,8 @@ const validateInstrumentSymbol = async (symbol) => {
     let redefinedSymbol = symbol;
     const country = symbol.split('.')[1];
     if (country === 'USA') redefinedSymbol = symbol.replace('.USA', '');
-    console.log('Firing for the symbol: ', redefinedSymbol);
 
     const url = CONSTANTS.SYMBOL_SEARCH(redefinedSymbol);
-    console.log(url);
 
     const response = await fetch(url);
     const data = await response.json();
@@ -38,9 +37,7 @@ const validateInstrumentCrypto = async (symbol) => {
     console.log('Firing the Crypto API');
     const [cryptoCoin, country] = symbol.split('.');
 
-    console.log('Firing for the symbol: ', cryptoCoin, country);
     const url = CONSTANTS.CRYPTO_CURRENCY_DAILY(cryptoCoin, country);
-    console.log(url);
 
     const response = await fetch(url);
     const data = await response.json();
@@ -210,7 +207,14 @@ const makePayment = async (userId, token) => {
     return { status: false, message: e.message };
   }
 };
-
+const isAuthenticated = () => {
+  const user = localStorage.getItem('token');
+  if (!user) {
+    return false;
+  } else {
+    return JSON.parse(user);
+  }
+};
 export {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
@@ -223,4 +227,5 @@ export {
   getPaymentById,
   makePayment,
   getPortfolioDateMap,
+  isAuthenticated,
 };

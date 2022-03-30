@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../Css/Form.css"
 import { useParams } from "react-router-dom";
+import CONSTANTS from '../../utils/constants';
 function SecurityQuestion() {
 
     const navigate = useNavigate();
     const params = useParams();
     const [question, setQuestion] = useState([]);
-    const api_url = `http://localhost:5000/api/getQuestion/${params.id}`;
+    const api_url = `${CONSTANTS.LOCAL_BACKEND_URL}/getQuestion/${params.id}`;
     
             
     
@@ -45,7 +46,7 @@ function SecurityQuestion() {
         e.preventDefault();
         try {
 
-            const url = "http://localhost:5000/api/verifyAnswer";
+            const url = `${CONSTANTS.LOCAL_BACKEND_URL}/verifyAnswer`;
             setFormData({ ...formData, id:params.id });
             console.log(formData);
             const { data: res } = await axios.post(url, formData);

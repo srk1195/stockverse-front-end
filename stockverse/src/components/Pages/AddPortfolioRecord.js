@@ -1,3 +1,4 @@
+// Author: Sai Rahul Kodumuru (B00875628)
 import React, { useState } from 'react';
 import {
   Form,
@@ -14,12 +15,13 @@ import {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
   addPortfolioRecord,
+  isAuthenticated,
 } from '../../utils/apiCalls';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 function AddPortfolioRecord() {
-  const userId = '623fcb4036fe9031dcfd696e';
+  const { id: userId } = isAuthenticated();
   const [portfolioData, setPortfolioData] = useState({
     instrumentName: '',
     instrumentSymbol: '',
@@ -51,6 +53,14 @@ function AddPortfolioRecord() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isAuthenticated() || !userId) {
+      toast.error('You are not logged in', {
+        theme: 'dark',
+      });
+      navigate('/');
+      return;
+    }
 
     // Start Loading
     setPortfolioData({ ...portfolioData, isLoading: true });
@@ -88,7 +98,9 @@ function AddPortfolioRecord() {
       // Add it to the mongoDB!
       const addResult = await addPortfolioRecord(newPortfolioData, userId);
       if (addResult.status) {
-        toast.success('Successfully added the record');
+        toast.success('Successfully added the record', {
+          theme: 'dark',
+        });
         console.log(addResult.data);
         navigate('/portfolio');
       } else {

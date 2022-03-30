@@ -12,12 +12,16 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { getPortfolioData, getPortfolioDateMap } from '../../utils/apiCalls';
+import {
+  getPortfolioData,
+  getPortfolioDateMap,
+  isAuthenticated,
+} from '../../utils/apiCalls';
 
 import { BsPencilSquare } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 const Portfolio = () => {
-  const userId = '623fcb4036fe9031dcfd696e';
+  const { id: userId } = isAuthenticated();
   const [search, setSearch] = useState('');
   const [portfolioData, setPortfolioData] = useState([]);
   const [portfolioDateMap, setPortfolioDateMap] = useState({});
@@ -25,11 +29,23 @@ const Portfolio = () => {
 
   useEffect(() => {
     async function fetchPortfolioData(userId) {
-      const response = await toast.promise(getPortfolioData(userId), {
-        pending: 'Loading Data',
-        success: 'Successfully loaded data 👌',
-        error: 'Something went wrong 🤯',
-      });
+      if (!isAuthenticated() || !userId) {
+        toast.error('You are not logged in', {
+          theme: 'dark',
+        });
+        navigate('/');
+        return;
+      }
+
+      const response = await toast.promise(
+        getPortfolioData(userId),
+        {
+          pending: 'Loading Data...🔵',
+          success: 'Successfully loaded data 👌',
+          error: 'Something went wrong 🤯',
+        },
+        { theme: 'dark' }
+      );
       const mapResponse = await getPortfolioDateMap(userId);
       setPortfolioDateMap(mapResponse['data']['data']);
       setPortfolioData(response['data']['data']);
@@ -37,7 +53,7 @@ const Portfolio = () => {
 
     // Call the Async Function
     fetchPortfolioData(userId);
-  }, []);
+  }, [userId, navigate]);
 
   const renderPortfolioData = () => {
     if (portfolioData.length === 0) {
@@ -73,14 +89,20 @@ const Portfolio = () => {
                 {currencyFormatter(
                   portfolio.currency,
                   portfolio.investmentValue
-                )}
+                ).replace('-', '')}
               </td>
               <td>
-                {currencyFormatter(portfolio.currency, portfolio.currentValue)}
+                {currencyFormatter(
+                  portfolio.currency,
+                  portfolio.currentValue
+                ).replace('-', '')}
               </td>
 
               <td className={textColor}>
-                {currencyFormatter(portfolio.currency, portfolio.profitLoss)}
+                {currencyFormatter(
+                  portfolio.currency,
+                  portfolio.profitLoss
+                ).replace('-', '')}
               </td>
             </tr>
           );
