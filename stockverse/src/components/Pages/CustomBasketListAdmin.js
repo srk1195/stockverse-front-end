@@ -48,17 +48,11 @@ const CustomBasketListAdmin = () => {
   return (
     <>
       <AdminNavigation />
-      <div style={{ backgroundColor: "#e9ecef", paddingTop: 10 }}>
+      <div className=".top-file-list">
         <div className="text-center fs-1">Custom Basket List</div>
         <Button
           onClick={(e) => navigateToListing(e)}
-          style={{
-            backgroundColor: "#474d5a",
-            color: "white",
-            float: "right",
-            display: "block",
-            marginRight: "3.5rem",
-          }}
+          className="add-custom-basket"
         >
           Add Basket
         </Button>

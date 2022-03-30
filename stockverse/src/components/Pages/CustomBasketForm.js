@@ -170,7 +170,7 @@ const CustomBasketForm = () => {
         alignItems={"center"}
         justifyContent={"center"}
         direction="column"
-        style={{ minHeight: "20vh", padding: "2em" }}
+        className="grid"
       >
         <Grid item>
           <Typography variant="h5" color={"#485461"}>
@@ -179,7 +179,7 @@ const CustomBasketForm = () => {
         </Grid>
 
         <Grid item>
-          <Card style={{ padding: "1.5rem", backgroundColor: "#e9ecef" }}>
+          <Card className="card">
             <Box
               component="form"
               sx={{
@@ -196,7 +196,7 @@ const CustomBasketForm = () => {
                   value={basketName}
                   onChange={handleBasketName}
                 />
-                <div style={{ marginLeft: 8, color: "red" }}>
+                <div className="error-margin">
                   {basketNameError ? errors.basketName : null}
                 </div>
               </div>
@@ -208,7 +208,7 @@ const CustomBasketForm = () => {
                 value={description}
                 onChange={handleDescription}
               />
-              <div style={{ marginLeft: 8, color: "red" }}>
+              <div className="error-margin">
                 {descriptionError ? errors.description : null}
               </div>
               <TextField
@@ -219,7 +219,7 @@ const CustomBasketForm = () => {
                 value={ageGroup}
                 onChange={handleAgeGroup}
               />
-              <div style={{ marginLeft: 8, color: "red" }}>
+              <div className="error-margin">
                 {ageGroupError ? errors.ageGroup : null}
               </div>
               <FormControl sx={{ m: 1, width: "calc(100% - 5px)" }}>
@@ -241,7 +241,7 @@ const CustomBasketForm = () => {
                   <MenuItem value={"Low"}>Low</MenuItem>
                 </Select>
               </FormControl>
-              <div style={{ marginLeft: 8, color: "red" }}>
+              <div className="error-margin">
                 {confidenceLevelError ? errors.confidenceLevel : null}
               </div>
               <Stack spacing={2} direction="row">
@@ -255,14 +255,7 @@ const CustomBasketForm = () => {
                 />
                 <Button
                   onClick={(e) => checkForSymbol(e)}
-                  style={{
-                    height: "2.5em",
-                    alignSelf: "center",
-                    borderRadius: "50%",
-                    borderRadius: "100%",
-                    backgroundColor: "#474d5a",
-                    color: "white",
-                  }}
+                  className="check-for-symbol-button"
                 >
                   +
                 </Button>
@@ -272,7 +265,7 @@ const CustomBasketForm = () => {
                   <Chip label={item} onDelete={handleDelete(item)} />
                 ))}
               </Stack>
-              <div style={{ marginLeft: 8, color: "red" }}>
+              <div className="error-margin">
                 {marketSymbolError ? errors.marketSymbol : null}
               </div>
               <FormControlLabel
@@ -289,24 +282,14 @@ const CustomBasketForm = () => {
             <Stack direction="row" spacing={15}>
               <Button
                 onClick={(e) => verifyData(e)}
-                style={{
-                  backgroundColor: "#474d5a",
-                  color: "white",
-                  alignSelf: "center",
-                  justifyContent: "center",
-                }}
+                className="form-submit"
                 variant="contained"
               >
                 Submit
               </Button>
               <Button
                 onClick={(e) => navigateToListing(e)}
-                style={{
-                  backgroundColor: "#474d5a",
-                  color: "white",
-                  alignSelf: "center",
-                  justifyContent: "center",
-                }}
+                className="form-submit"
               >
                 Listing
               </Button>

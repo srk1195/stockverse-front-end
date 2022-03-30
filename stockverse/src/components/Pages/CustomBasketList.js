@@ -3,14 +3,29 @@ import { Navigation } from "./Navigation";
 import "../Css/CustomBasket.css";
 import { Table } from "react-bootstrap";
 import axios from "axios";
-
+import { fetchCustomBaskets } from "../../utils/axiosCall";
+import { toast } from "react-toastify";
 const CustomBasketList = () => {
   const [basketList, setBasketList] = useState([]);
 
   useEffect(() => {
-    fetchCustomBaskets();
+    fetchCustomBaskets()
+      .then((res) => {
+        if (res.status === 200) {
+          setBasketList(res.data);
+        }
+      })
+      .catch((err) => {
+        if (!err?.response) {
+          toast.error("No Server Response");
+        } else if (err.response?.status !== 201) {
+          toast.error(err.response?.data["Message"]);
+        } else {
+          toast.error("Wishlist fetching Failed.");
+        }
+      });
   }, []);
-
+  /* 
   const fetchCustomBaskets = () => {
     axios
       .get("http://localhost:5000/api/customBasket/getCustomBasketByVisibility")
@@ -21,12 +36,12 @@ const CustomBasketList = () => {
           alert("Error with the api");
         }
       });
-  };
+  }; */
 
   return (
     <>
       <Navigation />
-      <div style={{ backgroundColor: "#e9ecef", paddingTop: 10 }}>
+      <div className=".top-file-list">
         <div className="text-center fs-1">Custom Basket List</div>
         <br />
         <div className="table-responsive">
