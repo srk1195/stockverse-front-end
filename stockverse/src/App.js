@@ -34,7 +34,7 @@ function App() {
         {user &&<Route exact path="/home" element={<Home />}/>}
         
         {user &&<Route exact path="/dashboard" element={<Dashboard />} />}
-        {user &&<Route pathexact path="/payment" element={<Payment />} />}
+        {user &&<Route exact path="/payment" element={<Payment />} />}
         {user &&<Route exact path='/payment/users/:userId/transactions/:transactionId' element={ <PaymentDetails />}/>}
         {user &&<Route exact path="/portfolio" element={<Portfolio />} />}
 
@@ -43,6 +43,7 @@ function App() {
         {user &&<Route exact path="/usersList" element={<UsersList/>}/>}
         {user &&<Route exact path='/userStatistics' element={<UserStatistics/>}/>}
         {user &&<Route exact path="/add-portfolio/*" element={<AddPortfolioRecord />} />}
+        {user &&<Route exact path="/edit-portfolio/:id" element={<EditPortfolioRecord />} />}
         {!user &&<Route exact path="/*" element={<UserNotAuthenticate />} />}
         <Route exact path="/login" element={<Form />} />
         <Route exact path="/register" element={<Register />} />
