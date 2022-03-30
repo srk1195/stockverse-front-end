@@ -242,6 +242,7 @@ const Portfolio = () => {
                 onClick={handleClick}
               >
                 New
+                <i className="fas fa-plus-circle p-1"></i>
               </Button>
             </Form.Group>
           </Col>
