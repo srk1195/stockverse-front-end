@@ -99,7 +99,7 @@ const Payment = () => {
               <tbody>
                 {filteredList.map(item => (
                   <tr>
-                    <td><a href="" onClick={() => navigate(`/payment/users/6241a51dc3b605106b626d06/transactions/${item.transactionId}`)}>{item?.["transactionId"]}</a></td>
+                    <td><a href="" onClick={() => navigate(`/payment/users/${userDetails?.id}/transactions/${item.transactionId}`)}>{item?.["transactionId"]}</a></td>
                     <td>{item.status}</td>
                     <td>{item?.createdDate ? new Date(item?.createdDate * 1000).toLocaleDateString() : '-'}</td>
                   </tr>
