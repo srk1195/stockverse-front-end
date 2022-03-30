@@ -1,31 +1,31 @@
 // Author: Sai Rahul Kodumuru (B00875628)
-import CONSTANTS from './constants';
+import CONSTANTS from "./constants";
 
 // Portfolio Backend
 const validateInstrumentSymbol = async (symbol) => {
   try {
     // handle USA
     let redefinedSymbol = symbol;
-    const country = symbol.split('.')[1];
-    if (country === 'USA') redefinedSymbol = symbol.replace('.USA', '');
+    const country = symbol.split(".")[1];
+    if (country === "USA") redefinedSymbol = symbol.replace(".USA", "");
 
     const url = CONSTANTS.SYMBOL_SEARCH(redefinedSymbol);
 
     const response = await fetch(url);
     const data = await response.json();
 
-    const matchedItem = await data['bestMatches'].find(
+    const matchedItem = await data["bestMatches"].find(
       (stock) =>
-        stock['1. symbol'] === redefinedSymbol &&
-        stock['9. matchScore'].startsWith('1')
+        stock["1. symbol"] === redefinedSymbol &&
+        stock["9. matchScore"].startsWith("1")
     );
-
+    console.log(matchedItem);
     if (matchedItem) {
-      matchedItem.instrumentRegion = matchedItem['4. region'];
-      matchedItem.currency = matchedItem['8. currency'];
+      matchedItem.instrumentRegion = matchedItem["4. region"];
+      matchedItem.currency = matchedItem["8. currency"];
       return { status: true, matchedItem };
     } else {
-      throw new Error('No Match Found');
+      throw new Error("No Match Found");
     }
   } catch (e) {
     return { status: false, message: e.message };
@@ -34,21 +34,21 @@ const validateInstrumentSymbol = async (symbol) => {
 
 const validateInstrumentCrypto = async (symbol) => {
   try {
-    console.log('Firing the Crypto API');
-    const [cryptoCoin, country] = symbol.split('.');
+    console.log("Firing the Crypto API");
+    const [cryptoCoin, country] = symbol.split(".");
 
     const url = CONSTANTS.CRYPTO_CURRENCY_DAILY(cryptoCoin, country);
 
     const response = await fetch(url);
     const data = await response.json();
-    const matchedItem = await data['Meta Data'];
+    const matchedItem = await data["Meta Data"];
 
     if (matchedItem) {
-      matchedItem.instrumentRegion = matchedItem['5. Market Name'];
-      matchedItem.currency = matchedItem['4. Market Code'];
+      matchedItem.instrumentRegion = matchedItem["5. Market Name"];
+      matchedItem.currency = matchedItem["4. Market Code"];
       return { status: true, matchedItem };
     } else {
-      throw new Error('No Match Found for the given crypto');
+      throw new Error("No Match Found for the given crypto");
     }
   } catch (e) {
     return { status: false, message: e.message };
@@ -63,9 +63,9 @@ const addPortfolioRecord = async (portfolioData, userId) => {
 
     delete newPortfolioData.error;
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newPortfolioData),
     });
@@ -89,9 +89,9 @@ const editPortfolioRecord = async (portfolioData, userId, recordId) => {
     delete newPortfolioData.createdAt;
     delete newPortfolioData.updatedAt;
     const response = await fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newPortfolioData),
     });
@@ -139,7 +139,7 @@ const getPortfolioDataById = async (userId, recordId) => {
     if (data.success) {
       return { status: true, data: data.data };
     } else {
-      throw new Error('No Match Found');
+      throw new Error("No Match Found");
     }
   } catch (e) {
     console.log(e);
@@ -152,8 +152,8 @@ const deletePortfolioRecord = async (userId, recordId) => {
     const url = `${CONSTANTS.LOCAL_BACKEND_URL}/portfolio/${userId}/${recordId}`;
 
     const response = await fetch(url, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
     return { status: true, data };
@@ -194,9 +194,9 @@ const makePayment = async (userId, token) => {
   try {
     const url = `${CONSTANTS.LOCAL_BACKEND_URL}/makePayment/${userId}`;
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(token),
     });
@@ -208,7 +208,7 @@ const makePayment = async (userId, token) => {
   }
 };
 const isAuthenticated = () => {
-  const user = localStorage.getItem('token');
+  const user = localStorage.getItem("token");
   if (!user) {
     return false;
   } else {
