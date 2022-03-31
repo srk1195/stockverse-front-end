@@ -6,7 +6,8 @@ import {
     Form,
 } from "react-bootstrap";
 import {
-    makePayment
+    makePayment,
+    updateUserSubscription
 } from '../../utils/apiCalls';
 
 const stripe_publicKey = "pk_test_51KhmBKLyxaCK9H4ulqAVRo7eM4jsIk64WJ8iVnKUUMwQCOplmGfVzz18fZ7csy2Vv7RrbqpC5NlagD1uUQcqqYlc00KTtRVewT";
@@ -17,6 +18,7 @@ const PaymentForm = (props) => {
         let response = await makePayment(userId, token);
         if (response.status) {
             if (typeof (props.callback) === "function") {
+                updateUserSubscription();
                 props.callback(response.data);
             }
         }
