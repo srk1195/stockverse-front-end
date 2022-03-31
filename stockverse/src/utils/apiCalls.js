@@ -215,6 +215,15 @@ const isAuthenticated = () => {
     return JSON.parse(user);
   }
 };
+
+const updateUserSubscription = () => {
+  let user = localStorage.getItem("token");
+  user = JSON.parse(user);
+  user = { ...user, isPremium: true };
+  localStorage.setItem("token", JSON.stringify(user));
+  return user;
+}
+
 export {
   validateInstrumentSymbol,
   validateInstrumentCrypto,
@@ -228,4 +237,5 @@ export {
   makePayment,
   getPortfolioDateMap,
   isAuthenticated,
+  updateUserSubscription,
 };
