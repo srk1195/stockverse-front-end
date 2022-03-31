@@ -136,6 +136,7 @@ function Wishlist() {
                                                     PChng: apiPChng,
                                                 };
                                         wViewDetailArrayFunction.push(demo);
+                                        console.log(wViewDetailArrayFunction);
                                         setWishlistData({...wishlistData,ViewDetailsArray:wViewDetailArrayFunction,Name:wNameFunction,WId:wIdFunction,InvestArray:wInvestArrayFunction,Investments:wInvestmentsFunction,UserId:wishlistData.UserId});
                                     } 
                                 }
@@ -524,8 +525,9 @@ function Wishlist() {
                                     </thead>
                                     
                                     <tbody>
+                                    {console.log(wishlistData.ViewDetailsArray)}
                                     {console.log(wishlistData.ViewDetailsArray.length)}
-                                    {(wishlistData.ViewDetailsArray.length === 0) ? <> <tr><td colspan="9">No Record Found.</td></tr></> : <>
+                                    {(wishlistData.ViewDetailsArray.length === 0) ? <> <tr><td colSpan="9">No Record Found.</td></tr></> : <>
                                     {wishlistData.ViewDetailsArray?.map(item => (
                                         <tr key={item.Symbol}>
                                             <td>{item.Symbol}</td>
