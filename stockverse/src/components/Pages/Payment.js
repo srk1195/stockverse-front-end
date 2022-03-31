@@ -9,7 +9,8 @@ import {
   Form,
 } from "react-bootstrap";
 import {
-  getPayments
+  getPayments,
+  isAuthenticated
 } from '../../utils/apiCalls';
 import PaymentForm from './PaymentForm'
 import { useNavigate } from 'react-router-dom';
@@ -23,13 +24,12 @@ const Payment = () => {
 
   const [search, setSearch] = useState(null);
   const [statusFilter, setStatusFilter] = useState(null);
+  var userDetails = isAuthenticated() || {};
 
   const listPayments = async () => {
-    //userId given for now
-    let userId = "6241a51dc3b605106b626d06";
-    let list = await getPayments(userId);
-    setPaymentList(list?.payments);
-    setFilteredList(list?.payments);
+    let list = await getPayments(userDetails?.id);
+    setPaymentList(list?.payments || []);
+    setFilteredList(list?.payments || []);
   }
   useEffect(async () => {
     await listPayments();
@@ -39,7 +39,9 @@ const Payment = () => {
     let list = paymentList && [...paymentList];
     if (search && search.length > 0) {
       list = list.filter((item) => {
-        return item['transactionId'].toString().toLowerCase().includes(search)
+        let id = item['transactionId'].toString().toLowerCase();
+        console.log(id, search.toLowerCase());
+        return id === search.toLowerCase() || id.includes(search.toLowerCase());
       })
     }
 
@@ -55,13 +57,13 @@ const Payment = () => {
   return (
     <>
       <Navigation />
-      <Container className="p-bg-container p-container">
+      <Container className="pay-bg-container pay-container">
         <Row className="p-3">
           <Col className="d-flex justify-content-start mt-4">
             <h3>Payment</h3>
           </Col>
           <Col>
-            <PaymentForm callback={setPaymentList} />
+            {!userDetails?.isPremium && <PaymentForm userId={userDetails?.id} callback={setPaymentList} />}
           </Col>
         </Row>
         <Row>
@@ -97,7 +99,7 @@ const Payment = () => {
               <tbody>
                 {filteredList.map(item => (
                   <tr>
-                    <td><a href="" onClick={() => navigate(`/payment/users/6241a51dc3b605106b626d06/transactions/${item.transactionId}`)}>{item?.["transactionId"]}userId</a></td>
+                    <td><a href="" onClick={() => navigate(`/payment/users/${userDetails?.id}/transactions/${item.transactionId}`)}>{item?.["transactionId"]}</a></td>
                     <td>{item.status}</td>
                     <td>{item?.createdDate ? new Date(item?.createdDate * 1000).toLocaleDateString() : '-'}</td>
                   </tr>

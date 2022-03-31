@@ -1,3 +1,4 @@
+/*Author : Parthkumar Patel (B00899800)*/
 import React,{useState, useEffect} from 'react';
 import {Navigation} from './Navigation';
 import {useNavigate} from "react-router-dom";
@@ -6,12 +7,13 @@ import { addWishlist, getUserWishlist ,getWishlistById, updateWishlistById,delet
 import { Button, Row, FloatingLabel, ListGroup, Form, Container, Col, Modal, Table } from "react-bootstrap"; 
 import {Box, Grid, Card, CardContent, CardHeader, Divider}  from "@mui/material";
 import CONSTANTS from '../../utils/constants';
+import {isAuthenticated} from '../../utils/apiCalls';
 import { toast } from 'react-toastify';
 
 function Wishlist() {
     const [state, setState] = useState('start');
     const [stateView, setStateView] = useState('startView');
-    const [wishlistData,setWishlistData] = useState({ WId:'',Name:'',Investments:'',InvestArray:[],SearchArray:[],ViewDetailsArray:[] });
+    const [wishlistData,setWishlistData] = useState({ WId:'',Name:'',Investments:'',InvestArray:[],SearchArray:[],ViewDetailsArray:[],UserId:'' });
   
     const navigate =useNavigate();
     const regexName = /^[a-zA-Z]+$/;
@@ -35,30 +37,47 @@ function Wishlist() {
     }, []);
     
     const getUserWishlists = (e) =>  {
-    const reqUserId ="623b3b984f1e07b09753d6d2";
-        getUserWishlist(reqUserId).then((res) => {
-            if (res.status === 201) {
-                if (res.data !== null && res.data.Data !== null) {
-                    setUserWishlists(res.data.Data);
-                } 
-            }
-        }).catch((err) => {
-            if (!err?.response) {
-                toast.error('No Server Response');
-            } else if (err.response?.status !== 201) {
-                toast.error(err.response?.data["Message"]);
-            } else {
-                toast.error('Wishlist fetching Failed.');
-            }
-        }); 
+        const Authentication =isAuthenticated();
+        if(Authentication !== false)
+        {
+            console.log("authn",Authentication);
+            getUserWishlist(Authentication.id).then((res) => {
+                if (res.status === 201) {
+                    if (res.data !== null && res.data.Data !== null) {
+                        setUserWishlists(res.data.Data);
+                    } 
+                }
+            }).catch((err) => {
+                if (!err?.response) {
+                    toast.error('No Server Response');
+                } else if (err.response?.status !== 201) {
+                    toast.error(err.response?.data["Message"]);
+                } else {
+                    toast.error('Wishlist fetching Failed.');
+                }
+            }); 
+        }
+        else
+        {
+            toast.error("User Not Authenticated.");
+        }
     }
 
     //-------------------------------
     var btnAdd= e =>
     {
-        e.preventDefault();
-        setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:'',InvestArray:[],Investments:'',SearchArray:[]});
-        setState('btnAdd');
+        const Authentication =isAuthenticated();
+        if(Authentication !== false)
+        {
+            e.preventDefault();
+            setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:'',InvestArray:[],Investments:'',SearchArray:[],UserId:Authentication.id});
+            setState('btnAdd');
+        }
+        else
+        {
+            toast.error("User Not Authenticated.");
+        }
+        
     }
     var btnNewState= (e,reqid) =>
     {
@@ -71,49 +90,58 @@ function Wishlist() {
             if (res.status === 201) {
                 if (res.data !== null && res.data.Data !== null) {
                     wNameFunction=res.data.Data[0].Name;
+                    
                     wIdFunction=res.data.Data[0]._id;
                     wInvestmentsFunction=res.data.Data[0].Investments;
-                    var arr = res.data.Data[0].Investments.split(",");
-                    for (var i=0; i < arr.length; i++) {
-                        var demo = 
-                            {
-                                Symbol: arr[i].split('-')[0],
-                                Name: arr[i].split('-')[1],
-                                Type: '',
-                                Region: '',
-                            };
-                        
-                        wInvestArrayFunction.push(demo);
-                        const url = CONSTANTS.GLOBAL_QUOTE(arr[i].split('-')[0]);
-                        let Sym=arr[i].split('-')[0],Name=arr[i].split('-')[1];
-                        fetch(url)
-                        .then(
-                            function(res){return res.json();}
-                        )
-                        .then( 
-                            function(res){
-                                if(res["Global Quote"]){
-                                    var apiSymbol=Sym,apiName=Name,apiOpen=res["Global Quote"]["02. open"],
-                                    apiHigh=res["Global Quote"]["03. high"],apiLow=res["Global Quote"]["04. low"],apiPrice=res["Global Quote"]["05. price"],
-                                    apiPreviousClose=res["Global Quote"]["08. previous close"],apiChng=res["Global Quote"]["09. change"],apiPChng=res["Global Quote"]["10. change percent"];
-                                    const demo = 
-                                            {
-                                                Symbol: apiSymbol,
-                                                Name: apiName,
-                                                Open: apiOpen,
-                                                High: apiHigh,
-                                                Low: apiLow,
-                                                Price: apiPrice,
-                                                PreviousClose: apiPreviousClose,
-                                                Change: apiChng,
-                                                PChng: apiPChng,
-                                            };
-                                    wViewDetailArrayFunction.push(demo);
-                                    setWishlistData({...wishlistData,ViewDetailsArray:wViewDetailArrayFunction,Name:wNameFunction,WId:wIdFunction,InvestArray:wInvestArrayFunction,Investments:wInvestmentsFunction});
-                                } 
-                            }
-                        )                       
+                    console.log(res.data.Data[0].Investments);
+                    if(wInvestmentsFunction === "" || wInvestmentsFunction === null)
+                    {
+                        setWishlistData({...wishlistData,ViewDetailsArray:wViewDetailArrayFunction,Name:wNameFunction,WId:wIdFunction,InvestArray:wInvestArrayFunction,Investments:wInvestmentsFunction,UserId:wishlistData.UserId});
                     }
+                    else
+                    {
+                        var arr = res.data.Data[0].Investments.split(",");
+                        for (var i=0; i < arr.length; i++) {
+                            var demo = 
+                                {
+                                    Symbol: arr[i].split('-')[0],
+                                    Name: arr[i].split('-')[1],
+                                    Type: '',
+                                    Region: '',
+                                };
+                            
+                            wInvestArrayFunction.push(demo);
+                            const url = CONSTANTS.GLOBAL_QUOTE(arr[i].split('-')[0]);
+                            let Sym=arr[i].split('-')[0],Name=arr[i].split('-')[1];
+                            fetch(url)
+                            .then(
+                                function(res){return res.json();}
+                            )
+                            .then( 
+                                function(res){
+                                    if(res["Global Quote"]){
+                                        var apiSymbol=Sym,apiName=Name,apiOpen=res["Global Quote"]["02. open"],
+                                        apiHigh=res["Global Quote"]["03. high"],apiLow=res["Global Quote"]["04. low"],apiPrice=res["Global Quote"]["05. price"],
+                                        apiPreviousClose=res["Global Quote"]["08. previous close"],apiChng=res["Global Quote"]["09. change"],apiPChng=res["Global Quote"]["10. change percent"];
+                                        const demo = 
+                                                {
+                                                    Symbol: apiSymbol,
+                                                    Name: apiName,
+                                                    Open: apiOpen,
+                                                    High: apiHigh,
+                                                    Low: apiLow,
+                                                    Price: apiPrice,
+                                                    PreviousClose: apiPreviousClose,
+                                                    Change: apiChng,
+                                                    PChng: apiPChng,
+                                                };
+                                        wViewDetailArrayFunction.push(demo);
+                                        setWishlistData({...wishlistData,ViewDetailsArray:wViewDetailArrayFunction,Name:wNameFunction,WId:wIdFunction,InvestArray:wInvestArrayFunction,Investments:wInvestmentsFunction,UserId:wishlistData.UserId});
+                                    } 
+                                }
+                            )                       
+                        }
+                    }                    
                     setState('none');
                     setStateView('PageViewState'); 
                 }
@@ -155,7 +183,7 @@ function Wishlist() {
             var SymbolsName="";
             wishlistData.InvestArray.forEach(data => SymbolsName += data.Symbol+"-"+data.Name+",")
             const newWishlist = {
-                UserId:"623b3b984f1e07b09753d6d2",
+                UserId:wishlistData.UserId,
                 Name: wishlistData.Name,
                 Investments: SymbolsName.slice(0, -1),
             };
@@ -165,6 +193,7 @@ function Wishlist() {
                         if (res.data["Status"]) {
                             toast.success(res.data["Message"]);
                             getUserWishlists(); 
+                            setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:'',InvestArray:[],Investments:'',SearchArray:[],UserId:wishlistData.UserId});
                             setState('start');
                         } 
                     }
@@ -193,7 +222,7 @@ function Wishlist() {
             var SymbolsName="";
             wishlistData.InvestArray.forEach(data => SymbolsName += data.Symbol+"-"+data.Name+",")
             const newWishlist = {
-                UserId:"623b3b984f1e07b09753d6d2",
+                UserId:wishlistData.UserId,
                 Name: wishlistData.Name,
                 Investments: SymbolsName.slice(0, -1),
             };
@@ -203,6 +232,7 @@ function Wishlist() {
                         if (res.data !== null && res.data.Data !== null) {
                             toast.success(res.data["Message"]);
                             getUserWishlists(); 
+                            setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:wishlistData.WId,InvestArray:[],Investments:'',SearchArray:[],UserId:wishlistData.UserId});
                             setState('start');
                         } 
                     }
@@ -222,7 +252,7 @@ function Wishlist() {
     const changeName = (e) => {
         e.preventDefault();
         const name=e.target.name;
-        if(name==="firstName"){           
+        if(name==="WishlistName"){           
             if(!regexName.test(e.target.value) && e.target.value)
             {
                 setWarnFN(true);
@@ -247,24 +277,47 @@ function Wishlist() {
                 Region: props.Region,
             }
         ];
-        const investcount =wishlistData.InvestArray.length;
-        if(investcount<5)
+        const Authentication =isAuthenticated();
+        if(Authentication !== false)
         {
-            const foundInvest = wishlistData.InvestArray.filter((item) => item.Symbol === demo[0]["Symbol"]); 
-            if(foundInvest.length >0)
+            if(Authentication.isPremium ===true)
             {
-                toast.error("Investment has already been added");
+                const foundInvest = wishlistData.InvestArray.filter((item) => item.Symbol === demo[0]["Symbol"]); 
+                if(foundInvest.length >0)
+                {
+                    toast.error("Investment has already been added");
+                }
+                else
+                {
+                    let investList = wishlistData.InvestArray.concat(demo);
+                    setWishlistData({...wishlistData,InvestArray:investList});
+                }
             }
-            else
-            {
-                let investList = wishlistData.InvestArray.concat(demo);
-                setWishlistData({...wishlistData,InvestArray:investList});
+            else{
+                const investcount =wishlistData.InvestArray.length;
+                if(investcount<5)
+                {
+                    const foundInvest = wishlistData.InvestArray.filter((item) => item.Symbol === demo[0]["Symbol"]); 
+                    if(foundInvest.length >0)
+                    {
+                        toast.error("Investment has already been added");
+                    }
+                    else
+                    {
+                        let investList = wishlistData.InvestArray.concat(demo);
+                        setWishlistData({...wishlistData,InvestArray:investList});
+                    }
+                    
+                }
+                else
+                {
+                    handleShow();
+                } 
             }
-            
         }
         else
         {
-            handleShow();
+            toast.error("User Not Authenticated.");
         }   
     }
     function minusClicked(props) {
@@ -280,7 +333,7 @@ function Wishlist() {
                     setState('start');
                     setStateView('startView');
                     getUserWishlists(); 
-                    setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:'',InvestArray:[],Investments:'',SearchArray:[]});
+                    setWishlistData({...wishlistData,ViewDetailsArray:[],Name:'',WId:'',InvestArray:[],Investments:'',SearchArray:[],UserId:wishlistData.UserId});
                     setDeleteShow(false);
                 } 
             }
@@ -413,14 +466,15 @@ function Wishlist() {
                                 </Row>
                                 <div>
                                     <Box className='ucontainer' sx={{ flexGrow: 1 }}>
-                                        <Grid container style={{marginLeft: '2px'}}spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                                        <Grid container style={{marginLeft: '2px'}} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                                             {userWishlists.map((wishlist) => {
                                                 var arr = wishlist.Investments.split(",");
                                                 //console.log(wishlist._id);
                                                 return (
                                                     <>
-                                                        <Card className='udtitle'>
-                                                            <CardHeader title={<div onClick={(e) => {btnNewState(e,wishlist._id); }}><a href="">{wishlist.Name}</a></div>   }/><Divider />
+                                                        <Card className='udtitle' >
+                                                            
+                                                            <CardHeader title={<div onClick={(e) => {btnNewState(e,wishlist._id); }} style={{textAlign:'center'}}><a href="">{wishlist.Name}</a></div>   }/><Divider />
                                                             <CardContent>
                                                                 <ListGroup style={{overflow: "auto",maxHeight: "500px"}}>
                                                                     {arr.map(item => (
@@ -470,6 +524,8 @@ function Wishlist() {
                                     </thead>
                                     
                                     <tbody>
+                                    {console.log(wishlistData.ViewDetailsArray.length)}
+                                    {(wishlistData.ViewDetailsArray.length === 0) ? <> <tr><td colspan="9">No Record Found.</td></tr></> : <>
                                     {wishlistData.ViewDetailsArray?.map(item => (
                                         <tr key={item.Symbol}>
                                             <td>{item.Symbol}</td>
@@ -482,7 +538,8 @@ function Wishlist() {
                                             <td>{item.Change}</td>
                                             <td>{item.PChng}</td>
                                         </tr>                                       
-                                    ))} 
+                                    ))}
+                                    </>}
                                     </tbody>
                                     </Table>
                                 </div> 
@@ -512,7 +569,7 @@ function Wishlist() {
                                 <div className="inner">
                                     <div className="input_text">
                                         <FloatingLabel controlId="floatingName" label="Name">
-                                            <Form.Control type="text" className={` ${warnFN ? "warning" : "" }`}  name="firstName"  value={wishlistData.Name} onChange={changeName}  placeholder="Enter Name" />
+                                            <Form.Control type="text" className={` ${warnFN ? "warning" : "" }`}  name="WishlistName"  value={wishlistData.Name} onChange={changeName}  placeholder="Enter Name" />
                                         </FloatingLabel>
                                         {warnFN ? <p style={{color:"red"}}><i className="fa fa-warning"></i>{msgFN}</p> : null}     
                                         

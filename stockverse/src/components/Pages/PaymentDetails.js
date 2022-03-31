@@ -24,8 +24,8 @@ const PaymentDetails = () => {
     return (
         <>
             <Navigation />
-            <Container className="p-bg-container p-container">
-                <Row className="p-3">
+            <Container className="pay-bg-container pay-container">
+                <Row>
                     <Col className="d-flex justify-content-start mt-4">
                         <h3>Payment Details</h3>
                     </Col>

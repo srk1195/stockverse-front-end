@@ -1,4 +1,4 @@
-
+/*Author : Parthkumar Patel (B00899800)*/
 .w-bg-container{
     background-color: #e9ecef;
   }
@@ -13,4 +13,8 @@
   }
   .udtitle {
     margin: 5px;
+    width: 320px;
+    max-width: 350px;
+    overflow: auto;
+    max-height: 370px;
   }
