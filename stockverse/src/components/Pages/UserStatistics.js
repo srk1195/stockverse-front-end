@@ -23,7 +23,7 @@ const UserStatistics = () => {
 
     const onModification = (c) => {
       var filterAttribute;
-      var filteredValues = [];
+      var filteredValues = {};
       switch(c.target.id){
         case 'name':
           filterAttribute = 'Name'
@@ -40,21 +40,30 @@ const UserStatistics = () => {
       }
       console.log(filterAttribute)
       if(c.target.value){
-        let obj = {};
-        filteredValues = wishlists.filter(item => item[filterAttribute] && item[filterAttribute].toLowerCase().includes(c.target.value.toLowerCase()))
-        setWishlists(filteredValues);
+        let obj = {} 
+        let obj1 = filterData
         obj[filterAttribute] = c.target.value
-        setFilterData(filterData => ({
-          ...filterData,
+        obj1[filterAttribute] = c.target.value
+        setFilterData(filter => ({
+          ...filter,
           ...obj
         }));
+        filteredValues = obj1
       }else{
-        let obj = {};
+        let obj = {} 
         obj = filterData;
         delete obj[filterAttribute];
-        setFilterData(obj)
-        setWishlists(allWishlists)
+        filteredValues = obj
       }
+      filtering(filteredValues)
+    }
+
+    function filtering(obj){
+      let filt = allWishlists;
+      for (let i=0; i< Object.keys(obj).length ; i++){
+        filt = filt.filter(item => item[Object.keys(obj)[i]].toLowerCase().includes((Object.values(obj)[i]).toLowerCase()))
+      }
+      setWishlists(filt)
     }
 
   return (
@@ -95,10 +104,10 @@ const UserStatistics = () => {
         {wishlists.map((val, key) => {
           return (
             <tr key={key}>
-              <td>{val.Name}</td>
-              <td>{val.Investments}</td>
-              <td>{val.createdAt}</td>
-              <td>{val.updatedAt}</td>
+              <td title={val.Name}>{val.Name}</td>
+              <td title={val.Investments}>{val.Investments}</td>
+              <td title={val.createdAt}>{val.createdAt}</td>
+              <td title={val.updatedAt}>{val.updatedAt}</td>
             </tr>
           )
         })}
