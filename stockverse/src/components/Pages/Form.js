@@ -48,9 +48,12 @@ function Form() {
             console.log(response);
             if(response.role===false) {
 			    navigate(`/home`);
+                window.location.reload();
             }
-            else
-                navigate('/admin')
+            else{
+                navigate('/admin');
+                window.location.reload();
+            }
 		} catch (error) {
 			if (
 				error.response &&
