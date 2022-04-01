@@ -16,3 +16,8 @@
   align-items: center;
   justify-content: flex-end;
 }
+
+.disabled-input-text:disabled {
+  cursor: no-drop;
+  background-color: white;
+}

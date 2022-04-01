@@ -159,7 +159,7 @@ function EditPortfolioRecord() {
               >
                 <span>
                   <Form.Select
-                    className="mb-3 fw-normal"
+                    className="mb-3 fw-normal disabled-input-text"
                     size="md"
                     aria-label="Default select example"
                     name="instrumentType"
@@ -190,7 +190,7 @@ function EditPortfolioRecord() {
                 <span>
                   <Form.Control
                     type="text"
-                    className="fw-normal"
+                    className="fw-normal disabled-input-text"
                     size="sm"
                     placeholder="Ex: IBM.USA (or) BTC.USD"
                     onChange={handleChange}
@@ -241,7 +241,7 @@ function EditPortfolioRecord() {
             <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Label>
                 Average Buy Price ({getSymbolFromCurrency(currency) + ' '}
-                {currency})
+                {currency} )
               </Form.Label>
               <Form.Control
                 type="number"
