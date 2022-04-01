@@ -16,13 +16,13 @@ function getRandomAPIKey() {
   ];
 
   return (
-    keys[Math.floor(Math.random() * keys.length)] ||
-    process.env.REACT_APP_AV_API_KEY_SIX
+    process.env.REACT_APP_AV_API_KEY_ONE ||
+    keys[Math.floor(Math.random() * keys.length)]
   );
 }
 
 const CONSTANTS = Object.freeze({
-  API_ENDPOINT: "",
+  API_ENDPOINT: '',
   GLOBAL_QUOTE(symbol) {
     return `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${getRandomAPIKey()}`;
   },
@@ -34,8 +34,8 @@ const CONSTANTS = Object.freeze({
   },
   // LOCAL_BACKEND_URL: `http://localhost:5000/api`,
   LOCAL_BACKEND_URL: `https://stockverse-back-end.herokuapp.com/api`,
-  COUNTRY_CODE_URL: "https://openexchangerates.org/api/currencies.json",
-  PRODUCTION_URL: "https://stockverse-back-end.herokuapp.com/api/",
+  COUNTRY_CODE_URL: 'https://openexchangerates.org/api/currencies.json',
+  PRODUCTION_URL: 'https://stockverse-back-end.herokuapp.com/api/',
 });
 
 export default CONSTANTS;
