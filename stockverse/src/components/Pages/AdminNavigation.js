@@ -19,6 +19,15 @@ export class AdminNavigation extends Component {
           variant="dark"
         >
           <Container style={{ marginLeft: "unset", minWidth: "100%" }}>
+            <Navbar.Brand href="/home">
+              {" "}
+              <img
+                src={logo}
+                className="n-App-logo rounded-circle pe-3"
+                alt="logo"
+              />
+              STOCKVERSE
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
