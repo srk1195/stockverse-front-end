@@ -1,3 +1,4 @@
+/* Author Shiv Gaurang Desai(B00862445)*/
 .vertical-center {
   align-items: center;
 }
@@ -35,12 +36,12 @@
   justify-content: center;
 }
 
-.card {
+.card-custom {
   padding: 1.5rem !important;
   background-color: #e9ecef !important;
 }
 
-.grid {
+.grid-custom {
   min-height: 20vh !important;
   padding: 2em !important;
 }

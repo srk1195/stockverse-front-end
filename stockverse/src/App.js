@@ -81,14 +81,27 @@ function App() {
         <Route exact path="/profile/:id" element={<Profile />} />
         <Route path="/*" element={<PageNotFound />} />
 
-        <Route exact path="/customBasketForm" element={<CustomBasketForm />} />
-        <Route exact path="/customBasketList" element={<CustomBasketList />} />
-
-        <Route
-          exact
-          path="/customBasketListAdmin"
-          element={<CustomBasketListAdmin />}
-        />
+        {user && (
+          <Route
+            exact
+            path="/customBasketForm"
+            element={<CustomBasketForm />}
+          />
+        )}
+        {user && (
+          <Route
+            exact
+            path="/customBasketList"
+            element={<CustomBasketList />}
+          />
+        )}
+        {user && (
+          <Route
+            exact
+            path="/customBasketListAdmin"
+            element={<CustomBasketListAdmin />}
+          />
+        )}
       </Routes>
       <ToastContainer position="bottom-right" autoClose={1000} />
     </>

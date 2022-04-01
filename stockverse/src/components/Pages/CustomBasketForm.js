@@ -1,3 +1,4 @@
+//Author Shiv Gaurang Desai(B00862445)
 import "../Css/CustomBasket.css";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -18,7 +19,6 @@ import {
   Typography,
 } from "@mui/material";
 import { validateInstrumentSymbol } from "../../utils/apiCalls";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { AdminNavigation } from "./AdminNavigation";
 import { addCustomBasket } from "../../utils/axiosCall";
@@ -173,7 +173,7 @@ const CustomBasketForm = () => {
         alignItems={"center"}
         justifyContent={"center"}
         direction="column"
-        className="grid"
+        className="grid-custom"
       >
         <Grid item>
           <Typography variant="h5" color={"#485461"}>
@@ -182,7 +182,7 @@ const CustomBasketForm = () => {
         </Grid>
 
         <Grid item>
-          <Card className="card">
+          <Card className="card-custom">
             <Box
               component="form"
               sx={{

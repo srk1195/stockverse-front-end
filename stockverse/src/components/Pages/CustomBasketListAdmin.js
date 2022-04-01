@@ -1,15 +1,14 @@
+//Author Shiv Gaurang Desai(B00862445)
 import React, { useEffect, useState } from "react";
 import "../Css/CustomBasket.css";
 import { useNavigate } from "react-router-dom";
 import { Button, Table } from "react-bootstrap";
 import { AdminNavigation } from "./AdminNavigation";
-import "../Css/CustomBasket.css";
 import {
   fetchCustomBasketsAdmin,
   deleteCustomBasket,
 } from "../../utils/axiosCall";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 const CustomBasketListAdmin = () => {
   const [basketList, setBasketList] = useState([]);
@@ -39,7 +38,6 @@ const CustomBasketListAdmin = () => {
   const deleteCustomBasketApi = (e, id) => {
     e.preventDefault();
     deleteCustomBasket(id)
-      // .delete("https://localhost/api/customBasket/delete")
       .then((res) => {
         if (res.status === 200) {
           getCustomBasketListData();
