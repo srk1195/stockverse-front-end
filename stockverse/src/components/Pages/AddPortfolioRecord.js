@@ -270,7 +270,7 @@ function AddPortfolioRecord() {
     <>
       <Navigation />
 
-      <Container fluid className="pf-bg-container p-2 pf-container">
+      <Container className="pf-bg-container p-2 pf-container">
         {displayErrorMessage()}
         <h3 className="text-center mb-5">
           {' '}
