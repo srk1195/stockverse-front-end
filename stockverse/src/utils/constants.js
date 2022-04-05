@@ -32,9 +32,17 @@ const CONSTANTS = Object.freeze({
   CRYPTO_CURRENCY_DAILY(symbol, market) {
     return `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=${market}&apikey=${getRandomAPIKey()}`;
   },
-  // LOCAL_BACKEND_URL: `http://localhost:5000/api`,
-  LOCAL_BACKEND_URL: `https://stockverse-back-end.herokuapp.com/api`,
-  COUNTRY_CODE_URL: 'https://openexchangerates.org/api/currencies.json',
+  EQUITY_DAILY(symbol) {
+    return `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=full&apikey=${getRandomAPIKey()}`;
+  },
+  COMPANY_OVERVIEW(symbol) {
+    return `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${getRandomAPIKey()}`;
+  },
+  CONSUMER_SENTIMENT() {
+    return `https://www.alphavantage.co/query?function=CONSUMER_SENTIMENT&apikey=${getRandomAPIKey()}`;
+  },
+  LOCAL_BACKEND_URL: `http://localhost:5000/api`,
+  // LOCAL_BACKEND_URL: `https://stockverse-back-end.herokuapp.com/api`,
   PRODUCTION_URL: 'https://stockverse-back-end.herokuapp.com/api/',
 });
 
