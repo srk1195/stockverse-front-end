@@ -19,7 +19,6 @@ import {
   Container,
   Col,
   Modal,
-  Table,
 } from 'react-bootstrap';
 import {
   Box,
@@ -29,69 +28,100 @@ import {
   CardHeader,
   Divider,
 } from '@mui/material';
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, tableCellClasses } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { grey } from "@mui/material/colors";
 import CONSTANTS from '../../utils/constants';
 import { isAuthenticated } from '../../utils/apiCalls';
 import { toast } from 'react-toastify';
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: grey[400],
+    color: theme.palette.common.black,
+    fontSize: 18,
+    padding: 3
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 16,
+    padding:5
+  }
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0
+  }
+}));
+
 function Wishlist() {
-  const [state, setState] = useState('start');
-  const [stateView, setStateView] = useState('startView');
-  const [wishlistData, setWishlistData] = useState({
-    WId: '',
-    Name: '',
-    Investments: '',
-    InvestArray: [],
-    SearchArray: [],
-    ViewDetailsArray: [],
-    UserId: '',
-  });
+    const [state, setState] = useState('start');
+    const [stateView, setStateView] = useState('startView');
+    const [wishlistData,setWishlistData] = useState({ WId:'',Name:'',Investments:'',InvestArray:[],SearchArray:[],ViewDetailsArray:[],UserId:'' });
+    const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const navigate = useNavigate();
-  const regexName = /^[a-zA-Z]+$/;
-  const [warnFN, setWarnFN] = React.useState(false);
-  const [msgFN, setMsgFN] = React.useState('');
-  // Getting User Wishlist
-  const [userWishlists, setUserWishlists] = useState([]);
-  const [show, setShow] = useState(false);
-  const [searchRegion, setSearchRegion] = useState(null);
-  const [searchSymbol, setSearchSymbol] = useState(null);
-  const [searchKeyword, setSearchKeyword] = useState(null);
-  const [disableKeyword, setDisableKeyword] = useState(false);
-  const [disableSymbol, setDisableSymbol] = useState(false);
-  const [deleteShow, setDeleteShow] = useState(false);
-  const handleDeleteNo = () => setDeleteShow(false);
-  const handleDeleteShow = () => setDeleteShow(true);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  useEffect(() => {
-    getUserWishlists();
-  }, []);
-
-  const getUserWishlists = (e) => {
-    const Authentication = isAuthenticated();
-    if (Authentication !== false) {
-      console.log('authn', Authentication);
-      getUserWishlist(Authentication.id)
-        .then((res) => {
-          if (res.status === 201) {
-            if (res.data !== null && res.data.Data !== null) {
-              setUserWishlists(res.data.Data);
-            }
-          }
-        })
-        .catch((err) => {
-          if (!err?.response) {
-            toast.error('No Server Response');
-          } else if (err.response?.status !== 201) {
-            toast.error(err.response?.data['Message']);
-          } else {
-            toast.error('Wishlist fetching Failed.');
-          }
-        });
-    } else {
-      toast.error('User Not Authenticated.');
-    }
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+    const navigate =useNavigate();
+    const regexName = /^[a-zA-Z]+$/;
+    const [warnFN,setWarnFN]= React.useState(false);
+    const [msgFN, setMsgFN] = React.useState("");
+    // Getting User Wishlist
+    const [userWishlists, setUserWishlists] = useState([]);
+    const [show, setShow] = useState(false);
+    const [searchRegion,setSearchRegion]=useState(null);
+    const [searchSymbol,setSearchSymbol]=useState(null);
+    const [searchKeyword,setSearchKeyword]=useState(null);
+    const [disableKeyword, setDisableKeyword] = useState(false);
+    const [disableSymbol, setDisableSymbol] = useState(false);
+    const [deleteShow, setDeleteShow] = useState(false);
+    const handleDeleteNo = () => setDeleteShow(false);
+    const handleDeleteShow = () => setDeleteShow(true);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    useEffect(() => {
+        getUserWishlists();    
+    }, []);
+    
+    const getUserWishlists = (e) =>  {
+        const Authentication =isAuthenticated();
+        if(Authentication !== false)
+        {
+            console.log("authn",Authentication);
+            getUserWishlist(Authentication.id).then((res) => {
+                if (res.status === 201) {
+                    if (res.data !== null && res.data.Data !== null) {
+                        setUserWishlists(res.data.Data);
+                        console.log("res",res.data.Data);
+                    
+                    } 
+                }
+            }).catch((err) => {
+                if (!err?.response) {
+                    toast.error('No Server Response');
+                } else if (err.response?.status !== 201) {
+                    toast.error(err.response?.data["Message"]);
+                } else {
+                    toast.error('Wishlist fetching Failed.');
+                }
+            }); 
+        }
+        else
+        {
+            toast.error("User Not Authenticated.");
+        }
+    }
 
   //-------------------------------
   var btnAdd = (e) => {
@@ -115,100 +145,102 @@ function Wishlist() {
   };
   var btnNewState = (e, reqid) => {
     e.preventDefault();
-    let wNameFunction = null,
-      wIdFunction = null;
-    let wViewDetailArrayFunction = [];
-    let wInvestArrayFunction = [];
-    let wInvestmentsFunction = [];
-    getWishlistById(reqid)
-      .then((res) => {
-        if (res.status === 201) {
-          if (res.data !== null && res.data.Data !== null) {
-            wNameFunction = res.data.Data[0].Name;
+    const Authentication = isAuthenticated();
+    if (Authentication !== false) {
+      let wNameFunction = null,wIdFunction = null,wViewDetailArrayFunction = [],wInvestArrayFunction = [],wInvestmentsFunction = [];
+      getWishlistById(reqid)
+        .then((res) => {
+          if (res.status === 201) {
+            if (res.data !== null && res.data.Data !== null) {
+              wNameFunction = res.data.Data[0].Name;
 
-            wIdFunction = res.data.Data[0]._id;
-            wInvestmentsFunction = res.data.Data[0].Investments;
-            console.log(res.data.Data[0].Investments);
-            if (wInvestmentsFunction === '' || wInvestmentsFunction === null) {
-              setWishlistData({
-                ...wishlistData,
-                ViewDetailsArray: wViewDetailArrayFunction,
-                Name: wNameFunction,
-                WId: wIdFunction,
-                InvestArray: wInvestArrayFunction,
-                Investments: wInvestmentsFunction,
-                UserId: wishlistData.UserId,
-              });
-            } else {
-              var arr = res.data.Data[0].Investments.split(',');
-              for (var i = 0; i < arr.length; i++) {
-                var demo = {
-                  Symbol: arr[i].split('-')[0],
-                  Name: arr[i].split('-')[1],
-                  Type: '',
-                  Region: '',
-                };
+              wIdFunction = res.data.Data[0]._id;
+              wInvestmentsFunction = res.data.Data[0].Investments;
+              console.log(res.data.Data[0].Investments);
+              if (wInvestmentsFunction === '' || wInvestmentsFunction === null) {
+                setWishlistData({
+                  ...wishlistData,
+                  ViewDetailsArray: wViewDetailArrayFunction,
+                  Name: wNameFunction,
+                  WId: wIdFunction,
+                  InvestArray: wInvestArrayFunction,
+                  Investments: wInvestmentsFunction,
+                  UserId: Authentication.id,
+                });
+              } else {
+                var arr = res.data.Data[0].Investments.split(',');
+                for (var i = 0; i < arr.length; i++) {
+                  var demo = {
+                    Symbol: arr[i].split('-')[0],
+                    Name: arr[i].split('-')[1],
+                    Type: '',
+                    Region: '',
+                  };
 
-                wInvestArrayFunction.push(demo);
-                const url = CONSTANTS.GLOBAL_QUOTE(arr[i].split('-')[0]);
-                let Sym = arr[i].split('-')[0],
-                  Name = arr[i].split('-')[1];
-                fetch(url)
-                  .then(function (res) {
-                    return res.json();
-                  })
-                  .then(function (res) {
-                    if (res['Global Quote']) {
-                      var apiSymbol = Sym,
-                        apiName = Name,
-                        apiOpen = res['Global Quote']['02. open'],
-                        apiHigh = res['Global Quote']['03. high'],
-                        apiLow = res['Global Quote']['04. low'],
-                        apiPrice = res['Global Quote']['05. price'],
-                        apiPreviousClose =
-                          res['Global Quote']['08. previous close'],
-                        apiChng = res['Global Quote']['09. change'],
-                        apiPChng = res['Global Quote']['10. change percent'];
-                      const demo = {
-                        Symbol: apiSymbol,
-                        Name: apiName,
-                        Open: apiOpen,
-                        High: apiHigh,
-                        Low: apiLow,
-                        Price: apiPrice,
-                        PreviousClose: apiPreviousClose,
-                        Change: apiChng,
-                        PChng: apiPChng,
-                      };
-                      wViewDetailArrayFunction.push(demo);
-                      console.log(wViewDetailArrayFunction);
-                      setWishlistData({
-                        ...wishlistData,
-                        ViewDetailsArray: wViewDetailArrayFunction,
-                        Name: wNameFunction,
-                        WId: wIdFunction,
-                        InvestArray: wInvestArrayFunction,
-                        Investments: wInvestmentsFunction,
-                        UserId: wishlistData.UserId,
-                      });
-                    }
-                  });
+                  wInvestArrayFunction.push(demo);
+                  const url = CONSTANTS.GLOBAL_QUOTE(arr[i].split('-')[0]);
+                  let Sym = arr[i].split('-')[0],
+                    Name = arr[i].split('-')[1];
+                  fetch(url)
+                    .then(function (res) {
+                      return res.json();
+                    })
+                    .then(function (res) {
+                      if (res['Global Quote']) {
+                        var apiSymbol = Sym,
+                          apiName = Name,
+                          apiOpen = res['Global Quote']['02. open'],
+                          apiHigh = res['Global Quote']['03. high'],
+                          apiLow = res['Global Quote']['04. low'],
+                          apiPrice = res['Global Quote']['05. price'],
+                          apiPreviousClose =
+                            res['Global Quote']['08. previous close'],
+                          apiChng = res['Global Quote']['09. change'],
+                          apiPChng = res['Global Quote']['10. change percent'];
+                        const demo = {
+                          Symbol: apiSymbol,
+                          Name: apiName,
+                          Open: apiOpen,
+                          High: apiHigh,
+                          Low: apiLow,
+                          Price: apiPrice,
+                          PreviousClose: apiPreviousClose,
+                          Change: apiChng,
+                          PChng: apiPChng,
+                        };
+                        wViewDetailArrayFunction.push(demo);
+                        console.log(wViewDetailArrayFunction);
+                        setWishlistData({
+                          ...wishlistData,
+                          ViewDetailsArray: wViewDetailArrayFunction,
+                          Name: wNameFunction,
+                          WId: wIdFunction,
+                          InvestArray: wInvestArrayFunction,
+                          Investments: wInvestmentsFunction,
+                          UserId: Authentication.id,
+                        });
+                      }
+                    });
+                }
               }
+              setState('none');
+              setStateView('PageViewState');
             }
-            setState('none');
-            setStateView('PageViewState');
           }
-        }
-      })
-      .catch((err) => {
-        if (!err?.response) {
-          toast.error('No Server Response');
-        } else if (err.response?.status !== 201) {
-          toast.error(err.response?.data['Message']);
-        } else {
-          toast.error('Wishlist fetching Failed.');
-        }
-      });
+        })
+        .catch((err) => {
+          if (!err?.response) {
+            toast.error('No Server Response');
+          } else if (err.response?.status !== 201) {
+            toast.error(err.response?.data['Message']);
+          } else {
+            toast.error('Wishlist fetching Failed.');
+          }
+        });
+      } 
+      else {
+      toast.error('User Not Authenticated.');
+    }
   };
 
   var btnEdit = (e) => {
@@ -226,98 +258,110 @@ function Wishlist() {
   };
   var btnSave = (e) => {
     e.preventDefault();
-    if (wishlistData.Name === '') {
-      setWarnFN(true);
-      setMsgFN('Please Enter a valid First Name.');
-      return;
-    } else if (!warnFN) {
-      var SymbolsName = '';
-      wishlistData.InvestArray.forEach(
-        (data) => (SymbolsName += data.Symbol + '-' + data.Name + ',')
-      );
-      const newWishlist = {
-        UserId: wishlistData.UserId,
-        Name: wishlistData.Name,
-        Investments: SymbolsName.slice(0, -1),
-      };
-      addWishlist(newWishlist)
-        .then((res) => {
-          //console.log(res);
-          if (res.status === 201) {
-            if (res.data['Status']) {
-              toast.success(res.data['Message']);
-              getUserWishlists();
-              setWishlistData({
-                ...wishlistData,
-                ViewDetailsArray: [],
-                Name: '',
-                WId: '',
-                InvestArray: [],
-                Investments: '',
-                SearchArray: [],
-                UserId: wishlistData.UserId,
-              });
-              setState('start');
+    const Authentication = isAuthenticated();
+    if (Authentication !== false) {
+      if (wishlistData.Name === '') {
+        setWarnFN(true);
+        setMsgFN('Please Enter a valid First Name.');
+        return;
+      } else if (!warnFN) {
+        var SymbolsName = '';
+        wishlistData.InvestArray.forEach(
+          (data) => (SymbolsName += data.Symbol + '-' + data.Name + ',')
+        );
+        const newWishlist = {
+          UserId: Authentication.id,
+          Name: wishlistData.Name,
+          Investments: SymbolsName.slice(0, -1),
+        };
+        addWishlist(newWishlist)
+          .then((res) => {
+            //console.log(res);
+            if (res.status === 201) {
+              if (res.data['Status']) {
+                toast.success(res.data['Message']);
+                getUserWishlists();
+                setWishlistData({
+                  ...wishlistData,
+                  ViewDetailsArray: [],
+                  Name: '',
+                  WId: '',
+                  InvestArray: [],
+                  Investments: '',
+                  SearchArray: [],
+                  UserId: Authentication.id,
+                });
+                setState('start');
+              }
             }
-          }
-        })
-        .catch((err) => {
-          if (!err?.response) {
-            toast.error('No Server Response');
-          } else if (err.response?.status !== 201) {
-            toast.error(err.response?.data['Message']);
-          } else {
-            toast.error('Wishlist saving Failed.');
-          }
-        });
+          })
+          .catch((err) => {
+            if (!err?.response) {
+              toast.error('No Server Response');
+            } else if (err.response?.status !== 201) {
+              toast.error(err.response?.data['Message']);
+            } else {
+              toast.error('Wishlist saving Failed.');
+            }
+          });
+        }
+        } 
+      else {
+      toast.error('User Not Authenticated.');
     }
   };
   var btnUpdate = (e, reqId) => {
     e.preventDefault();
-    if (wishlistData.Name === '') {
-      setWarnFN(true);
-      setMsgFN('Please Enter a valid First Name.');
-      return;
-    } else if (!warnFN) {
-      var SymbolsName = '';
-      wishlistData.InvestArray.forEach(
-        (data) => (SymbolsName += data.Symbol + '-' + data.Name + ',')
-      );
-      const newWishlist = {
-        UserId: wishlistData.UserId,
-        Name: wishlistData.Name,
-        Investments: SymbolsName.slice(0, -1),
-      };
-      updateWishlistById(reqId, newWishlist)
-        .then((res) => {
-          //console.log(res);
-          if (res.status === 201) {
-            if (res.data !== null && res.data.Data !== null) {
-              toast.success(res.data['Message']);
-              getUserWishlists();
-              setWishlistData({
-                ...wishlistData,
-                ViewDetailsArray: [],
-                Name: '',
-                WId: wishlistData.WId,
-                InvestArray: [],
-                Investments: '',
-                SearchArray: [],
-                UserId: wishlistData.UserId,
-              });
-              setState('start');
+    const Authentication = isAuthenticated();
+    if (Authentication !== false) {
+      if (wishlistData.Name === '') {
+        setWarnFN(true);
+        setMsgFN('Please Enter a valid First Name.');
+        return;
+      } else if (!warnFN) {
+        var SymbolsName = '';
+        wishlistData.InvestArray.forEach(
+          (data) => (SymbolsName += data.Symbol + '-' + data.Name + ',')
+        );
+        const newWishlist = {
+          UserId: Authentication.id,
+          Name: wishlistData.Name,
+          Investments: SymbolsName.slice(0, -1),
+        };
+        updateWishlistById(reqId, newWishlist)
+          .then((res) => {
+            //console.log(res);
+            if (res.status === 201) {
+              if (res.data !== null && res.data.Data !== null) {
+                toast.success(res.data['Message']);
+                getUserWishlists();
+                setWishlistData({
+                  ...wishlistData,
+                  ViewDetailsArray: [],
+                  Name: '',
+                  WId: wishlistData.WId,
+                  InvestArray: [],
+                  Investments: '',
+                  SearchArray: [],
+                  UserId: Authentication.id,
+                });
+                setState('start');
+              }
             }
-          }
-        })
-        .catch((err) => {
-          if (!err?.response) {
-            toast.error('No Server Response');
-          } else if (err.response?.status !== 201) {
-            toast.error(err.response?.data['Message']);
-          } else {
-            toast.error('Wishlist updating Failed.');
-          }
-        });
+          })
+          .catch((err) => {
+            if (!err?.response) {
+              toast.error('No Server Response');
+            } else if (err.response?.status !== 201) {
+              toast.error(err.response?.data['Message']);
+            } else {
+              toast.error('Wishlist updating Failed.');
+            }
+          });
+      }
+    } 
+      else {
+      toast.error('User Not Authenticated.');
     }
   };
 
@@ -386,7 +430,9 @@ function Wishlist() {
   }
 
   const handleDeleteYes = (e) => {
-    deleteWishlistById(wishlistData.WId)
+    const Authentication = isAuthenticated();
+    if (Authentication !== false) {
+      deleteWishlistById(wishlistData.WId)
       .then((res) => {
         if (res.status === 201) {
           if (res.data !== null && res.data.Data !== null) {
@@ -402,7 +448,7 @@ function Wishlist() {
               InvestArray: [],
               Investments: '',
               SearchArray: [],
-              UserId: wishlistData.UserId,
+              UserId: Authentication.id,
             });
             setDeleteShow(false);
           }
@@ -417,6 +463,10 @@ function Wishlist() {
           toast.error('Wishlist fetching Failed.');
         }
       });
+    } 
+      else {
+      toast.error('User Not Authenticated.');
+    }
   };
   const handlePayment = (e) => {
     navigate(`/payment`);
@@ -482,7 +532,18 @@ function Wishlist() {
         });
     }
   };
-
+  const columns = [
+  { id: 'Symbol', label: 'Symbol', maxWidth: '70px' ,minWidth: '40px'},
+  { id: 'Name', label: 'Name', maxWidth: '900px' ,minWidth: '200px'},
+  { id: 'Open', label: 'Open', maxWidth: '60px',minWidth: '45px'},
+  { id: 'High', label: 'High', maxWidth: '60px',minWidth: '45px' },
+  { id: 'Low', label: 'Low', maxWidth: '60px' ,minWidth: '45px'},
+  { id: 'Price', label: 'Price ($)', maxWidth: '60px',minWidth: '45px' },
+  { id: 'PreviousClose', label: 'Previous Close', maxWidth: '65px',minWidth: '55px' },
+  { id: 'Change', label: 'Change', maxWidth: '60px',minWidth: '45px' },
+  { id: 'PChange', label: 'Change (%)', maxWidth: '65px',minWidth: '50px' }
+];
+ 
   return (
     <>
       <Navigation />
@@ -558,7 +619,7 @@ function Wishlist() {
                     >
                       {userWishlists.map((wishlist) => {
                         var arr = wishlist.Investments.split(',');
-                        //console.log(wishlist._id);
+                        console.log(wishlist._id);
                         return (
                           <>
                             <Card className="udtitle">
@@ -579,7 +640,7 @@ function Wishlist() {
                                 <ListGroup
                                   style={{
                                     overflow: 'auto',
-                                    maxHeight: '500px',
+                                    maxHeight: '280px',
                                   }}
                                 >
                                   {arr.map((item) => (
@@ -603,8 +664,8 @@ function Wishlist() {
               </div>
             )}
             {stateView === 'PageViewState' && (
-              <div>
-                <Row className="p-3">
+              <div className="p-3">
+                <Row>
                   <Col>
                     <h3> View Wishlist</h3>
                   </Col>
@@ -616,7 +677,7 @@ function Wishlist() {
                         btnDashboard(wishlistData.WId);
                       }}
                     >
-                      <i className="fas fa-pencil-alt"></i> dashboard
+                      <i className="fas fa-chart-line"></i> Chart
                     </Button>
                     <Button
                       style={{ fontSize: 18, marginRight: 10 }}
@@ -637,52 +698,59 @@ function Wishlist() {
                   </Col>
                 </Row>
                 <div>
-                  <h5>Wishlist Name :{wishlistData.Name}</h5>
-
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Symbol</th>
-                        <th>Name</th>
-                        <th>Open</th>
-                        <th>High</th>
-                        <th>Low</th>
-                        <th>Price($)</th>
-                        <th>Previous Close</th>
-                        <th>Change</th>
-                        <th>Change (%)</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {console.log(wishlistData.ViewDetailsArray)}
-                      {console.log(wishlistData.ViewDetailsArray.length)}
-                      {wishlistData.ViewDetailsArray.length === 0 ? (
-                        <>
-                          {' '}
-                          <tr>
-                            <td colSpan="9">No Record Found.</td>
-                          </tr>
-                        </>
-                      ) : (
-                        <>
-                          {wishlistData.ViewDetailsArray?.map((item) => (
-                            <tr key={item.Symbol}>
-                              <td>{item.Symbol}</td>
-                              <td>{item.Name}</td>
-                              <td>{item.Open}</td>
-                              <td>{item.High}</td>
-                              <td>{item.Low}</td>
-                              <td>{item.Price}</td>
-                              <td>{item.PreviousClose}</td>
-                              <td>{item.Change}</td>
-                              <td>{item.PChng}</td>
-                            </tr>
-                          ))}
-                        </>
-                      )}
-                    </tbody>
-                  </Table>
+                  <h5>Wishlist Name : {wishlistData.Name}</h5>
+                  <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                      <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                          <TableRow>
+                            {columns.map((column) => (
+                              <StyledTableCell
+                                key={column.id}
+                                style={{ minWidth: column.minWidth,maxWidth: column.maxWidth }}
+                              >
+                                {column.label}
+                              </StyledTableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {wishlistData.ViewDetailsArray.length === 0 ? (
+                              <>
+                                  <StyledTableRow hover role="checkbox" tabIndex={-1} colSpan='9'>
+                                      <StyledTableCell >
+                                          No Record Found.
+                                      </StyledTableCell>
+                                  </StyledTableRow>
+                              </>
+                          ) : (
+                              <>
+                                  {wishlistData.ViewDetailsArray?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item) => {
+                                      return (
+                                          <StyledTableRow hover role="checkbox" tabIndex={-1}>
+                                              {Object.keys(item).map((key) => (
+                                                  <StyledTableCell >
+                                                      {item[key]}
+                                                  </StyledTableCell>
+                                              ))}
+                                          </StyledTableRow>
+                                      );
+                                  })}
+                              </>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 15]}
+                      component="div"
+                      count={wishlistData.ViewDetailsArray.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  </Paper>
                 </div>
               </div>
             )}
@@ -1007,7 +1075,7 @@ function Wishlist() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export default Wishlist;
