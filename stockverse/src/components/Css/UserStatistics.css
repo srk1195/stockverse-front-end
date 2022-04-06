@@ -11,24 +11,24 @@
     text-align: center;
 }
 
-table {
+.ustable table {
     border: 2px solid #474d5a;
     width: 80%;
     margin: auto;
   }
     
-  th {
+.ustable th {
     border-bottom: 1px solid black;
     text-align: center;
     border: solid;
   }
     
-  td {
+.ustable td {
     text-align: center;
     border: solid;
   }
 
-  tr {
+.ustable tr {
     border: solid
   }
 
