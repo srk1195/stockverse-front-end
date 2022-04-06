@@ -45,6 +45,8 @@ function Wishlist() {
                 if (res.status === 201) {
                     if (res.data !== null && res.data.Data !== null) {
                         setUserWishlists(res.data.Data);
+                        console.log("res",res.data.Data);
+                    
                     } 
                 }
             }).catch((err) => {
@@ -90,7 +92,6 @@ function Wishlist() {
             if (res.status === 201) {
                 if (res.data !== null && res.data.Data !== null) {
                     wNameFunction=res.data.Data[0].Name;
-                    
                     wIdFunction=res.data.Data[0]._id;
                     wInvestmentsFunction=res.data.Data[0].Investments;
                     console.log(res.data.Data[0].Investments);
@@ -479,9 +480,11 @@ function Wishlist() {
                                                             <CardContent>
                                                                 <ListGroup style={{overflow: "auto",maxHeight: "500px"}}>
                                                                     {arr.map(item => (
+                                                                        <>
                                                                         <ListGroup.Item key={item.split('-')[0]}>
                                                                             <span>  {item.split('-')[0]} - {item.split('-')[1]}</span>
                                                                         </ListGroup.Item>
+                                                                        </>
                                                                     ))}
                                                                 </ListGroup>
                                                             </CardContent>
