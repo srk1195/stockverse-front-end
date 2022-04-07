@@ -38,7 +38,6 @@ const UserStatistics = () => {
           filterAttribute = 'updatedAt'
           break;
       }
-      console.log(filterAttribute)
       if(c.target.value){
         let obj = {} 
         let obj1 = filterData
@@ -78,7 +77,7 @@ const UserStatistics = () => {
           <h4 className='textstats' >Numbers of users after filtering fields: {wishlists.length}</h4>
         </div>
       </div>
-       <table className='ustable'>
+       <table className='ustable' style={{margin:'auto',width:"80%"}}>
         <tr>
           <th>Name
             <div className='inputsection'>

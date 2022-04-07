@@ -117,7 +117,6 @@ function EditPortfolioRecord() {
       toast.success('Successfully edited the record', {
         theme: 'dark',
       });
-      console.log(addResult.data);
       navigate('/portfolio');
     } else {
       setPortfolioData({

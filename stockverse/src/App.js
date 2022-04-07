@@ -34,6 +34,7 @@ import SendPromotions from './components/Pages/SendPromotions';
 import BlogManagement from "./components/Pages/BlogManagement";
 import UserBlogs from './components/Pages/UserBlogs';
 import News from "./components/Pages/News";
+import About from "./components/Pages/About";
 
 function App() {
   const user = localStorage.getItem("token");
@@ -42,8 +43,9 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Form />} />
         {user && <Route exact path="/home" element={<Home />} />}
+        {user && <Route exact path="/about" element={<About />} />}
 
-        {user && <Route exact path="/dashboard" element={<Dashboard />} />}
+        {user && <Route exact path="/dashboard" element={<About />} />}
         {user && <Route exact path="/payment" element={<Payment />} />}
         {user && (
           <Route
@@ -90,7 +92,7 @@ function App() {
           element={<SecurityQuestion />}
         />
         <Route exact path="/changePassword/:id" element={<ChangePassword />} />
-        <Route exact path="/profile/:id" element={<Profile />} />
+        <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/adminBlogs" element={<BlogManagement />} />
         <Route exact path="/userBlogs" element= {<UserBlogs/>} />
         <Route path="/*" element={<PageNotFound />} />

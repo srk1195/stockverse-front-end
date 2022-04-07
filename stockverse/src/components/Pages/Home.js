@@ -1,11 +1,11 @@
 /*Author : Parthkumar Patel (B00899800)*/
 import React from 'react'
 import "../Css/Home.css"
-import Dashboard from './Dashboard'
+import About from './About'
 const Home = () => {
   return (
     <>
-    <Dashboard />  
+    <About />  
     
     </>
   )

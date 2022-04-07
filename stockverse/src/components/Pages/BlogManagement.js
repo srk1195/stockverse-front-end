@@ -60,7 +60,6 @@ function BlogManagement() {
           const idx = allBlogs.findIndex(item => item._id == currItm);
           let arr = allBlogs
           arr.splice(idx, 1)
-          console.log(arr)
           this.setAllBlogs(arr)
         }
       }).catch((err) => {
@@ -99,7 +98,7 @@ function BlogManagement() {
                       <strong>Blog Content</strong>
                       <Card.Text>{item.BlogContent}</Card.Text>
                         <hr/>
-                        <Button style={{'margin':'10px'}}  onClick={() => deleteaBlog(item._id)} role="button" className="mt-1" type="button" variant="outline-dark" autoFocus>
+                        <Button style={{'margin':'10px'}}  onClick={() => deleteaBlog(item._id)} role="button" className="mt-1" type="button" variant="outline-danger" autoFocus>
                           Delete
                         </Button>
                       </Card.Body>
@@ -134,7 +133,7 @@ function BlogManagement() {
                 <Button onClick={closeDelete} role="button" className="mt-1" type="button" variant="outline-dark">
                  Cancel
                 </Button>
-                <Button onClick={deleteY} role="button" className="mt-1" type="button" variant="outline-dark" autoFocus>
+                <Button onClick={deleteY} role="button" className="mt-1" type="button" variant="outline-danger" autoFocus>
                  Delete
                 </Button>
                 </DialogActions>

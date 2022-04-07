@@ -17,18 +17,18 @@ import UserBlogs from "./UserBlogs";
 import News from "./News";
 
 export class Navigation extends Component {
+
   handleLogout = () => {
     localStorage.removeItem("token");
     window.location = "/login";
   };
   handleProfile = () => {
-    window.location = `/profile/${this.props.name}`;
+    window.location = `/profile`;
   };
 
   render() {
     return (
       <>
-        <h1>{this.props.value}</h1>
         <Navbar
           collapseOnSelect
           className=" App-header"
@@ -38,7 +38,6 @@ export class Navigation extends Component {
         >
           <Container style={{ marginLeft: "unset", minWidth: "100%" }}>
             <Navbar.Brand href="/home">
-              {" "}
               <img
                 src={logo}
                 className="n-App-logo rounded-circle pe-3"
@@ -50,14 +49,7 @@ export class Navigation extends Component {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
-                <Nav.Link href="">
-                  <i
-                    className="fas fa-bell rounded-circle c-white "
-                    alt="Notification"
-                    width="30"
-                  ></i>
-                </Nav.Link>
-                <NavDropdown
+                 <NavDropdown
                   align="end"
                   title={
                     <i
@@ -67,19 +59,16 @@ export class Navigation extends Component {
                     ></i>
                   }
                 >
-                  <NavDropdown.Item href="">About</NavDropdown.Item>
+                  <NavDropdown.Item href="/about">About</NavDropdown.Item>
                   <NavDropdown.Item
                     onClick={this.handleProfile}
-                    name={this.props.value}
                   >
                     Profile
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="">Subscription</NavDropdown.Item>
+                  <NavDropdown.Item href="/payment">Subscription</NavDropdown.Item>
                   <NavDropdown.Item onClick={this.handleLogout}>
                     Logout
                   </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="">Notification</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>
