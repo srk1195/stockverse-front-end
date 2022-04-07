@@ -78,7 +78,7 @@ const UserStatistics = () => {
           <h4 className='textstats' >Numbers of users after filtering fields: {wishlists.length}</h4>
         </div>
       </div>
-       <table>
+       <table className='ustable'>
         <tr>
           <th>Name
             <div className='inputsection'>

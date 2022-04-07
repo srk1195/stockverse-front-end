@@ -1,3 +1,4 @@
+//Author : Pallavi Cherukupalli (B00887062)
 import React, {useEffect} from 'react';
 import { getAllBlogs} from "../../utils/axiosCall";
 import { toast } from "react-toastify";
