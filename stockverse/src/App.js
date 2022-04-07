@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
@@ -28,6 +29,7 @@ import UserStatistics from "./components/Pages/UserStatistics";
 import CustomBasketForm from "./components/Pages/CustomBasketForm";
 import CustomBasketListAdmin from "./components/Pages/CustomBasketListAdmin";
 import CustomBasketList from "./components/Pages/CustomBasketList";
+import InstrumentDashboard from "./components/Pages/InstrumentDashboard";
 import News from "./components/Pages/News";
 function App() {
   const user = localStorage.getItem("token");
@@ -47,7 +49,7 @@ function App() {
           />
         )}
         {user && <Route exact path="/portfolio" element={<Portfolio />} />}
-        <Route exact path="/News" element={<News />} />
+
         {user && <Route exact path="/wishlist" element={<Wishlist />} />}
         {user && <Route exact path="/admin" element={<AdminDashboard />} />}
         {user && <Route exact path="/usersList" element={<UsersList />} />}
@@ -68,6 +70,11 @@ function App() {
             element={<EditPortfolioRecord />}
           />
         )}
+        <Route
+          exact
+          path="/instrument-dashboard/:id"
+          element={<InstrumentDashboard />}
+        />
         {!user && <Route exact path="/*" element={<UserNotAuthenticate />} />}
         <Route exact path="/login" element={<Form />} />
         <Route exact path="/register" element={<Register />} />
@@ -103,6 +110,7 @@ function App() {
             element={<CustomBasketListAdmin />}
           />
         )}
+        {user && <Route exact path="/News" element={<News />} />}
       </Routes>
       <ToastContainer position="bottom-right" autoClose={1000} />
     </>
