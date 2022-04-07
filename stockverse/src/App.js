@@ -31,6 +31,8 @@ import CustomBasketListAdmin from './components/Pages/CustomBasketListAdmin';
 import CustomBasketList from './components/Pages/CustomBasketList';
 import InstrumentDashboard from './components/Pages/InstrumentDashboard';
 import SendPromotions from './components/Pages/SendPromotions';
+import BlogManagement from "./components/Pages/BlogManagement";
+import UserBlogs from './components/Pages/UserBlogs';
 
 function App() {
   const user = localStorage.getItem('token');
@@ -88,6 +90,8 @@ function App() {
         />
         <Route exact path="/changePassword/:id" element={<ChangePassword />} />
         <Route exact path="/profile/:id" element={<Profile />} />
+        <Route exact path="/adminBlogs" element={<BlogManagement />} />
+        <Route exact path="/userBlogs" element= {<UserBlogs/>} />
         <Route path="/*" element={<PageNotFound />} />
 
         {user && (

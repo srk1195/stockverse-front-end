@@ -26,7 +26,12 @@ export const deleteCustomBasket = (id) =>
   API.delete(`/customBasket/deleteCustomBasket/${id}`);
 export const addCustomBasket = (customBasketData) =>
   API.post("/customBasket/addCustomBasket", customBasketData);
-
+export const addBlogs = (blogData) =>
+  API.post("/blogs/addBlogs", blogData);
+export const getAllBlogs = () =>
+  API.get("/blogs/getAllBlogs")
+export const deleteBlog = (id) =>
+  API.delete(`/blogs/deleteBlog/${id}`)
 /* export const getAllUsers = () => API.get('/users');
 
 export const getUserProfile = (UserId) => API.get(`/users/${UserId}`);

@@ -18,6 +18,9 @@ const AdminDashboard = () => {
     e.preventDefault();
     navigate("/sendPromotions");
   };
+  const handleBlogManagement = (e) => {
+    navigate("/adminBlogs");
+  }
 
   return (
     <div className="adminDashboard">
@@ -32,8 +35,8 @@ const AdminDashboard = () => {
               >
                 Check Activity
               </Card.Body>
-              <Card.Body className="cardRight eachCard bg-secondary">
-                Investment Video Strategy
+              <Card.Body  onClick={(e) => handleSendPromotions(e)} className="cardRight eachCard bg-secondary">
+              Send Promotions
               </Card.Body>
             </div>
             <div className="container">
@@ -43,14 +46,8 @@ const AdminDashboard = () => {
               >
                 Custom Basket Management
               </Card.Body>
-              <Card.Body className="cardRight eachCard bg-secondary">
+              <Card.Body onClick={(e) => handleBlogManagement(e)} className="cardRight eachCard bg-secondary">
                 My blogs
-              </Card.Body>
-            </div>
-            <div className="container">
-              <Card.Body onClick={(e) => handleSendPromotions(e)}
-                className="cardRight eachCard bg-secondary">
-                Send Promotions
               </Card.Body>
             </div>
           </Card>
