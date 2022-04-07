@@ -14,6 +14,7 @@ import Wishlist from "./Wishlist";
 import { Routes, Route } from "react-router-dom";
 import CustomBasketList from "./CustomBasketList";
 import UserBlogs from "./UserBlogs";
+import News from "./News";
 
 export class Navigation extends Component {
   handleLogout = () => {
@@ -122,6 +123,12 @@ export class Navigation extends Component {
                 </Nav.Link>
                 <Nav.Link
                   className="d-inline p-2 bg-secondary text-white"
+                  href="/News"
+                >
+                  Market News
+                </Nav.Link>
+                <Nav.Link
+                  className="d-inline p-2 bg-secondary text-white"
                   href="/userBlogs"
                 >
                   Blogs
@@ -142,6 +149,7 @@ export class Navigation extends Component {
             element={<CustomBasketList />}
           />
           <Route exact path="/userBlogs" element={<UserBlogs />} />
+          <Route exact path="/News" element={<News />} />
         </Routes>
       </>
     );

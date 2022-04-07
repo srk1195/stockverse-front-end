@@ -1,29 +1,29 @@
 // @ts-nocheck
-import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
 
-import PageNotFound from './components/Pages/PageNotFound';
-import UserNotAuthenticate from './components/Pages/UserNotAuthenticate';
-import Form from './components/Pages/Form';
-import Home from './components/Pages/Home';
-import AdminDashboard from './components/Pages/AdminDashboard';
-import Payment from './components/Pages/Payment';
-import PaymentDetails from './components/Pages/PaymentDetails';
-import Portfolio from './components/Pages/Portfolio';
-import Dashboard from './components/Pages/Dashboard';
-import Wishlist from './components/Pages/Wishlist';
-import Register from './components/Pages/Register';
-import ChangePassword from './components/Pages/ChangePassword';
-import Profile from './components/Pages/Profile';
+import PageNotFound from "./components/Pages/PageNotFound";
+import UserNotAuthenticate from "./components/Pages/UserNotAuthenticate";
+import Form from "./components/Pages/Form";
+import Home from "./components/Pages/Home";
+import AdminDashboard from "./components/Pages/AdminDashboard";
+import Payment from "./components/Pages/Payment";
+import PaymentDetails from "./components/Pages/PaymentDetails";
+import Portfolio from "./components/Pages/Portfolio";
+import Dashboard from "./components/Pages/Dashboard";
+import Wishlist from "./components/Pages/Wishlist";
+import Register from "./components/Pages/Register";
+import ChangePassword from "./components/Pages/ChangePassword";
+import Profile from "./components/Pages/Profile";
 
-import UsersList from './components/Pages/UserList';
+import UsersList from "./components/Pages/UserList";
 
-import AddPortfolioRecord from './components/Pages/AddPortfolioRecord';
-import { ToastContainer } from 'react-toastify';
-import ForgotPassword from './components/Pages/ForgotPassword';
-import SecurityQuestion from './components/Pages/SecurityQuestion';
-import 'react-toastify/dist/ReactToastify.css';
-import EditPortfolioRecord from './components/Pages/EditPortfolioRecord';
+import AddPortfolioRecord from "./components/Pages/AddPortfolioRecord";
+import { ToastContainer } from "react-toastify";
+import ForgotPassword from "./components/Pages/ForgotPassword";
+import SecurityQuestion from "./components/Pages/SecurityQuestion";
+import "react-toastify/dist/ReactToastify.css";
+import EditPortfolioRecord from "./components/Pages/EditPortfolioRecord";
 
 import UserStatistics from './components/Pages/UserStatistics';
 import CustomBasketForm from './components/Pages/CustomBasketForm';
@@ -33,9 +33,10 @@ import InstrumentDashboard from './components/Pages/InstrumentDashboard';
 import SendPromotions from './components/Pages/SendPromotions';
 import BlogManagement from "./components/Pages/BlogManagement";
 import UserBlogs from './components/Pages/UserBlogs';
+import News from "./components/Pages/News";
 
 function App() {
-  const user = localStorage.getItem('token');
+  const user = localStorage.getItem("token");
   return (
     <>
       <Routes>
@@ -115,12 +116,9 @@ function App() {
             element={<CustomBasketListAdmin />}
           />
         )}
+        {user && <Route exact path="/News" element={<News />} />}
         {user && (
-          <Route
-            exact
-            path="/sendPromotions"
-            element={<SendPromotions />}
-          />
+          <Route exact path="/sendPromotions" element={<SendPromotions />} />
         )}
       </Routes>
       <ToastContainer position="bottom-right" autoClose={1000} />
