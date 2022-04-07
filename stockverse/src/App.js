@@ -112,7 +112,7 @@ function App() {
             element={<CustomBasketListAdmin />}
           />
         )}
-        {user && <Route exact path="/News" element={<News />} />}
+        {<Route exact path="/News" element={<News />} />}
         {user && (
           <Route exact path="/sendPromotions" element={<SendPromotions />} />
         )}
