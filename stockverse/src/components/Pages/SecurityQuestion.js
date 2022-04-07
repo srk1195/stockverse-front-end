@@ -99,7 +99,7 @@ function SecurityQuestion() {
                                 </div>
 
                                 <div className="f-btn">
-                                    <button type="submit" onClick={submitForm}>Sign in</button>
+                                    <button type="submit" onClick={submitForm}>Submit</button>
                                 </div>
                                 {(!securityRes.status) ? <p style={{ color: "red" }}><i className="fa fa-warning"></i>{securityRes.message}</p> : null}
                             </form>

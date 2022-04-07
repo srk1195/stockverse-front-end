@@ -97,7 +97,7 @@ function ForgetPassword() {
 
 
                                 <div className="f-btn">
-                                    <button type="submit" onClick={submitForm}>Sign in</button>
+                                    <button type="submit" onClick={submitForm}>Verify Email</button>
                                 </div>
                                 {error && <div className="fa fa-warning">{error}</div>}
                                 <br />
