@@ -15,7 +15,7 @@ const News = () => {
   const fetchNews = () => {
     axios
       .get(
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=63480ac4f76e4f17bc0f2afb87bf0be2"
+        "https://newsapi.org/v2/everything?q=equity&apiKey=79af8a0825ba4443adf9c1f76f8913cb"
       )
       .then((data) => {
         setNewsList(data.data.articles);
@@ -37,6 +37,11 @@ const News = () => {
               } else {
                 temp = "";
               }
+              var authorName = "Multiple Sources ";
+
+              if (item.author) {
+                 authorName = item.author;
+                }
               return (
                 <>
                   <div
@@ -58,7 +63,7 @@ const News = () => {
                         <Col>
                           <Card.Body>
                             <Card.Title>{item.title}</Card.Title>
-                            <Card.Text>Author: {item.author}</Card.Text>
+                            <Card.Text>Author: {authorName}</Card.Text>
                             <Card.Text>
                               Published On: {item.publishedAt}
                             </Card.Text>
