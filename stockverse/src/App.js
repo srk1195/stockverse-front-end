@@ -25,12 +25,14 @@ import SecurityQuestion from "./components/Pages/SecurityQuestion";
 import "react-toastify/dist/ReactToastify.css";
 import EditPortfolioRecord from "./components/Pages/EditPortfolioRecord";
 
-import UserStatistics from "./components/Pages/UserStatistics";
-import CustomBasketForm from "./components/Pages/CustomBasketForm";
-import CustomBasketListAdmin from "./components/Pages/CustomBasketListAdmin";
-import CustomBasketList from "./components/Pages/CustomBasketList";
-import InstrumentDashboard from "./components/Pages/InstrumentDashboard";
-import SendPromotions from "./components/Pages/SendPromotions";
+import UserStatistics from './components/Pages/UserStatistics';
+import CustomBasketForm from './components/Pages/CustomBasketForm';
+import CustomBasketListAdmin from './components/Pages/CustomBasketListAdmin';
+import CustomBasketList from './components/Pages/CustomBasketList';
+import InstrumentDashboard from './components/Pages/InstrumentDashboard';
+import SendPromotions from './components/Pages/SendPromotions';
+import BlogManagement from "./components/Pages/BlogManagement";
+import UserBlogs from './components/Pages/UserBlogs';
 import News from "./components/Pages/News";
 
 function App() {
@@ -89,6 +91,8 @@ function App() {
         />
         <Route exact path="/changePassword/:id" element={<ChangePassword />} />
         <Route exact path="/profile/:id" element={<Profile />} />
+        <Route exact path="/adminBlogs" element={<BlogManagement />} />
+        <Route exact path="/userBlogs" element= {<UserBlogs/>} />
         <Route path="/*" element={<PageNotFound />} />
 
         {user && (
