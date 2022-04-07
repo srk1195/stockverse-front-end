@@ -47,12 +47,23 @@ function Form() {
 			const { data: response } = await axios.post(url2, formData);
             console.log(response);
             if(response.role===false) {
-			    navigate(`/home`);
-                window.location.reload();
+			    
+                window.setTimeout(function(){
+
+                    // Move to a new location or you can do something else
+                    window.location.href = "/home";
+            
+                }, 50);
             }
             else{
-                navigate('/admin');
-                window.location.reload();
+                window.setTimeout(function(){
+
+                    // Move to a new location or you can do something else
+                    window.location.href = "/admin";
+            
+                }, 50);
+                
+                
             }
 		} catch (error) {
 			if (
