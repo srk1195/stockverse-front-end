@@ -7,8 +7,8 @@
     display: block;
     min-height: 800px;
  }
-table {width: 100%;}
-td {
+.pay-table {width: 100%;}
+.pay-table  td {
  max-width: 0;
  overflow: hidden;
  text-overflow: ellipsis;
