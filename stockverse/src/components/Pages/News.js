@@ -1,3 +1,4 @@
+import "../Css/News.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
@@ -24,52 +25,56 @@ const News = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#e9ecef" }}>
+    <div>
       <Navigation />
-
-      <p style={{ textAlign: "center", fontSize: "3rem", padding: 10 }}>
-        Market News Article
-      </p>
-      {newsList.length > 0
-        ? newsList.map((item) => {
-            return (
-              <>
-                <div
-                  style={{ padding: 10 }}
-                  classnName="shadow p-3 mb-5 bg-white rounded"
-                >
-                  <Card>
-                    <Row className="no-gutters">
-                      <Col md={4.2} lg={4.2}>
-                        <Card.Img
-                          variant="top"
-                          src={
-                            item.urlToImage
-                              ? item.urlToImage
-                              : "http://creativemichelle.com/wp-content/plugins/elementor/assets/images/placeholder.png"
-                          }
-                        />
-                      </Col>
-                      <Col>
-                        <Card.Body>
-                          <Card.Title>{item.title}</Card.Title>
-                          <Card.Text>Author: {item.author}</Card.Text>
-                          <Card.Text>
-                            Published On: {item.publishedAt}
-                          </Card.Text>
-                          <Card.Text>
-                            {item.description}
-                            {item.content}
-                          </Card.Text>
-                        </Card.Body>
-                      </Col>
-                    </Row>
-                  </Card>
-                </div>
-              </>
-            );
-          })
-        : null}
+      <div>
+        <p className="page-title-news">Market News Article</p>
+        {newsList.length > 0
+          ? newsList.map((item) => {
+              if (item.content != null) {
+                var temp = item.content.substring(0, item.content.indexOf("["));
+              } else {
+                temp = "";
+              }
+              return (
+                <>
+                  <div
+                    style={{ padding: 10 }}
+                    classnName="shadow p-3 mb-5 bg-white rounded"
+                  >
+                    <Card>
+                      <Row className="no-gutters">
+                        <Col md={4} lg={4}>
+                          <Card.Img
+                            variant="top"
+                            src={
+                              item.urlToImage
+                                ? item.urlToImage
+                                : "http://creativemichelle.com/wp-content/plugins/elementor/assets/images/placeholder.png"
+                            }
+                          />
+                        </Col>
+                        <Col>
+                          <Card.Body>
+                            <Card.Title>{item.title}</Card.Title>
+                            <Card.Text>Author: {item.author}</Card.Text>
+                            <Card.Text>
+                              Published On: {item.publishedAt}
+                            </Card.Text>
+                            <Card.Text>
+                              {item.description}
+                              {temp}
+                            </Card.Text>
+                          </Card.Body>
+                        </Col>
+                      </Row>
+                    </Card>
+                  </div>
+                </>
+              );
+            })
+          : null}
+      </div>
     </div>
   );
 };
