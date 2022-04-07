@@ -1,3 +1,4 @@
+// Author Shiv Gaurang Desai (B00862445)
 import "../Css/News.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
