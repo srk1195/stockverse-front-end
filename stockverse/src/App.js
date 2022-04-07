@@ -30,6 +30,8 @@ import CustomBasketForm from './components/Pages/CustomBasketForm';
 import CustomBasketListAdmin from './components/Pages/CustomBasketListAdmin';
 import CustomBasketList from './components/Pages/CustomBasketList';
 import InstrumentDashboard from './components/Pages/InstrumentDashboard';
+import SendPromotions from './components/Pages/SendPromotions';
+
 function App() {
   const user = localStorage.getItem('token');
   return (
@@ -107,6 +109,13 @@ function App() {
             exact
             path="/customBasketListAdmin"
             element={<CustomBasketListAdmin />}
+          />
+        )}
+        {user && (
+          <Route
+            exact
+            path="/sendPromotions"
+            element={<SendPromotions />}
           />
         )}
       </Routes>

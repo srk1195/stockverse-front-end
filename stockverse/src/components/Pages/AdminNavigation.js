@@ -101,6 +101,12 @@ export class AdminNavigation extends Component {
                 >
                   Custom Basket Management
                 </Nav.Link>
+                <Nav.Link
+                  className="d-inline p-2 bg-secondary text-white"
+                  href="/sendPromotions"
+                >
+                  Send Promotions
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>

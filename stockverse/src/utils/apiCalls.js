@@ -264,6 +264,24 @@ const updateUserSubscription = () => {
   return user;
 };
 
+//send promotion
+const sendPromotionsEmail = async (data) => {
+  try {
+    const url = `${CONSTANTS.LOCAL_BACKEND_URL}/sendPromotions`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  } catch (e) {
+    console.log(e);
+    return { status: false, message: e.message };
+  }
+};
+
 export {
   getInstrumentDailyData,
   getCompanyOverview,
@@ -281,4 +299,5 @@ export {
   getPortfolioDateMap,
   isAuthenticated,
   updateUserSubscription,
+  sendPromotionsEmail,
 };
