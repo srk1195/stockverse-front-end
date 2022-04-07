@@ -107,6 +107,12 @@ export class AdminNavigation extends Component {
                 >
                   Send Promotions
                 </Nav.Link>
+                <Nav.Link
+                  className="d-inline p-2 bg-secondary text-white"
+                  href="/News"
+                >
+                  Market News
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>
