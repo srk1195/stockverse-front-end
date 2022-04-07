@@ -28,6 +28,7 @@ import UserStatistics from "./components/Pages/UserStatistics";
 import CustomBasketForm from "./components/Pages/CustomBasketForm";
 import CustomBasketListAdmin from "./components/Pages/CustomBasketListAdmin";
 import CustomBasketList from "./components/Pages/CustomBasketList";
+import News from "./components/Pages/News";
 function App() {
   const user = localStorage.getItem("token");
   return (
@@ -46,7 +47,7 @@ function App() {
           />
         )}
         {user && <Route exact path="/portfolio" element={<Portfolio />} />}
-
+        <Route exact path="/News" element={<News />} />
         {user && <Route exact path="/wishlist" element={<Wishlist />} />}
         {user && <Route exact path="/admin" element={<AdminDashboard />} />}
         {user && <Route exact path="/usersList" element={<UsersList />} />}
