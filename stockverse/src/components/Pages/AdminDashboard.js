@@ -14,6 +14,10 @@ const AdminDashboard = () => {
     e.preventDefault();
     navigate("/customBasketListAdmin");
   };
+  const handleSendPromotions = (e) => {
+    e.preventDefault();
+    navigate("/sendPromotions");
+  };
 
   return (
     <div className="adminDashboard">
@@ -43,7 +47,12 @@ const AdminDashboard = () => {
                 My blogs
               </Card.Body>
             </div>
-            <div className="container"></div>
+            <div className="container">
+              <Card.Body onClick={(e) => handleSendPromotions(e)}
+                className="cardRight eachCard bg-secondary">
+                Send Promotions
+              </Card.Body>
+            </div>
           </Card>
         </div>
       </div>
