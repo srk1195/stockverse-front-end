@@ -11,7 +11,7 @@ import {
     Button
 } from "@mui/material";
 import { AdminNavigation } from "./AdminNavigation";
-
+import '../Css/SendPromotions.css'
 import {
     sendPromotionsEmail
 } from '../../utils/apiCalls';
@@ -66,15 +66,15 @@ const SendPromotions = () => {
                 alignItems={"center"}
                 justifyContent={"center"}
                 direction="column"
-                className="grid-custom"
+                className="promo-grid-custom"
             >
                 <Grid item>
                     <Typography variant="h5" color={"#485461"}>
                         SEND PROMOTIONS
                     </Typography>
                 </Grid>
-                <Card className="card-custom" style={{ width: '100%' }}>
-                    <FormControl sx={{ m: 1, width: "calc(100% - 5px)" }}>
+                <Card className="promo-custom">
+                    <FormControl  sx={{ m: 1, width: "calc(100% - 5px)" }}>
                         <InputLabel id="demo-controlled-open-select-label">
                             User Sunscription
                         </InputLabel>
@@ -125,8 +125,7 @@ const SendPromotions = () => {
                     </div>
                     <Button
                         onClick={() => handleSubmit()}
-                        style={{ float: 'right' }}
-                        className="form-submit"
+                        className="promo-submit"
                         variant="contained"
                     >
                         Send Emails

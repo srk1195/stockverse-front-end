@@ -88,7 +88,7 @@ const Payment = () => {
         </div>}
         {filteredList.length > 0 &&
           <div>
-            <Table striped bordered hover className="p">
+            <Table striped bordered hover className="pay-table">
               <thead>
                 <tr>
                   <th>Transaction ID</th>
