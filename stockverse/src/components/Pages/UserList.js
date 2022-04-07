@@ -67,7 +67,7 @@ function UsersList() {
             <div id="nullUsers" className='nullUsers'>
                 <p className='text'>No Users found</p>
             </div>
-            <Button style={{fontSize:18, float:'right', margin: '20px'}} variant="outline-primary" onClick={btnClick}>Statistics</Button>
+            <Button role="button" className="mt-1" type="button" variant="outline-dark" style={{fontSize:18, float:'right', margin: '20px'}} onClick={btnClick}>Statistics</Button>
         </div>
     </div>
   );

@@ -1,3 +1,4 @@
+//Author : Pallavi Cherukupalli (B00887062)
 import React, {useEffect} from 'react';
 import { AdminNavigation } from './AdminNavigation';
 import { Button, Card, Container } from "react-bootstrap"; 
@@ -89,7 +90,7 @@ function BlogManagement() {
         <div className='blgs'>
             <AdminNavigation/>
             <Container  style={{fontSize:18, margin: '20px'}}>
-              <Button style={{float:'right'}} variant="outline-primary" onClick={addBlog}>Add</Button>
+              <Button style={{float:'right'}} role="button" className="mt-1" type="button" variant="outline-dark" onClick={addBlog}>Add</Button>
             </Container>
             <div className='blogCon'>
               {allBlogs && allBlogs.map(item => (
@@ -98,7 +99,7 @@ function BlogManagement() {
                       <strong>Blog Content</strong>
                       <Card.Text>{item.BlogContent}</Card.Text>
                         <hr/>
-                        <Button style={{'margin':'10px'}}  onClick={() => deleteaBlog(item._id)} variant="outline-primary" autoFocus>
+                        <Button style={{'margin':'10px'}}  onClick={() => deleteaBlog(item._id)} role="button" className="mt-1" type="button" variant="outline-dark" autoFocus>
                           Delete
                         </Button>
                       </Card.Body>
@@ -114,10 +115,10 @@ function BlogManagement() {
                  <textarea className="dialog-input" type="text" onChange={handleChange}></textarea>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleClose} variant="outline-primary">
+                <Button onClick={handleClose} role="button" className="mt-1" type="button" variant="outline-dark">
                  Cancel
                 </Button>
-                <Button onClick={postBlog} variant="outline-primary" autoFocus>
+                <Button onClick={postBlog} role="button" className="mt-1" type="button" variant="outline-dark" autoFocus>
                  Post
                 </Button>
                 </DialogActions>
@@ -130,10 +131,10 @@ function BlogManagement() {
                   Are you sure you want to delete?
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={closeDelete} variant="outline-primary">
+                <Button onClick={closeDelete} role="button" className="mt-1" type="button" variant="outline-dark">
                  Cancel
                 </Button>
-                <Button onClick={deleteY} variant="outline-primary" autoFocus>
+                <Button onClick={deleteY} role="button" className="mt-1" type="button" variant="outline-dark" autoFocus>
                  Delete
                 </Button>
                 </DialogActions>
