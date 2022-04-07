@@ -81,17 +81,11 @@ export class AdminNavigation extends Component {
                   className="d-inline p-2 bg-secondary text-white"
                   href="/"
                 >
-                  Investment Video Strategy
-                </Nav.Link>
-                <Nav.Link
-                  className="d-inline p-2 bg-secondary text-white"
-                  href="/"
-                >
                   Mail Management
                 </Nav.Link>
                 <Nav.Link
                   className="d-inline p-2 bg-secondary text-white"
-                  href="/"
+                  href="/adminBlogs"
                 >
                   My blogs
                 </Nav.Link>
@@ -100,6 +94,18 @@ export class AdminNavigation extends Component {
                   href="/CustomBasketListAdmin"
                 >
                   Custom Basket Management
+                </Nav.Link>
+                <Nav.Link
+                  className="d-inline p-2 bg-secondary text-white"
+                  href="/sendPromotions"
+                >
+                  Send Promotions
+                </Nav.Link>
+                <Nav.Link
+                  className="d-inline p-2 bg-secondary text-white"
+                  href="/News"
+                >
+                  Market News
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
