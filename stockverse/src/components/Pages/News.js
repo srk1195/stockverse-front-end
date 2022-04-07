@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Navigation } from "./Navigation";
+import { toast } from "react-toastify";
 
 const News = () => {
   useEffect(() => {
@@ -21,7 +22,7 @@ const News = () => {
         setNewsList(data.data.articles);
       })
       .catch((e) => {
-        console.log(e);
+        toast.error(e);
       });
   };
 

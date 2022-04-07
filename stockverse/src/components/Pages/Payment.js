@@ -40,7 +40,6 @@ const Payment = () => {
     if (search && search.length > 0) {
       list = list.filter((item) => {
         let id = item['transactionId'].toString().toLowerCase();
-        console.log(id, search.toLowerCase());
         return id === search.toLowerCase() || id.includes(search.toLowerCase());
       })
     }

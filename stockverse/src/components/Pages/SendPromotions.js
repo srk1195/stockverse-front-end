@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
     Card,
     Grid,
@@ -46,14 +47,14 @@ const SendPromotions = () => {
         if (!error) {
             let response = await sendPromotionsEmail(emailDetails);
             if (response?.success) {
-                alert("Email Sent");
+                toast.success("Email Sent");
                 setEmailDetails({
                     subscription: "",
                     subject: "",
                     content: ""
                 });
             }
-            else alert("Email sent failed, please try again");
+            else toast.error("Email sent failed, please try again");
         }
     }
 
@@ -76,12 +77,12 @@ const SendPromotions = () => {
                 <Card className="promo-custom">
                     <FormControl  sx={{ m: 1, width: "calc(100% - 5px)" }}>
                         <InputLabel id="demo-controlled-open-select-label">
-                            User Sunscription
+                            User Subscription
                         </InputLabel>
                         <Select
                             sx={{ m: 1, width: "calc(100% - 5px)" }}
                             value={emailDetails?.subscription}
-                            label="User Sunscription"
+                            label="User Subscription"
                             name="subscription"
                             onChange={(e) => { setEmailDetails({ ...emailDetails, subscription: e.target.value }) }}
                             onBlur={(e) => validate(e.target.name)}

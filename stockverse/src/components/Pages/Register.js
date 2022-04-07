@@ -10,7 +10,6 @@ const Register = () => {
     const api_url = `${CONSTANTS.LOCAL_BACKEND_URL}/getRandomQuestion`;
     useEffect(() => {
         axios.get(api_url).then((res) => {
-            // console.log("questions", res.data.questions);
             setProfile(res.data.questions);
             
         });
@@ -21,7 +20,6 @@ const Register = () => {
             value: item.question   
         }
     });
-    console.log(options);
     const navigate = useNavigate();
     const [error, setError] = useState("");
     
@@ -133,11 +131,9 @@ const Register = () => {
         try {
 
             const url = `${CONSTANTS.LOCAL_BACKEND_URL}/register`;
-            console.log(userData);
             const { data: res } = await axios.post(url, userData);
 
             navigate("/login");
-            console.log(res.message);
         } catch (error) {
             if (
                 error.response &&

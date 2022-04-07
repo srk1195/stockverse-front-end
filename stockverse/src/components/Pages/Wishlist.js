@@ -74,7 +74,7 @@ function Wishlist() {
     setPage(0);
   };
     const navigate =useNavigate();
-    const regexName = /^[a-zA-Z]+$/;
+    const regexName = /^[A-Za-z0-9? _-]+$/;
     const [warnFN,setWarnFN]= React.useState(false);
     const [msgFN, setMsgFN] = React.useState("");
     // Getting User Wishlist
@@ -98,12 +98,10 @@ function Wishlist() {
         const Authentication =isAuthenticated();
         if(Authentication !== false)
         {
-            console.log("authn",Authentication);
             getUserWishlist(Authentication.id).then((res) => {
                 if (res.status === 201) {
                     if (res.data !== null && res.data.Data !== null) {
                         setUserWishlists(res.data.Data);
-                        console.log("res",res.data.Data);
                     
                     } 
                 }
@@ -156,7 +154,6 @@ function Wishlist() {
 
               wIdFunction = res.data.Data[0]._id;
               wInvestmentsFunction = res.data.Data[0].Investments;
-              console.log(res.data.Data[0].Investments);
               if (wInvestmentsFunction === '' || wInvestmentsFunction === null) {
                 setWishlistData({
                   ...wishlistData,
@@ -209,7 +206,6 @@ function Wishlist() {
                           PChng: apiPChng,
                         };
                         wViewDetailArrayFunction.push(demo);
-                        console.log(wViewDetailArrayFunction);
                         setWishlistData({
                           ...wishlistData,
                           ViewDetailsArray: wViewDetailArrayFunction,
@@ -253,7 +249,6 @@ function Wishlist() {
     handleDeleteShow(reqId);
   };
   var btnDashboard = (reqId) => {
-    console.log(`/instrument-dashboard/${reqId}`);
     navigate(`/instrument-dashboard/${reqId}`);
   };
   var btnSave = (e) => {
@@ -264,7 +259,11 @@ function Wishlist() {
         setWarnFN(true);
         setMsgFN('Please Enter a valid First Name.');
         return;
-      } else if (!warnFN) {
+      }
+      else if(wishlistData.InvestArray === null || wishlistData.InvestArray.toString() === null || wishlistData.InvestArray.toString()==="" || wishlistData.InvestArray === undefined){
+        toast.error("Please add atleast one Investment into the Wislist.");
+      }
+      else if (!warnFN) {
         var SymbolsName = '';
         wishlistData.InvestArray.forEach(
           (data) => (SymbolsName += data.Symbol + '-' + data.Name + ',')
@@ -276,7 +275,6 @@ function Wishlist() {
         };
         addWishlist(newWishlist)
           .then((res) => {
-            //console.log(res);
             if (res.status === 201) {
               if (res.data['Status']) {
                 toast.success(res.data['Message']);
@@ -318,7 +316,11 @@ function Wishlist() {
         setWarnFN(true);
         setMsgFN('Please Enter a valid First Name.');
         return;
-      } else if (!warnFN) {
+      } 
+      else if(wishlistData.InvestArray === null || wishlistData.InvestArray.toString() === null || wishlistData.InvestArray.toString()==="" || wishlistData.InvestArray === undefined){
+        toast.error("Please add atleast one Investment into the Wislist.");
+      }
+      else if (!warnFN) {
         var SymbolsName = '';
         wishlistData.InvestArray.forEach(
           (data) => (SymbolsName += data.Symbol + '-' + data.Name + ',')
@@ -330,7 +332,6 @@ function Wishlist() {
         };
         updateWishlistById(reqId, newWishlist)
           .then((res) => {
-            //console.log(res);
             if (res.status === 201) {
               if (res.data !== null && res.data.Data !== null) {
                 toast.success(res.data['Message']);
@@ -381,7 +382,6 @@ function Wishlist() {
   };
 
   function plusClicked(props) {
-    //console.log(props);
     const demo = [
       {
         Symbol: props.Symbol,
@@ -492,7 +492,6 @@ function Wishlist() {
 
       const url = CONSTANTS.SYMBOL_SEARCH(API_SEARCH);
 
-      //alert(API_Call);
       fetch(url)
         .then(function (res) {
           return res.json();
@@ -601,7 +600,7 @@ function Wishlist() {
                     {state === 'start' && stateView === 'startView' && (
                       <Button
                         style={{ fontSize: 18 }}
-                        variant="outline-primary"
+                        variant="outline-dark"
                         onClick={btnAdd}
                       >
                         <i className="fas fa-plus-circle"></i> Add New
@@ -619,7 +618,6 @@ function Wishlist() {
                     >
                       {userWishlists.map((wishlist) => {
                         var arr = wishlist.Investments.split(',');
-                        console.log(wishlist._id);
                         return (
                           <>
                             <Card className="udtitle">
@@ -672,7 +670,7 @@ function Wishlist() {
                   <Col className="d-flex justify-content-end">
                     <Button
                       style={{ fontSize: 18, marginRight: 10 }}
-                      variant="outline-primary"
+                      variant="outline-dark"
                       onClick={() => {
                         btnDashboard(wishlistData.WId);
                       }}
@@ -681,14 +679,14 @@ function Wishlist() {
                     </Button>
                     <Button
                       style={{ fontSize: 18, marginRight: 10 }}
-                      variant="outline-primary"
+                      variant="outline-dark"
                       onClick={btnEdit}
                     >
                       <i className="fas fa-pencil-alt"></i> Edit
                     </Button>
                     <Button
                       style={{ fontSize: 18 }}
-                      variant="outline-primary"
+                      variant="outline-danger"
                       onClick={(e) => {
                         btnDelete(e, wishlistData.WId);
                       }}
@@ -766,7 +764,7 @@ function Wishlist() {
                     <Col className="d-flex justify-content-end">
                       <Button
                         style={{ fontSize: 18 }}
-                        variant="outline-primary"
+                        variant="outline-dark"
                         onClick={(e) => {
                           btnDelete(e, wishlistData.WId);
                         }}
@@ -806,7 +804,6 @@ function Wishlist() {
                           <ListGroup
                             style={{ overflow: 'auto', maxHeight: '500px' }}
                           >
-                            {/* { console.log("hi")}{ console.log(investArray)} */}
                             {wishlistData.InvestArray.map((item) => (
                               <>
                                 <ListGroup.Item
@@ -1006,7 +1003,7 @@ function Wishlist() {
                                 >
                                   <Button
                                     style={{ fontSize: 18 }}
-                                    variant="outline-primary"
+                                    variant="outline-dark"
                                     onClick={btnSearch}
                                   >
                                     <i className="fas fa-search"></i> Search
@@ -1049,7 +1046,7 @@ function Wishlist() {
                       {state === 'btnAdd' && (
                         <Button
                           style={{ fontSize: 18 }}
-                          variant="outline-primary"
+                          variant="outline-dark"
                           onClick={btnSave}
                         >
                           <i className="fas fa-save"></i> Save
@@ -1058,7 +1055,7 @@ function Wishlist() {
                       {state === 'btnEdit' && (
                         <Button
                           style={{ fontSize: 18 }}
-                          variant="outline-primary"
+                          variant="outline-dark"
                           onClick={(e) => {
                             btnUpdate(e, wishlistData.WId);
                           }}

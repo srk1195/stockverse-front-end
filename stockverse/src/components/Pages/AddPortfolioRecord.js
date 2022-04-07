@@ -101,7 +101,6 @@ function AddPortfolioRecord() {
         toast.success('Successfully added the record', {
           theme: 'dark',
         });
-        console.log(addResult.data);
         navigate('/portfolio');
       } else {
         setPortfolioData({

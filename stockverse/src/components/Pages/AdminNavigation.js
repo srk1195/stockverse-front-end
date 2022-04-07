@@ -8,6 +8,10 @@ import UsersList from "./UserList";
 import logo from "../Images/Logo.png";
 
 export class AdminNavigation extends Component {
+  handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location = "/login";
+  };
   render() {
     return (
       <>
@@ -20,7 +24,6 @@ export class AdminNavigation extends Component {
         >
           <Container style={{ marginLeft: "unset", minWidth: "100%" }}>
             <Navbar.Brand href="/home">
-              {" "}
               <img
                 src={logo}
                 className="n-App-logo rounded-circle pe-3"
@@ -32,13 +35,6 @@ export class AdminNavigation extends Component {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto"></Nav>
               <Nav>
-                <Nav.Link href="">
-                  <i
-                    className="fas fa-bell rounded-circle c-white "
-                    alt="Notification"
-                    width="30"
-                  ></i>
-                </Nav.Link>
                 <NavDropdown
                   align="end"
                   title={
@@ -49,11 +45,9 @@ export class AdminNavigation extends Component {
                     ></i>
                   }
                 >
-                  <NavDropdown.Item href="">About</NavDropdown.Item>
-                  <NavDropdown.Item href="">Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="">Subscription</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="">Notification</NavDropdown.Item>
+                  <NavDropdown.Item onClick={this.handleLogout}>
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>

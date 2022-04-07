@@ -58,7 +58,6 @@ const CustomBasketForm = () => {
     };
     addCustomBasket(data)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           toast.success("Successfully added the record");
           navigate("/customBasketListAdmin");
@@ -140,7 +139,7 @@ const CustomBasketForm = () => {
   const checkForSymbol = async (e) => {
     e.preventDefault();
     if (marketSymbol.includes(singleShare)) {
-      alert("Share is alreay selected");
+      toast.error("Share is alreay selected");
     } else {
       var nw = await validateInstrumentSymbol(singleShare);
       if (nw.status) {
@@ -149,7 +148,7 @@ const CustomBasketForm = () => {
         setSingleShare("");
         setMarketSymbol(tempList);
       } else {
-        alert("Please select a valid share");
+        toast.error("Please select a valid share");
       }
     }
   };

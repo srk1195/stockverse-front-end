@@ -1,10 +1,4 @@
 /* Author : Pallavi Cherukupalli (B00887062) */
-.profile{
-    height: 100%;
-    position: absolute;
-    background-color: #DCDCDC;
-    width: 100%;
-}
 
 .text{
     font-size: xx-large;
@@ -36,10 +30,7 @@
     border-radius: 5px;
   }
 
-  .textstats{
-    font-family: initial;
-  }
-
+  
 
   .inputsection{
     width: 90%;

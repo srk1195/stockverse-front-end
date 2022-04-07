@@ -12,7 +12,6 @@ const Register = () => {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const params = useParams();
-    console.log(params);
     const [userData, setUserData] = useState({  password: "", cpassword: ""});
     
    
@@ -61,9 +60,7 @@ const Register = () => {
             const url = `${CONSTANTS.LOCAL_BACKEND_URL }/updatePassword/${params.id}`;
             
             const { data: res } = await axios.post(url, userData);
-            console.log(res);
             navigate("/login");
-            console.log(res.message);
         } catch (error) {
             if (
                 error.response &&

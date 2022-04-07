@@ -38,14 +38,12 @@ function Form() {
         e.preventDefault();
         
         try {
-            console.log(formData);
-			const url = `${CONSTANTS.LOCAL_BACKEND_URL}/signin`;
+            const url = `${CONSTANTS.LOCAL_BACKEND_URL}/signin`;
 			const { data: res } = await axios.post(url, formData);
 			localStorage.setItem("token", JSON.stringify(res));
             
             const url2 = `${CONSTANTS.LOCAL_BACKEND_URL}/getRoleByEmail`;
 			const { data: response } = await axios.post(url2, formData);
-            console.log(response);
             if(response.role===false) {
 			    
                 window.setTimeout(function(){

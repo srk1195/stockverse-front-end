@@ -15,13 +15,11 @@ function SecurityQuestion() {
     
     useEffect(() => {
         axios.get(api_url).then((res) => {
-            console.log(res.data.question);
             setQuestion(res.data.question);
             
         });
         
     },[]);
-    console.log("params", params.id);
     const [formData, setFormData] = useState({ answer: '' });
     const [warnAnswer, setWarnAnswer] = useState(false);
     const [msgAnswer, setMsgAnswer] = useState("");
@@ -48,9 +46,7 @@ function SecurityQuestion() {
 
             const url = `${CONSTANTS.LOCAL_BACKEND_URL}/verifyAnswer`;
             setFormData({ ...formData, id:params.id });
-            console.log(formData);
             const { data: res } = await axios.post(url, formData);
-            console.log(res);
             if (!warnAnswer) {
                 if (res.message ==='Answer is correct') {
                     navigate(`/changePassword/${params.id}`, { state: { newId: params.id} });
